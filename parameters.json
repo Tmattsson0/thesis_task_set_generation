@@ -1,0 +1,29 @@
+{
+  "environment": {
+    "number_of_hosts": "",
+    "schedule_type": "",
+    "preemptible": "",
+    "num_of_cores": "",
+    "microtick_values": ""
+  },
+  "system": {
+    "tt_utilization": "",
+    "et_utilization": "",
+    "num_of_tt_tasks": "",
+    "num_of_et_tasks": "",
+    "periods": ""
+  },
+  "task": {
+    "allowed_jitter": "",
+    "release_time": "",
+    "deadline_type": ""
+  },
+  "chain": {
+    "num_of_chains": "",
+    "num_of_tasks_in_chain": "",
+    "num_of_low": "",
+    "num_of_high": "",
+    "num_of_host_transitions": "",
+    "latency": ""
+  }
+}
