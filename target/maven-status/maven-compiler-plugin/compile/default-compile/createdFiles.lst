@@ -1,3 +1,4 @@
-model/TaskType.class
+util/CsvWriter.class
 Main.class
 model/Task.class
+model/TaskType.class
