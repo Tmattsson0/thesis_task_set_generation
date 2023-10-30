@@ -27,7 +27,7 @@ public class CsvWriter {
 
         try {
 
-            File file = new File(testCasesFilePath + File.separator + java.time.LocalDate.now() + "_" + parameterSubFolderName + File.separator + fileName);
+            File file = new File(testCasesFilePath + File.separator + java.time.LocalDate.now() + "_" + parameterSubFolderName + File.separator + fileName + ".csv");
 
             Files.createDirectories(Paths.get(testCasesFilePath + File.separator + java.time.LocalDate.now() + "_" + parameterSubFolderName));
 

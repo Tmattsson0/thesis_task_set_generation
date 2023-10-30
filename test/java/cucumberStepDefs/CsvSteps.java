@@ -60,7 +60,8 @@ public class CsvSteps {
                 + java.time.LocalDate.now() + "_"
                 + parameterName
                 + File.separator
-                + fileName);
+                + fileName
+                + ".csv");
 
         Assertions.assertTrue(f.isDirectory());
         Assertions.assertTrue(file.exists());
