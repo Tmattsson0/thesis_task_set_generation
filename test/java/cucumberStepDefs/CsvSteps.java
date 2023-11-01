@@ -39,11 +39,11 @@ public class CsvSteps {
 
     @When("the csv method is called")
     public void aCsvFileAndASubfolderDoesNotExist() {
-        testCase.add(new Task("tTT0", 20, 4000, TaskType.TT, 7, 4000));
-        testCase.add(new Task("tTT1", 20, 4000, TaskType.TT, 7, 4000));
-        testCase.add(new Task("tTT2", 20, 4000, TaskType.TT, 7, 4000));
-        testCase.add(new Task("tTT3", 20, 4000, TaskType.TT, 7, 4000));
-        testCase.add(new Task("tTT4", 20, 4000, TaskType.TT, 7, 4000));
+        testCase.add(new Task("1", "TTt01", 360, 80000, 80000, -1, 0, 0, 0, TaskType.TT, 1));
+        testCase.add(new Task("2", "TTt02", 360, 80000, 80000, -1, 0, 0, 0, TaskType.TT, 1));
+        testCase.add(new Task("3", "TTt03", 360, 80000, 80000, -1, 0, 0, 0, TaskType.TT, 1));
+        testCase.add(new Task("4", "TTt04", 360, 80000, 80000, -1, 0, 0, 0, TaskType.TT, 1));
+        testCase.add(new Task("5", "TTt05", 360, 80000, 80000, -1, 0, 0, 0, TaskType.TT, 1));
         writeDataAtOnce(filepath, testCase, parameterName, fileName);
     }
 

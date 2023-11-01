@@ -40,7 +40,7 @@ public class CsvWriter {
             // create a List which contains String array
             List<String[]> textData = csvTaskToStringConverter(data);
 
-            textData.add(0, new String[] { "tasks", "name", "duration", "period", "type", "priority", "deadline"});
+            textData.add(0, new String[] { "tasks", "id", "name", "WCET", "period", "deadline", "maxJitter", "offset", "CpuID", "CoreID", "type", "priority"});
             writer.writeAll(textData);
 
             // closing writer connection
@@ -59,12 +59,17 @@ public class CsvWriter {
         for (Task task : taskSet){
             stringTaskSet.add(new String[] {
                     "",
+                    task.getId(),
                     task.getName(),
-                    String.valueOf(task.getDuration()),
+                    String.valueOf(task.getWcet()),
                     String.valueOf(task.getPeriod()),
+                    String.valueOf(task.getDeadline()),
+                    String.valueOf(task.getMaxJitter()),
+                    String.valueOf(task.getOffset()),
+                    String.valueOf(task.getCpuId()),
+                    String.valueOf(task.getCoreId()),
                     task.getTaskType().toString(),
-                    String.valueOf(task.getPriority()),
-                    String.valueOf(task.getDeadline())
+                    String.valueOf(task.getPriority())
             });
         }
             return stringTaskSet;

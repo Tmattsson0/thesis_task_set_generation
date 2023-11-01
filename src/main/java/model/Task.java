@@ -1,33 +1,47 @@
 package model;
 
 public class Task {
-
+    private String id;
     private String name;
-    private int duration;
+    private int wcet;
     private int period;
+    private int deadline;
+    private int maxJitter;
+    private int offset;
+    private int cpuId;
+    private int coreId;
     private TaskType taskType;
     private int priority;
-    private int deadline;
 
-    public Task(String name, int duration, int period, TaskType taskType, int priority, int deadline) {
+//    public Task(String name, int duration, int period, TaskType taskType, int priority, int deadline) {
+//        this.name = name;
+//        this.wcet = duration;
+//        this.period = period;
+//        this.taskType = taskType;
+//        this.priority = priority;
+//        this.deadline = deadline;
+//    }
+
+    public Task(String id, String name, int wcet, int period, int deadline, int maxJitter, int offset, int cpuId, int coreId, TaskType taskType, int priority) {
+        this.id = id;
         this.name = name;
-        this.duration = duration;
+        this.wcet = wcet;
         this.period = period;
+        this.deadline = deadline;
+        this.maxJitter = maxJitter;
+        this.offset = offset;
+        this.cpuId = cpuId;
+        this.coreId = coreId;
         this.taskType = taskType;
         this.priority = priority;
-        this.deadline = deadline;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", duration=" + duration +
-                ", period=" + period +
-                ", taskType=" + taskType +
-                ", priority=" + priority +
-                ", deadline=" + deadline +
-                '}';
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -38,12 +52,12 @@ public class Task {
         this.name = name;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getWcet() {
+        return wcet;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setWcet(int wcet) {
+        this.wcet = wcet;
     }
 
     public int getPeriod() {
@@ -52,6 +66,46 @@ public class Task {
 
     public void setPeriod(int period) {
         this.period = period;
+    }
+
+    public int getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(int deadline) {
+        this.deadline = deadline;
+    }
+
+    public int getMaxJitter() {
+        return maxJitter;
+    }
+
+    public void setMaxJitter(int maxJitter) {
+        this.maxJitter = maxJitter;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getCpuId() {
+        return cpuId;
+    }
+
+    public void setCpuId(int cpuId) {
+        this.cpuId = cpuId;
+    }
+
+    public int getCoreId() {
+        return coreId;
+    }
+
+    public void setCoreId(int coreId) {
+        this.coreId = coreId;
     }
 
     public TaskType getTaskType() {
@@ -70,12 +124,21 @@ public class Task {
         this.priority = priority;
     }
 
-    public int getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(int deadline) {
-        this.deadline = deadline;
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", wcet=" + wcet +
+                ", period=" + period +
+                ", deadline=" + deadline +
+                ", maxJitter=" + maxJitter +
+                ", offset=" + offset +
+                ", cpuId=" + cpuId +
+                ", coreId=" + coreId +
+                ", taskType=" + taskType +
+                ", priority=" + priority +
+                '}';
     }
 }
 
