@@ -1,0 +1,104 @@
+package util;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
+
+public class ParametersJsonReader {
+    File parametersFile;
+    JsonNode root;
+
+    public ParametersJsonReader(String parametersFilePath) {
+        parametersFile = new File(parametersFilePath);
+        try {
+            root =  new ObjectMapper().readTree(parametersFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+//            throw new RuntimeException(e);
+        }
+    }
+
+    public int getNumOfHosts() {
+        return root.path("environment").path( "number_of_hosts").asInt();
+    }
+
+    public String getScheduleType(){
+        return root.path("environment").path( "schedule_type").asText();
+    }
+
+    public boolean getIsPreemptible(){
+        return root.path("environment").path( "preemptible").asBoolean();
+    }
+
+    public int getNumOfCores(){
+        return root.path("environment").path( "num_of_cores").asInt();
+    }
+
+    public int getMicrotickValues(){
+        return root.path("environment").path( "microtick_values").asInt();
+    }
+
+    public double getTtUtilization(){
+        return root.path("system").path( "tt_utilization").asDouble();
+    }
+
+    public double getEtUtilization(){
+        return root.path("system").path( "et_utilization").asDouble();
+    }
+
+    public int getNumOfTtTasks(){
+        return root.path("system").path( "num_of_tt_tasks").asInt();
+
+    }
+
+    public int getNumOfEtTasks(){
+        return root.path("system").path( "num_of_et_tasks").asInt();
+    }
+
+    public double[][] getPeriods() {
+        try {
+            return new ObjectMapper().readValue(root.path("system").path("periods").traverse(), double[][].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public double getAllowedJitter(){
+        return root.path("task").path("allowed_jitter").asDouble();
+    }
+
+    public double getReleaseTime(){
+        return root.path("task").path("release_time").asDouble();
+    }
+
+    public String getDeadlineType(){
+        return root.path("task").path("deadline_type").asText();
+    }
+
+    public int getNumOfChains(){
+        return root.path("chain").path("num_of_chains").asInt();
+    }
+
+    public int getNumOfTasksInChains(){
+        return root.path("chain").path("num_of_tasks_in_chain").asInt();
+    }
+
+    public int getNumOfLow(){
+        return root.path("chain").path("num_of_low").asInt();
+    }
+
+    public int getNumOfHigh(){
+        return root.path("chain").path("num_of_high").asInt();
+    }
+
+    public int getNumOfHostTransitions(){
+        return root.path("chain").path("num_of_host_transitions").asInt();
+    }
+
+    public double getLatency(){
+        return root.path("chain").path("latency").asDouble();
+    }
+}
