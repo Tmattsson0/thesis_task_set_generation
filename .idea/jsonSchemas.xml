@@ -3,6 +3,22 @@
   <component name="JsonSchemaMappingsProjectConfiguration">
     <state>
       <map>
+        <entry key="schema_task_generation">
+          <value>
+            <SchemaInfo>
+              <option name="generatedName" value="New Schema" />
+              <option name="name" value="schema_task_generation" />
+              <option name="relativePathToSchema" value="config/schema_task_generation.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value="config/parameters.json" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
         <entry key="task_generation_schema">
           <value>
             <SchemaInfo>
@@ -12,7 +28,7 @@
               <option name="patterns">
                 <list>
                   <Item>
-                    <option name="path" value="parameters.json" />
+                    <option name="path" value="config/schema_task_generation.json" />
                   </Item>
                 </list>
               </option>

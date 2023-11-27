@@ -4,13 +4,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ParametersJsonReader {
     File parametersFile;
     JsonNode root;
 
-    public ParametersJsonReader(String parametersFilePath) {
+    public ParametersJsonReader(String parametersFilePath) throws FileNotFoundException {
+        if (!Files.exists(Paths.get(parametersFilePath))){
+            throw new FileNotFoundException();
+        }
         parametersFile = new File(parametersFilePath);
         try {
             root =  new ObjectMapper().readTree(parametersFile);
@@ -36,8 +42,14 @@ public class ParametersJsonReader {
         return root.path("environment").path( "num_of_cores").asInt();
     }
 
-    public int getMicrotickValues(){
-        return root.path("environment").path( "microtick_values").asInt();
+    public int[] getMicrotickValues(){
+//        return root.path("environment").path( "microtick_values").a;
+        try {
+            return new ObjectMapper().readValue(root.path("environment").path("microtick_values").traverse(), int[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     public double getTtUtilization(){

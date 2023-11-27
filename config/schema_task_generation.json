@@ -18,7 +18,12 @@
           "type": "integer"
         },
         "microtick_values": {
-          "type": "integer"
+          "type": "array",
+          "items": [
+            {
+              "type": "integer"
+            }
+          ]
         }
       },
       "required": [

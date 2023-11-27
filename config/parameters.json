@@ -1,10 +1,10 @@
 {
   "environment": {
-    "number_of_hosts": 1,
+    "number_of_hosts": 8,
     "schedule_type": "",
     "preemptible": true,
-    "num_of_cores": 1,
-    "microtick_values": 1
+    "num_of_cores": 20,
+    "microtick_values": [100, 200, 300, 400, 500]
   },
   "system": {
     "tt_utilization": 2.2,
