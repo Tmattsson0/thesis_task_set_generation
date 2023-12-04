@@ -1,5 +1,6 @@
 package data;
 
+import model.DeadlineType;
 import model.PlatformModel;
 
 public class Singleton {
@@ -20,7 +21,7 @@ public class Singleton {
     public double[][] PERIODS;
     public double ALLOWED_JITTER;
     public double RELEASE_TIME;
-    public String DEADLINE_TYPE;
+    public DeadlineType DEADLINE_TYPE;
     public int NUM_OF_CHAINS;
     public int NUM_OF_TASKS_IN_CHAINS;
     public int NUM_OF_LOW;

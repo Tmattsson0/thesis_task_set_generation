@@ -13,14 +13,14 @@ public class Task {
     private TaskType taskType;
     private int priority;
 
-//    public Task(String name, int duration, int period, TaskType taskType, int priority, int deadline) {
-//        this.name = name;
-//        this.wcet = duration;
-//        this.period = period;
-//        this.taskType = taskType;
-//        this.priority = priority;
-//        this.deadline = deadline;
-//    }
+    public Task(String id, String name, int wcet, int period, int deadline, TaskType taskType) {
+        this.id = id;
+        this.name = name;
+        this.wcet = wcet;
+        this.period = period;
+        this.taskType = taskType;
+        this.deadline = deadline;
+    }
 
     public Task(String id, String name, int wcet, int period, int deadline, int maxJitter, int offset, int cpuId, int coreId, TaskType taskType, int priority) {
         this.id = id;

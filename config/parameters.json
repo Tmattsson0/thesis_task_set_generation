@@ -9,16 +9,16 @@
   "system": {
     "tt_utilization": 2.2,
     "et_utilization": 2.2,
-    "num_of_tt_tasks": 1,
-    "num_of_et_tasks": 1,
+    "num_of_tt_tasks": 100,
+    "num_of_et_tasks": 10,
     "periods":
-            [[100, 2.0],
-            [100, 3.0]]
+            [[100, 0.5],
+            [200, 0.5]]
   },
   "task": {
     "allowed_jitter": 2.2,
     "release_time": 2.2,
-    "deadline_type": ""
+    "deadline_type": "arbitrary;50,150"
   },
   "chain": {
     "num_of_chains": 1,

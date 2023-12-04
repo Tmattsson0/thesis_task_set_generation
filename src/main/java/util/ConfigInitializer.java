@@ -7,6 +7,7 @@ import model.*;
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 public class ConfigInitializer {
@@ -44,6 +45,8 @@ public class ConfigInitializer {
             initializeOnlyParametersFile();
         } catch (IOException | JAXBException e){
             e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -78,6 +81,8 @@ public class ConfigInitializer {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 

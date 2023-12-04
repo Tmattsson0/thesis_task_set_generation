@@ -2,12 +2,14 @@ package util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import model.DeadlineType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
 
 public class ParametersJsonReader {
     File parametersFile;
@@ -86,8 +88,16 @@ public class ParametersJsonReader {
         return root.path("task").path("release_time").asDouble();
     }
 
-    public String getDeadlineType(){
-        return root.path("task").path("deadline_type").asText();
+    public DeadlineType getDeadlineType() throws ParseException {
+        String baseText = root.path("task").path("deadline_type").asText();
+
+        String type = baseText.split(";")[0];
+
+        if (type.equalsIgnoreCase("implicit")) {
+            return new DeadlineType();
+        } else if (type.equalsIgnoreCase("arbitrary")){
+            return new DeadlineType(Integer.parseInt(baseText.split(";")[1].split(",")[0]), Integer.parseInt(baseText.split(";")[1].split(",")[1]));
+        } else throw new ParseException(baseText, 0);
     }
 
     public int getNumOfChains(){

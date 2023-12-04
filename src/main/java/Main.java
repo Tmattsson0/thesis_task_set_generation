@@ -1,20 +1,32 @@
 import data.Singleton;
 import model.PlatformModel;
+import model.Task;
 import util.ConfigInitializer;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Main {
     public static void main(String[] args) {
 
-
-
 //        XmlUtil.writePlatformModelConfig();
 
         ConfigInitializer.initialize();
 
-        Singleton singleton = Singleton.getInstance();
+        Singleton s = Singleton.getInstance();
 
-        System.out.println(singleton.PLATFORMMODEL);
+        TaskGenerator t = new TaskGenerator();
+        List<Task> ttTasks;
+        ttTasks = t.genTTTaskSet(s.TT_UTILIZATION, s.NUM_OF_TT_TASKS, s.PERIODS, s.DEADLINE_TYPE);
+        System.out.println(ttTasks);
+
+        List<Task> etTasks;
+        etTasks = t.genETTaskSet(s.ET_UTILIZATION, s.NUM_OF_ET_TASKS, s.PERIODS, s.DEADLINE_TYPE);
+        System.out.println(etTasks);
+
+//        System.out.println(singleton.PLATFORMMODEL);
 //
 //        System.out.println("NUMBER_OF_HOSTS: " + singleton.NUMBER_OF_HOSTS);
 //        System.out.println("SCHEDULE_TYPE: " + singleton.SCHEDULE_TYPE);
