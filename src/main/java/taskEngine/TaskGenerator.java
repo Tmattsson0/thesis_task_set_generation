@@ -1,3 +1,5 @@
+package taskEngine;
+
 import model.DeadlineType;
 import model.Task;
 import model.TaskType;
@@ -7,86 +9,105 @@ import java.util.stream.Collectors;
 
 public class TaskGenerator {
     Random random = new Random();
+    int numOfTasks;
+    double utilization;
+    double[][] periodsDist;
+    WcetGenerator wcetGenerator;
 
-    private Task generateRandomTask(){
+    public TaskGenerator(int numOfTasks, double utilization, double[][] periodsDist) {
+        this.numOfTasks = numOfTasks;
+        this.utilization = utilization;
+        this.periodsDist = periodsDist;
+        this.wcetGenerator = new WcetGenerator(util.specificPeriodToll.getSpecificPeriods(periodsDist,
+                numOfTasks),
+                utilization,
+                numOfTasks,
+                0.01,
+                0.5);
+    }
 
-        return null;
-    };
+//    private Task generateRandomTask() {
+//
+//        return null;
+//    }
 
-    public List<Task> genTTTaskSet(double ttUtilization, int numOfTTTasks, double[][] periods, DeadlineType deadlineType) {
+//    WcetGenerator wcetGenerator = new WcetGenerator()
+
+    public List<Task> genTTTaskSet(int numOfTTTasks, double[][] periods, DeadlineType deadlineType) {
         List<Task> taskset = new ArrayList<>();
-        int [] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfTTTasks);
-        int [] randomWCETBasedOnTTUtil = getRandomWCETBasedOnTTUtil(numOfTTTasks, ttUtilization, Arrays.stream(specificPeriods).sum());
+        int[] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfTTTasks);
+        List<Integer> randomWCETBasedOnTTUtil = wcetGenerator.generateRandomWCETValuesHC();
 
         for (int i = 0; i < numOfTTTasks; i++) {
-            taskset.add(new Task(String.valueOf(i + 1), "Task" + (i + 1), randomWCETBasedOnTTUtil[i], specificPeriods[i], calculateDeadline(deadlineType, specificPeriods[i]), TaskType.TT));
+            taskset.add(new Task(String.valueOf(i + 1), "Task" + (i + 1), randomWCETBasedOnTTUtil.get(i), specificPeriods[i], calculateDeadline(deadlineType, specificPeriods[i]), TaskType.TT));
         }
         return taskset;
     }
 
-    public List<Task> genETTaskSet(double etUtilization, int numOfETTasks, double[][] periods, DeadlineType deadlineType){
-        List<Task> taskset = new ArrayList<>();
-        int [] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfETTasks);
-        int [] randomMITBasedOnETUtil = getRandomMITBasedOnETUtil(numOfETTasks, etUtilization, Arrays.stream(specificPeriods).sum());
-
-        for (int i = 0; i < numOfETTasks; i++) {
-            taskset.add(new Task(String.valueOf(i + 1), "Task" + (i + 1), randomMITBasedOnETUtil[i], specificPeriods[i], calculateDeadline(deadlineType, specificPeriods[i]), TaskType.ET));
-        }
-        return taskset;
-    }
+//    public List<Task> genETTaskSet(double etUtilization, int numOfETTasks, double[][] periods, DeadlineType deadlineType) {
+//        List<Task> taskset = new ArrayList<>();
+//        int[] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfETTasks);
+//        int[] randomMITBasedOnETUtil = getRandomMITBasedOnETUtil(numOfETTasks, etUtilization, Arrays.stream(specificPeriods).sum());
+//
+//        for (int i = 0; i < numOfETTasks; i++) {
+//            taskset.add(new Task(String.valueOf(i + 1), "Task" + (i + 1), randomMITBasedOnETUtil[i], specificPeriods[i], calculateDeadline(deadlineType, specificPeriods[i]), TaskType.ET));
+//        }
+//        return taskset;
+//    }
 
 
     private int calculateDeadline(DeadlineType deadlineType, int specificPeriod) {
         if (deadlineType.isArbitrary()) {
             double deadlineMultiplier = random.ints(1, deadlineType.getX(), deadlineType.getY()).sum();
-            return (int) ((deadlineMultiplier/100) * specificPeriod);
+            return (int) ((deadlineMultiplier / 100) * specificPeriod);
         } else {
             return specificPeriod;
         }
     }
+}
 
 
 
 
-    private int[] getRandomWCETBasedOnTTUtil(int numOfTTTasks, double ttUtil, int sumOfSpecificPeriods) {
-        int targetWCETSum = (int) (sumOfSpecificPeriods / ttUtil);
-        int[] finalRandomNumbers = new int[numOfTTTasks];
+//    private int[] getRandomWCETBasedOnTTUtil(int numOfTTTasks, double ttUtil, int sumOfSpecificPeriods) {
+//        int targetWCETSum = (int) (sumOfSpecificPeriods / ttUtil);
+//        int[] finalRandomNumbers = new int[numOfTTTasks];
+//
+//        //Add numOfTasks amount of random numbers between 0 and targetWCETSum to initialRandomNumbers and also add 0 and targetWCETSum
+//        ArrayList<Integer> initialRandomNumbers = new ArrayList<>();
+//
+//        for (Object o: random.ints(0, targetWCETSum + 1).limit(numOfTTTasks - 1).boxed().toArray()) {
+//            initialRandomNumbers.add(Integer.parseInt(o.toString()));
+//        }
+//
+//        initialRandomNumbers.add(0);
+//        initialRandomNumbers.add(targetWCETSum);
+//        Collections.sort(initialRandomNumbers);
+//
+//        for (int i = 0; i < initialRandomNumbers.size() - 1 ; i++) {
+//            finalRandomNumbers[i] = initialRandomNumbers.get(i + 1) - initialRandomNumbers.get(i);
+//        }
+//        return finalRandomNumbers;
+//    }
 
-        //Add numOfTasks amount of random numbers between 0 and targetWCETSum to initialRandomNumbers and also add 0 and targetWCETSum
-        ArrayList<Integer> initialRandomNumbers = new ArrayList<>();
-
-        for (Object o: random.ints(0, targetWCETSum + 1).limit(numOfTTTasks - 1).boxed().toArray()) {
-            initialRandomNumbers.add(Integer.parseInt(o.toString()));
-        }
-
-        initialRandomNumbers.add(0);
-        initialRandomNumbers.add(targetWCETSum);
-        Collections.sort(initialRandomNumbers);
-
-        for (int i = 0; i < initialRandomNumbers.size() - 1 ; i++) {
-            finalRandomNumbers[i] = initialRandomNumbers.get(i + 1) - initialRandomNumbers.get(i);
-        }
-        return finalRandomNumbers;
-    }
-
-    private int[] getRandomMITBasedOnETUtil(int numOfETTasks, double etUtil, int sumOfSpecificPeriods) {
-        int targetMITSum = (int) (sumOfSpecificPeriods/etUtil);
-        int[] finalRandomNumbers = new int[numOfETTasks];
-
-        ArrayList<Integer> initialRandomNumbers = new ArrayList<>();
-
-        for (Object o: random.ints(0, targetMITSum + 1).limit(numOfETTasks - 1).boxed().toArray()) {
-            initialRandomNumbers.add(Integer.parseInt(o.toString()));
-        }
-        initialRandomNumbers.add(0);
-        initialRandomNumbers.add(targetMITSum);
-        Collections.sort(initialRandomNumbers);
-
-        for (int i = 0; i < initialRandomNumbers.size() - 1 ; i++) {
-            finalRandomNumbers[i] = initialRandomNumbers.get(i + 1) - initialRandomNumbers.get(i);
-        }
-        return finalRandomNumbers;
-    }}
+//    private int[] getRandomMITBasedOnETUtil(int numOfETTasks, double etUtil, int sumOfSpecificPeriods) {
+//        int targetMITSum = (int) (sumOfSpecificPeriods/etUtil);
+//        int[] finalRandomNumbers = new int[numOfETTasks];
+//
+//        ArrayList<Integer> initialRandomNumbers = new ArrayList<>();
+//
+//        for (Object o: random.ints(0, targetMITSum + 1).limit(numOfETTasks - 1).boxed().toArray()) {
+//            initialRandomNumbers.add(Integer.parseInt(o.toString()));
+//        }
+//        initialRandomNumbers.add(0);
+//        initialRandomNumbers.add(targetMITSum);
+//        Collections.sort(initialRandomNumbers);
+//
+//        for (int i = 0; i < initialRandomNumbers.size() - 1 ; i++) {
+//            finalRandomNumbers[i] = initialRandomNumbers.get(i + 1) - initialRandomNumbers.get(i);
+//        }
+//        return finalRandomNumbers;
+//    }}
 
 //    public int[] generateRandomWCETorMITValues(int numOfTasks, double util, int[] specificPeriods, double individualTaskUtilLowerBound, double individualTaskUtilUpperBound) {
 //        int targetSum = (int) (Arrays.stream(specificPeriods).sum() * util);

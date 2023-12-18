@@ -1,6 +1,8 @@
 import data.Singleton;
+import model.DeadlineType;
 import model.PlatformModel;
 import model.Task;
+import taskEngine.TaskGenerator;
 import taskEngine.WcetGenerator;
 import util.ConfigInitializer;
 
@@ -15,14 +17,12 @@ public class Main {
         ConfigInitializer.initialize();
 
         Singleton s = Singleton.getInstance();
-        int[] specificP = util.specificPeriodToll.getSpecificPeriods(s.PERIODS, 100);
 
-        WcetGenerator w = new WcetGenerator(specificP, 0.7, specificP.length,0.001, 0.6);
+        TaskGenerator t = new TaskGenerator(s.NUM_OF_TT_TASKS, s.TT_UTILIZATION, s.PERIODS);
 
-        List<Integer> list = new ArrayList<>();
+        List<Task> tasks = t.genTTTaskSet(s.NUM_OF_TT_TASKS, s.PERIODS, new DeadlineType());
 
-        list = w.generateRandomWCETValuesHC();
+        System.out.println(tasks);
 
-        System.out.println(list);
     }
 }

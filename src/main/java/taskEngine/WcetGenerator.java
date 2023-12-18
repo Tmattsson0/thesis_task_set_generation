@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class WcetGenerator {
-    Random random = new Random(125);
+    Random random = new Random(123);
     int[] specificPeriods;
     double util;
     int numOfTasks;
@@ -63,10 +63,10 @@ public class WcetGenerator {
                                 newSol.cost.doubleValue()/T));
 
                 if (newSol.cost.compareTo(currentSolution.cost) < 0) {
-                    currentSolution = newSol;
+                    currentSolution = makeMove(newSol);
                     System.out.println("betterSolution cost: " + currentSolution.cost);
                 } else if (ap < Math.random()) {
-                    currentSolution = newSol;
+                    currentSolution = makeMove(newSol);
                     System.out.println("worseSolution cost: " + currentSolution.cost);
                 }
             }
@@ -83,34 +83,22 @@ public class WcetGenerator {
     public List<Integer> generateRandomWCETValuesHC() {
         CandidateSolution currentSolution = generateInitailCandidateSolution();
         CandidateSolution newSol;
-        CandidateSolution worstNeighbour;
-        int radius = 5;
         boolean randomRestart = false;
         List<CandidateSolution> neighbours;
 
         while (true) {
-            System.out.println("Current solution: " + currentSolution.utilPairs);
-            System.out.println("Cost: " + currentSolution.cost);
-
             //Generate moves. Random or normal
-            if (randomRestart || radius > 300) {
+            if (randomRestart) {
                 //Random restart
                 System.out.println("Random!");
                 currentSolution = generateInitailCandidateSolution();
-                neighbours = generateMoves(currentSolution.utilPairs, radius, false);
+                neighbours = generateMoves(currentSolution.utilPairs);
                 newSol = neighbours.stream().min(Comparator.comparing(solution -> solution.cost)).orElseThrow();
                 randomRestart = false;
             } else {
-                neighbours = generateMoves(currentSolution.utilPairs, (int) (double) (radius), false);
+                neighbours = generateMoves(currentSolution.utilPairs);
                 newSol = neighbours.stream().min(Comparator.comparing(solution -> solution.cost)).orElseThrow();
             }
-
-            //Find best and worst neighbour
-//            newSol = neighbours.stream().min(Comparator.comparing(solution -> solution.cost)).orElseThrow();
-            worstNeighbour = neighbours.stream().max(Comparator.comparing(solution -> solution.cost)).orElseThrow();
-
-            double ratio = newSol.cost.doubleValue() / worstNeighbour.cost.doubleValue();
-
 
             System.out.println("New solution cost: " + newSol.cost);
 
@@ -118,10 +106,7 @@ public class WcetGenerator {
             if ((currentSolution.cost.compareTo(newSol.cost) < 0) && currentSolution.cost.compareTo(BigDecimal.ZERO) == 0) {
                 System.out.println("Top of hill. BestSolution: " + currentSolution.utilPairs);
                 System.out.println("Cost Function best solution: " + currentSolution.cost);
-                double finalUtil = 0.0;
-                for (UtilPair u : currentSolution.utilPairs){
-                    finalUtil += u.getUtil();
-                }
+                double finalUtil = currentSolution.utilPairs.stream().mapToDouble(UtilPair::getUtil).sum();
                 System.out.println("final util" + finalUtil);
                 return currentSolution.utilPairs.stream().map(UtilPair::getWcet).toList();
             }
@@ -135,32 +120,26 @@ public class WcetGenerator {
 
             //Plateau and good solution: return.
             else if (currentSolution.cost.compareTo(newSol.cost) == 0 && currentSolution.cost.compareTo(BigDecimal.ZERO) == 0){
+//                CandidateSolution chosen = makeMove(currentSolution);
                 System.out.println("Plateau, but good solution. BestSolution: " + currentSolution.utilPairs);
                 System.out.println("Cost Function best solution: " + currentSolution.cost);
+                double finalUtil = currentSolution.utilPairs.stream().mapToDouble(UtilPair::getUtil).sum();
+                System.out.println("final util" + finalUtil);
                 return currentSolution.utilPairs.stream().map(UtilPair::getWcet).toList();
             }
 
             //Normal climb
             else if (currentSolution.cost.compareTo(newSol.cost) > 0){
                 System.out.println("Climb");
-                currentSolution = newSol;
-                neighbours.clear();
-                radius = 5;
-            }
-
-            //Bad neighbourhood. Increase radius.
-            else if ((ratio >= 1.01 || ratio <= 0.99)){
-                System.out.println("Plateau and bad solution");
-                radius = radius + 1;
-                neighbours.clear();
+                currentSolution = makeMove(newSol);
+                double finalUtil = currentSolution.utilPairs.stream().mapToDouble(UtilPair::getUtil).sum();
+                System.out.println("final util " + finalUtil);
             }
 
             //Top of hill and bad solution: New random start
             else if ((currentSolution.cost.compareTo(newSol.cost) < 0) && currentSolution.cost.compareTo(BigDecimal.ZERO) > 0) {
                 System.out.println("Top of hill and bad solution");
                 randomRestart = true;
-                radius = 10;
-                neighbours.clear();
             }
         }
     }
@@ -203,6 +182,7 @@ public class WcetGenerator {
         return new CandidateSolution(utilPairs, random.ints(1, 0, utilPairs.size()).sum(), 1);
     }
 
+    //Todo make better.
     private CandidateSolution generateInitailCandidateSolution(){
         List<UtilPair> utilPairs = new ArrayList<>();
 
@@ -214,18 +194,13 @@ public class WcetGenerator {
         return new CandidateSolution(utilPairs, random.ints(1, 0, utilPairs.size()).sum(), 1);
     }
 
-    private List<CandidateSolution> generateMoves(List<UtilPair> utilPairs, int radius, boolean specificRadius){
+    private List<CandidateSolution> generateMoves(List<UtilPair> utilPairs){
         int moveSize;
 
         List<CandidateSolution> candidateSolutions = new ArrayList<>();
 
         for (UtilPair u: utilPairs) {
-
-            if (specificRadius) {
-                moveSize = radius;
-            } else {
-                moveSize = random.ints(1, 1, radius + 1).sum();
-            }
+            moveSize = random.ints(1, 1, u.period).sum();
 
             if (u.isLegalChange(moveSize)) {
                 candidateSolutions.add(new CandidateSolution(utilPairs, utilPairs.indexOf(u), moveSize));
@@ -238,8 +213,7 @@ public class WcetGenerator {
 
         if (candidateSolutions.isEmpty()){
             System.out.println("I'm empty");
-//            candidateSolutions.add(new CandidateSolution(generateRandomUtilPairs2().utilPairs, utilPairs.indexOf(0), moveSize));
-            return generateMoves(generateRandomUtilPairs2().utilPairs, 10, true);
+            return generateMoves(generateRandomUtilPairs2().utilPairs);
         }
 
         return candidateSolutions;
@@ -274,26 +248,19 @@ public class WcetGenerator {
         return candidateSolutions.get(0);
     }
 
+    //Todo fix
     private CandidateSolution makeMove(CandidateSolution solutionToMove){
+
         solutionToMove.utilPairs.get(solutionToMove.indexOfChange).changeWcet(solutionToMove.change);
-        return solutionToMove;
+
+        return new CandidateSolution(solutionToMove.utilPairs, 0, 0);
     }
 
     private BigDecimal costFunc(CandidateSolution candidateSolution){
-        int targetWcetSum = 0;
-
-        for (int p : specificPeriods) {
-            targetWcetSum = targetWcetSum + (int) (p * (util/numOfTasks));
-        }
-
-
         BigDecimal cost;
         double sumOfIndividualTaskBoundDeltas;
-        double currentUtil = 0.0;
+        double currentUtil;
         double utilDelta;
-        int desiredWCETSum = (int) (util * Arrays.stream(specificPeriods).sum());
-        int desiredWCETSum2 = (int) (util * Arrays.stream(specificPeriods).sum()) / numOfTasks;
-        int currentWcetSUM = 0;
 
         candidateSolution.utilPairs.get(candidateSolution.indexOfChange).changeWcet(candidateSolution.change);
 
@@ -302,17 +269,8 @@ public class WcetGenerator {
 
         currentUtil = candidateSolution.utilPairs.stream().mapToDouble(UtilPair::getUtil).sum();
 
-        for (UtilPair u: candidateSolution.utilPairs) {
-            currentWcetSUM = currentWcetSUM + u.getWcet();
-        }
-
-        int wcetDelta = Math.abs(desiredWCETSum - currentWcetSUM);
-        int wcetDeltaNew = Math.abs(desiredWCETSum2 - currentWcetSUM);
-        int targetWcetSumDelta = Math.abs(targetWcetSum - currentWcetSUM);
-
         utilDelta = Math.abs(currentUtil - util);
-        System.out.println("currentUtil: " + currentUtil);
-        System.out.println("util: " + util);
+
 //        cost = BigDecimal.valueOf(targetWcetSumDelta + sumOfIndividualTaskBoundDeltas);
 //        cost = BigDecimal.valueOf(targetWcetSumDelta);
         cost = BigDecimal.valueOf(utilDelta);
@@ -342,7 +300,7 @@ public class WcetGenerator {
         public UtilPair(int period, int wcet) {
             this.period = period;
             this.wcet = wcet;
-            this.util = (double) wcet /period;
+            this.util = (double) wcet/period;
         }
 
         public int getPeriod() {
@@ -365,7 +323,7 @@ public class WcetGenerator {
 
         public void changeWcet(int change) {
             this.wcet = this.wcet + change;
-            this.util = (double) wcet/this.period;
+            setWcet(wcet);
         }
 
         public double getUtil() {
