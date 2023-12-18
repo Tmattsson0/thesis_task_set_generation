@@ -20,6 +20,10 @@ public class Task {
         this.period = period;
         this.taskType = taskType;
         this.deadline = deadline;
+        this.cpuId = -1;
+        this.coreId = -1;
+        this.priority = -1;
+        this.maxJitter = -1;
     }
 
     public Task(String id, String name, int wcet, int period, int deadline, int maxJitter, int offset, int cpuId, int coreId, TaskType taskType, int priority) {

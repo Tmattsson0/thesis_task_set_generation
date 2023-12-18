@@ -3,6 +3,7 @@ import model.Task;
 import model.TaskType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TaskGenerator {
     Random random = new Random();
@@ -14,7 +15,7 @@ public class TaskGenerator {
 
     public List<Task> genTTTaskSet(double ttUtilization, int numOfTTTasks, double[][] periods, DeadlineType deadlineType) {
         List<Task> taskset = new ArrayList<>();
-        int [] specificPeriods = getSpecificPeriods(periods, numOfTTTasks);
+        int [] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfTTTasks);
         int [] randomWCETBasedOnTTUtil = getRandomWCETBasedOnTTUtil(numOfTTTasks, ttUtilization, Arrays.stream(specificPeriods).sum());
 
         for (int i = 0; i < numOfTTTasks; i++) {
@@ -25,7 +26,7 @@ public class TaskGenerator {
 
     public List<Task> genETTaskSet(double etUtilization, int numOfETTasks, double[][] periods, DeadlineType deadlineType){
         List<Task> taskset = new ArrayList<>();
-        int [] specificPeriods = getSpecificPeriods(periods, numOfETTasks);
+        int [] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfETTasks);
         int [] randomMITBasedOnETUtil = getRandomMITBasedOnETUtil(numOfETTasks, etUtilization, Arrays.stream(specificPeriods).sum());
 
         for (int i = 0; i < numOfETTasks; i++) {
@@ -45,36 +46,7 @@ public class TaskGenerator {
     }
 
 
-    private int[] getSpecificPeriods(double[][] periods, int numOfTasks){
-        ArrayList<Integer> periodDistributionArray = generatePeriodDistributionArray(periods);
-        int[] specificPeriods = new int[numOfTasks];
-        for (int i = 0; i < specificPeriods.length; i++) {
-            specificPeriods[i] = periodDistributionArray.get((int)(Math.random() * periodDistributionArray.size()));
-        }
-        return specificPeriods;
-    }
 
-    private ArrayList<Integer> generatePeriodDistributionArray(double[][] periods){
-        int numOfDecimalNumbers = 0;
-        for (double[] period : periods) {
-            if (Double.toString(period[1]).split("\\.")[1].length() > numOfDecimalNumbers) {
-                numOfDecimalNumbers = Double.toString(period[1]).length();
-            }
-        }
-
-        ArrayList<Integer> periodDistribution = new ArrayList<>();
-
-        for (double[] period : periods) {
-            for (int k = 0; k < period[1] * (10 ^ numOfDecimalNumbers); k++) {
-                periodDistribution.add((int) period[0]);
-            }
-        }
-
-        //Create an array of size 10^numOfDecimalNumbers and allocate the periods 0,X * 10^3 times in the array.
-        // Pick random value from array.
-
-        return periodDistribution;
-    }
 
     private int[] getRandomWCETBasedOnTTUtil(int numOfTTTasks, double ttUtil, int sumOfSpecificPeriods) {
         int targetWCETSum = (int) (sumOfSpecificPeriods / ttUtil);
@@ -114,5 +86,75 @@ public class TaskGenerator {
             finalRandomNumbers[i] = initialRandomNumbers.get(i + 1) - initialRandomNumbers.get(i);
         }
         return finalRandomNumbers;
-    }
-}
+    }}
+
+//    public int[] generateRandomWCETorMITValues(int numOfTasks, double util, int[] specificPeriods, double individualTaskUtilLowerBound, double individualTaskUtilUpperBound) {
+//        int targetSum = (int) (Arrays.stream(specificPeriods).sum() * util);
+//        double[] initialRandomNumbers = new double[numOfTasks];
+//        Arrays.setAll(initialRandomNumbers, i -> random.doubles(1, 0.01, 1).sum());
+//        double sumOfinitialRandomNumbers = Arrays.stream(initialRandomNumbers).sum();
+//        int[] finalRandomNumbers = new int[numOfTasks];
+//        List<UtilPair> utilPairs = new ArrayList<>();
+//
+//        for (int i = 0; i < initialRandomNumbers.length; i++) {
+//            finalRandomNumbers[i] = (int) Math.ceil((initialRandomNumbers[i] / sumOfinitialRandomNumbers) * targetSum);
+//        }
+//
+//        for (int i = 0; i < finalRandomNumbers.length; i++) {
+//            utilPairs.add(new UtilPair(specificPeriods[i], finalRandomNumbers[i]));
+//        }
+//
+//        while (!utilsAreWithinBounds(utilPairs, individualTaskUtilLowerBound, individualTaskUtilUpperBound)) {
+//            //Find utilPair with the biggest delta
+//            UtilPair biggestDelta = utilPairs.stream().max(Comparator.comparing(
+//                    utilPair -> utilPair.calculateUtilDelta(
+//                            individualTaskUtilLowerBound, individualTaskUtilUpperBound))).orElseThrow();
+//            List<UtilPair> utilPairsWithinBounds = utilPairs.stream().filter(utilPair -> utilPair.calculateUtilDelta(individualTaskUtilLowerBound, individualTaskUtilUpperBound) == 0).toList();
+//
+//            if (biggestDelta.getUtil() < individualTaskUtilLowerBound) {
+//                //Util too low. Raise wcet of Utilapair. Steal from others.
+//                int modifierValue = (int) (biggestDelta.getWcet() * (Math.random() + 1) - biggestDelta.getWcet());
+//                biggestDelta.setWcet(biggestDelta.getWcet() + modifierValue);
+//                for (UtilPair u: utilPairsWithinBounds) {
+//                    u.setWcet(u.getWcet() - modifierValue/utilPairsWithinBounds.size());
+//                }
+//            } else if (biggestDelta.getUtil() > individualTaskUtilUpperBound) {
+//                //Util to high. Lower wcet of utilpaur. Pass on to others.
+//                int modifierValue = (int) (biggestDelta.getWcet() * (Math.random()) - biggestDelta.getWcet());
+//                biggestDelta.setWcet(biggestDelta.getWcet() + modifierValue);
+//                for (UtilPair u: utilPairsWithinBounds) {
+//                    u.setWcet(u.getWcet() - modifierValue/utilPairsWithinBounds.size());
+//                }
+//            }
+//        }
+//
+//        for (UtilPair u: utilPairs) {
+//            System.out.println("util: " + u.getUtil());
+//        }
+//
+//        for (int i = 0; i < finalRandomNumbers.length; i++) {
+//            finalRandomNumbers[i] = utilPairs.get(i).getWcet();
+//        }
+//
+//        return finalRandomNumbers;
+//    }
+//
+//    private int[] generateRandomWCETorMITValuesSA(){
+//        //Simulated Annealing based numbergenerator that will ensure that all individual task util are within bounds.
+//        //Basic flow:
+//        //1: Generate the random numbers as initial solution.
+//        //2: Calculate fitness using a fitness function.
+//        //2a: If within bounds end.
+//        //3: randomly add or subtract 1 from a utilPair that is not within bounds.
+//        //3a: Number of new solutions: (amountOfUtilPairsUnderBound * amountOfUtilPairsOverBound) * 2
+//        //3b: Maybe add a "random" number to outOfBounds utilPairs. Number based on wcet avg over entire set. Number of new
+//        //solutions is same as amount of outOfBounds.
+//
+//        //Maybe bipartite graph? Maybe a flow problem?
+//        return null;
+//    }
+//
+//    private boolean utilsAreWithinBounds(List<UtilPair> utilPairs, double lowerBound, double upperBound) {
+//        return utilPairs.stream().noneMatch(utilPair -> utilPair.getUtil() >= lowerBound || utilPair.getUtil() <= upperBound);
+//    }
+//}
