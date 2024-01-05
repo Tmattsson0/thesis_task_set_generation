@@ -1,67 +1,50 @@
 package model;
 
+import java.util.Arrays;
+
 public class Task {
-    private String id;
-    private String name;
-    private int wcet;
-    private int period;
+    private final String id;
+    private final String name;
+    private int period; //MIT for ET tasks
     private int deadline;
-    private int maxJitter;
-    private int offset;
+    private int wcet;
     private int cpuId;
     private int coreId;
-    private TaskType taskType;
-    private int priority;
+    private int maxJitter;
+    private String[] coreAffinity;
+    private DeadlineType deadlineType;
 
-    public Task(String id, String name, int wcet, int period, int deadline, TaskType taskType) {
+    public Task(String id, int period, DeadlineType deadlineType) {
         this.id = id;
-        this.name = name;
-        this.wcet = wcet;
+        this.name = generateName(id);
         this.period = period;
-        this.taskType = taskType;
-        this.deadline = deadline;
+        this.deadlineType = deadlineType;
+        this.deadline = generateDeadline(deadlineType);
+        this.wcet = -1;
         this.cpuId = -1;
         this.coreId = -1;
-        this.priority = -1;
         this.maxJitter = -1;
+        this.coreAffinity = new String[]{};
     }
 
-    public Task(String id, String name, int wcet, int period, int deadline, int maxJitter, int offset, int cpuId, int coreId, TaskType taskType, int priority) {
-        this.id = id;
-        this.name = name;
-        this.wcet = wcet;
-        this.period = period;
-        this.deadline = deadline;
-        this.maxJitter = maxJitter;
-        this.offset = offset;
-        this.cpuId = cpuId;
-        this.coreId = coreId;
-        this.taskType = taskType;
-        this.priority = priority;
+    private int generateDeadline(DeadlineType deadlineType) {
+        if (deadlineType.isImplicit()) {
+            return this.period;
+        } else {
+            return deadlineType.calculateDeadline(this.period);
+        }
+    }
+
+    private String generateName(String id) {
+        return "Task" + id;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getWcet() {
-        return wcet;
-    }
-
-    public void setWcet(int wcet) {
-        this.wcet = wcet;
     }
 
     public int getPeriod() {
@@ -80,20 +63,20 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public int getMaxJitter() {
-        return maxJitter;
+    public DeadlineType getDeadlineType() {
+        return deadlineType;
     }
 
-    public void setMaxJitter(int maxJitter) {
-        this.maxJitter = maxJitter;
+    public void setDeadlineType(DeadlineType deadlineType) {
+        this.deadlineType = deadlineType;
     }
 
-    public int getOffset() {
-        return offset;
+    public int getWcet() {
+        return wcet;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    public void setWcet(int wcet) {
+        this.wcet = wcet;
     }
 
     public int getCpuId() {
@@ -112,37 +95,20 @@ public class Task {
         this.coreId = coreId;
     }
 
-    public TaskType getTaskType() {
-        return taskType;
+    public int getMaxJitter() {
+        return maxJitter;
     }
 
-    public void setTaskType(TaskType taskType) {
-        this.taskType = taskType;
+    public void setMaxJitter(int maxJitter) {
+        this.maxJitter = maxJitter;
     }
 
-    public int getPriority() {
-        return priority;
+    public String[] getCoreAffinity() {
+        return coreAffinity;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", wcet=" + wcet +
-                ", period=" + period +
-                ", deadline=" + deadline +
-                ", maxJitter=" + maxJitter +
-                ", offset=" + offset +
-                ", cpuId=" + cpuId +
-                ", coreId=" + coreId +
-                ", taskType=" + taskType +
-                ", priority=" + priority +
-                '}';
+    public void setCoreAffinity(String[] coreAffinity) {
+        this.coreAffinity = coreAffinity;
     }
 }
 

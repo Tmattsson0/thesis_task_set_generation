@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 public class DeadlineType {
     private final int x;
     private final int y;
@@ -35,6 +37,20 @@ public class DeadlineType {
     public boolean isImplicit() {
         return isImplicit;
     }
+
+    public int calculateDeadline(int period) {
+        Random r = new Random();
+        return r.ints(1, (int)(period * ((double) this.x/100)), (int)(period * ((double) this.y/100))).sum();
+    }
+
+    @Override
+    public String toString() {
+        if(isImplicit) {
+            return "DeadlineType{Implicit}";
+        } else
+            return "DeadlineType{Arbitrary, " + x + " ," + y;
+    }
 }
+
 
 

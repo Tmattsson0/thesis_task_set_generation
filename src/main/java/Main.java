@@ -1,28 +1,33 @@
 import data.Singleton;
-import model.DeadlineType;
-import model.PlatformModel;
-import model.Task;
+import model.*;
+import taskEngine.CoreAffinityDistributionTool;
 import taskEngine.TaskGenerator;
-import taskEngine.WcetGenerator;
 import util.ConfigInitializer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 public class Main {
     public static void main(String[] args) {
 
         ConfigInitializer.initialize();
-
+//
         Singleton s = Singleton.getInstance();
 
-        TaskGenerator t = new TaskGenerator(s.NUM_OF_TT_TASKS, s.TT_UTILIZATION, s.PERIODS);
+//        System.out.println(Arrays.deepToString(CoreAffinityDistributionTool.specificCoreAffinity(s.NUM_OF_TT_TASKS, s.coreAffinityDist, s.PLATFORMMODEL.getAllCores())));
 
-        List<Task> tasks = t.genTTTaskSet(s.NUM_OF_TT_TASKS, s.PERIODS, new DeadlineType());
 
-        System.out.println(tasks);
+
+//
+        TaskGenerator t = new TaskGenerator(s.NUM_OF_TT_TASKS, s.TT_UTILIZATION, s.PERIODS, s.coreAffinityDist, s.PLATFORMMODEL);
+
+        s.TTtasks = t.initializeTTtasks();
+
+        System.out.println(s.TTtasks);
+
+//        System.out.println(Arrays.toString(CoreAffinityDistributionTool.calculateAmountsOfDifferentTypes(10, new double[]{0.75, 0.1, 0.15})));
 
     }
+
+
 }

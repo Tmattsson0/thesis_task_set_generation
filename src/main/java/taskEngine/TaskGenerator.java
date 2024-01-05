@@ -1,29 +1,53 @@
 package taskEngine;
 
 import model.DeadlineType;
-import model.Task;
-import model.TaskType;
+import model.PlatformModel;
+import model.TTtask;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TaskGenerator {
     Random random = new Random();
     int numOfTasks;
     double utilization;
     double[][] periodsDist;
+    double [] coreAffinityDist;
+    PlatformModel platform;
     WcetGenerator wcetGenerator;
 
-    public TaskGenerator(int numOfTasks, double utilization, double[][] periodsDist) {
+    public TaskGenerator(int numOfTasks, double utilization, double[][] periodsDist, double[] coreAffinityDist, PlatformModel platform) {
         this.numOfTasks = numOfTasks;
         this.utilization = utilization;
         this.periodsDist = periodsDist;
+        this.coreAffinityDist = coreAffinityDist;
+        this.platform = platform;
         this.wcetGenerator = new WcetGenerator(util.specificPeriodToll.getSpecificPeriods(periodsDist,
                 numOfTasks),
                 utilization,
                 numOfTasks,
                 0.01,
                 0.5);
+    }
+
+    public List<TTtask> initializeTTtasks() {
+        List<TTtask> initialTTtasks = new ArrayList<>();
+        int[] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periodsDist, numOfTasks);
+        String[][] specificCoreAffinity = CoreAffinityDistributionTool.specificCoreAffinity(numOfTasks, coreAffinityDist, platform.getAllCores());
+
+        for (int i = 0; i < numOfTasks; i++) {
+            TTtask temp = new TTtask(String.valueOf(i), specificPeriods[i], new DeadlineType());
+            initialTTtasks.add(temp);
+        }
+
+        Collections.shuffle(initialTTtasks);
+
+        for (int i = 0; i < numOfTasks; i++) {
+            initialTTtasks.get(i).setCoreAffinity(specificCoreAffinity[i]);
+        }
+
+        initialTTtasks.sort(Comparator.comparingInt(d -> Integer.parseInt(d.getId())));
+
+        return initialTTtasks;
     }
 
 //    private Task generateRandomTask() {
@@ -33,16 +57,16 @@ public class TaskGenerator {
 
 //    WcetGenerator wcetGenerator = new WcetGenerator()
 
-    public List<Task> genTTTaskSet(int numOfTTTasks, double[][] periods, DeadlineType deadlineType) {
-        List<Task> taskset = new ArrayList<>();
-        int[] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfTTTasks);
-        List<Integer> randomWCETBasedOnTTUtil = wcetGenerator.generateRandomWCETValuesHC();
-
-        for (int i = 0; i < numOfTTTasks; i++) {
-            taskset.add(new Task(String.valueOf(i + 1), "Task" + (i + 1), randomWCETBasedOnTTUtil.get(i), specificPeriods[i], calculateDeadline(deadlineType, specificPeriods[i]), TaskType.TT));
-        }
-        return taskset;
-    }
+//    public List<Task> genTTTaskSet(int numOfTTTasks, double[][] periods, DeadlineType deadlineType) {
+//        List<Task> taskset = new ArrayList<>();
+//        int[] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfTTTasks);
+//        List<Integer> randomWCETBasedOnTTUtil = wcetGenerator.generateRandomWCETValuesHC();
+//
+//        for (int i = 0; i < numOfTTTasks; i++) {
+//            taskset.add(new Task(String.valueOf(i + 1), "Task" + (i + 1), randomWCETBasedOnTTUtil.get(i), specificPeriods[i], calculateDeadline(deadlineType, specificPeriods[i]), TaskType.TT));
+//        }
+//        return taskset;
+//    }
 
 //    public List<Task> genETTaskSet(double etUtilization, int numOfETTasks, double[][] periods, DeadlineType deadlineType) {
 //        List<Task> taskset = new ArrayList<>();
@@ -54,6 +78,7 @@ public class TaskGenerator {
 //        }
 //        return taskset;
 //    }
+
 
 
     private int calculateDeadline(DeadlineType deadlineType, int specificPeriod) {
