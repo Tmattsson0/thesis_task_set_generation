@@ -8,7 +8,7 @@ public class Task {
     private int period; //MIT for ET tasks
     private int deadline;
     private int wcet;
-    private int cpuId;
+    private String cpuId;
     private String coreId;
     private int maxJitter;
     private String[] coreAffinity;
@@ -21,7 +21,7 @@ public class Task {
         this.deadlineType = deadlineType;
         this.deadline = generateDeadline(deadlineType);
         this.wcet = -1;
-        this.cpuId = -1;
+        this.cpuId = "";
         this.coreId = "";
         this.maxJitter = -1;
         this.coreAffinity = new String[]{};
@@ -79,11 +79,11 @@ public class Task {
         this.wcet = wcet;
     }
 
-    public int getCpuId() {
+    public String getCpuId() {
         return cpuId;
     }
 
-    public void setCpuId(int cpuId) {
+    public void setCpuId(String cpuId) {
         this.cpuId = cpuId;
     }
 

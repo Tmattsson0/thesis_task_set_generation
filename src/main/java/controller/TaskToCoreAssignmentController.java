@@ -8,12 +8,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TaskController {
+public class TaskToCoreAssignmentController {
     //To contain helper methods to move tasks around the different cores. No checks are done with regard to if the core can run the task or not. These must happen elsewhere.
     Singleton s = Singleton.getInstance();
 
     public void addTaskToCore(Task task, String coreId){
         //Change CPU and Core assignment on task object in singleton and add task ID to list on core in singleton.'
+        task.setCoreId(coreId);
+        task.setCpuId(s.PLATFORMMODEL.getCpuByCoreId(coreId).getId());
         s.PLATFORMMODEL.getCoreById(coreId).addTask(task);
     }
 
@@ -60,5 +62,9 @@ public class TaskController {
 
     public Core getCoreByTaskId (String taskId){
         return s.PLATFORMMODEL.getAllCores().stream().filter(core -> core.containsTask(taskId)).findAny().orElse(null);
+    }
+
+    public void assignTasksToPlatform(List<Task> tasks){
+        
     }
 }

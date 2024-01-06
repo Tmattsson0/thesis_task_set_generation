@@ -34,6 +34,10 @@ public class PlatformModel {
         return getAllCores().stream().filter(core -> coreId.equals(core.getId())).findAny().orElse(null);
     }
 
+    public CPU getCpuByCoreId(String coreID){
+        return cpus.getCPUs().stream().filter(cpu -> cpu.containsCore(coreID)).findAny().orElse(null);
+    }
+
     public Task getTaskById(String taskId){
         Task temp = null;
         for (Core c: getAllCores()){

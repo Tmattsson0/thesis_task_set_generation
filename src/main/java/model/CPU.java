@@ -46,6 +46,10 @@ public class CPU {
         this.coreList = coreList;
     }
 
+    public boolean containsCore(String id){
+        return coreList.getCores().stream().anyMatch(core -> core.getId().equals(id));
+    }
+
 
     @Override
     public String toString() {

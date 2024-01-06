@@ -1,4 +1,4 @@
-import controller.TaskController;
+import controller.TaskToCoreAssignmentController;
 import data.Singleton;
 import model.*;
 import taskEngine.TaskGenerator;
@@ -17,7 +17,7 @@ public class Main {
         TTtask tTtask = new TTtask("1", 1000, new DeadlineType());
         TTtask tTtask1 = new TTtask("2", 1000, new DeadlineType());
 
-        TaskController taskController = new TaskController();
+        TaskToCoreAssignmentController taskController = new TaskToCoreAssignmentController();
 
         String id1 = s.PLATFORMMODEL.getAllCores().get(0).getId();
         String id2 = s.PLATFORMMODEL.getAllCores().get(1).getId();
