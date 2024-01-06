@@ -9,7 +9,7 @@ public class Task {
     private int deadline;
     private int wcet;
     private int cpuId;
-    private int coreId;
+    private String coreId;
     private int maxJitter;
     private String[] coreAffinity;
     private DeadlineType deadlineType;
@@ -22,7 +22,7 @@ public class Task {
         this.deadline = generateDeadline(deadlineType);
         this.wcet = -1;
         this.cpuId = -1;
-        this.coreId = -1;
+        this.coreId = "";
         this.maxJitter = -1;
         this.coreAffinity = new String[]{};
     }
@@ -87,11 +87,11 @@ public class Task {
         this.cpuId = cpuId;
     }
 
-    public int getCoreId() {
+    public String getCoreId() {
         return coreId;
     }
 
-    public void setCoreId(int coreId) {
+    public void setCoreId(String coreId) {
         this.coreId = coreId;
     }
 

@@ -1,33 +1,45 @@
+import controller.TaskController;
 import data.Singleton;
 import model.*;
-import taskEngine.CoreAffinityDistributionTool;
 import taskEngine.TaskGenerator;
 import util.ConfigInitializer;
-
-import java.util.Arrays;
 
 
 public class Main {
     public static void main(String[] args) {
 
         ConfigInitializer.initialize();
-//
+
         Singleton s = Singleton.getInstance();
 
-//        System.out.println(Arrays.deepToString(CoreAffinityDistributionTool.specificCoreAffinity(s.NUM_OF_TT_TASKS, s.coreAffinityDist, s.PLATFORMMODEL.getAllCores())));
-
-
-
-//
         TaskGenerator t = new TaskGenerator(s.NUM_OF_TT_TASKS, s.TT_UTILIZATION, s.PERIODS, s.coreAffinityDist, s.PLATFORMMODEL);
 
-        s.TTtasks = t.initializeTTtasks();
+        TTtask tTtask = new TTtask("1", 1000, new DeadlineType());
+        TTtask tTtask1 = new TTtask("2", 1000, new DeadlineType());
 
-        System.out.println(s.TTtasks);
+        TaskController taskController = new TaskController();
 
-//        System.out.println(Arrays.toString(CoreAffinityDistributionTool.calculateAmountsOfDifferentTypes(10, new double[]{0.75, 0.1, 0.15})));
+        String id1 = s.PLATFORMMODEL.getAllCores().get(0).getId();
+        String id2 = s.PLATFORMMODEL.getAllCores().get(1).getId();
+
+        taskController.addTaskToCore(tTtask, id1);
+        taskController.addTaskToCore(tTtask1, id2);
+
+        System.out.println(taskController.getTaskById(tTtask.getId()));
+        System.out.println(taskController.getCoreByTaskId(tTtask.getId()));
+
+        taskController.swapTasks(tTtask.getId(), tTtask1.getId());
+
+        System.out.println(s.PLATFORMMODEL.getCoreById(id1));
+        System.out.println(s.PLATFORMMODEL.getCoreById(id2));
+
+        System.out.println(taskController.getAllTasks());
+
+
+
+
+//        s.TTtasks = t.initializeTTtasks();
+//        s.TTtasks.forEach(System.out::println);
 
     }
-
-
 }

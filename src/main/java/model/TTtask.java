@@ -30,7 +30,7 @@ public class TTtask extends Task {
                 ", offset=" + offset +
                 ", taskType=" + taskType +
                 ", priority=" + priority +
-                '}';
+                "}";
     }
 
     public int getOffset() {

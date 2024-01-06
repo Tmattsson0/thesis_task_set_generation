@@ -30,6 +30,21 @@ public class PlatformModel {
         return allCores;
     }
 
+    public Core getCoreById(String coreId){
+        return getAllCores().stream().filter(core -> coreId.equals(core.getId())).findAny().orElse(null);
+    }
+
+    public Task getTaskById(String taskId){
+        Task temp = null;
+        for (Core c: getAllCores()){
+            temp = c.getTasks().stream().filter(task -> taskId.equals(task.getId())).findAny().orElse(null);
+            if (temp != null){
+                return temp;
+            }
+        }
+        return temp;
+    }
+
     @Override
     public String toString() {
         return "PlatformModel{" + cpus +
