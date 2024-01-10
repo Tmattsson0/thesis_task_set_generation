@@ -110,6 +110,10 @@ public class Task {
     public void setCoreAffinity(String[] coreAffinity) {
         this.coreAffinity = coreAffinity;
     }
+
+    public double calculateUtil() {
+        return (double) wcet /period;
+    }
 }
 
 

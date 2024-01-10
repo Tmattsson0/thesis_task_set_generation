@@ -1,9 +1,9 @@
 {
   "environment": {
-    "number_of_hosts": 8,
+    "number_of_hosts": 2,
     "schedule_type": "",
     "preemptible": true,
-    "num_of_cores": 20,
+    "num_of_cores": 8,
     "microtick_values": [100, 200, 300, 400, 500]
   },
   "system": {

@@ -81,4 +81,16 @@ public class Core {
                 ", tasks=" + tasks.toString() +
                 '}';
     }
+
+    public double calculateUtil() {
+        if (tasks.isEmpty()){
+            return 0.0;
+        } else {
+            double util = 0.0;
+            for (Task t : tasks){
+                util += t.calculateUtil();
+            }
+            return util;
+        }
+    }
 }

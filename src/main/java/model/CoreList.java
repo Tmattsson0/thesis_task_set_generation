@@ -15,7 +15,7 @@ public class CoreList {
         this.cores = new ArrayList<>();
 
         for (int i = 0; i < amount; i++){
-            Core tempCore = new Core("Core" + (i + 1), cpuId + (i + 1), 0, ScheduleType.NONE);
+            Core tempCore = new Core("Core" + (i + 1), cpuId + (i + 1), -1, ScheduleType.TTET);
             this.cores.add(tempCore);
         }
     }

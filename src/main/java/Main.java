@@ -1,8 +1,11 @@
-import controller.TaskToCoreAssignmentController;
+import taskEngine.TaskAssignmentManager;
 import data.Singleton;
 import model.*;
 import taskEngine.TaskGenerator;
+import taskEngine.TaskModifier;
 import util.ConfigInitializer;
+
+import java.util.List;
 
 
 public class Main {
@@ -14,32 +17,13 @@ public class Main {
 
         TaskGenerator t = new TaskGenerator(s.NUM_OF_TT_TASKS, s.TT_UTILIZATION, s.PERIODS, s.coreAffinityDist, s.PLATFORMMODEL);
 
-        TTtask tTtask = new TTtask("1", 1000, new DeadlineType());
-        TTtask tTtask1 = new TTtask("2", 1000, new DeadlineType());
+        TaskModifier taskModifier = new TaskModifier();
 
-        TaskToCoreAssignmentController taskController = new TaskToCoreAssignmentController();
+        List<TTtask> tasks = t.initializeTTtasks();
 
-        String id1 = s.PLATFORMMODEL.getAllCores().get(0).getId();
-        String id2 = s.PLATFORMMODEL.getAllCores().get(1).getId();
+        taskModifier.generateInitialConfiguration(tasks);
 
-        taskController.addTaskToCore(tTtask, id1);
-        taskController.addTaskToCore(tTtask1, id2);
-
-        System.out.println(taskController.getTaskById(tTtask.getId()));
-        System.out.println(taskController.getCoreByTaskId(tTtask.getId()));
-
-        taskController.swapTasks(tTtask.getId(), tTtask1.getId());
-
-        System.out.println(s.PLATFORMMODEL.getCoreById(id1));
-        System.out.println(s.PLATFORMMODEL.getCoreById(id2));
-
-        System.out.println(taskController.getAllTasks());
-
-
-
-
-//        s.TTtasks = t.initializeTTtasks();
-//        s.TTtasks.forEach(System.out::println);
+        s.PLATFORMMODEL.getAllCores().forEach(System.out::println);
 
     }
 }

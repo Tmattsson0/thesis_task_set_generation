@@ -119,7 +119,7 @@ public class ConfigInitializer {
 
             PlatformModel platformModel = new PlatformModel(cpuList);
 
-            AddMicroticks(platformModel.getAllCores());
+            addMicroticks(platformModel.getAllCores());
 
             return platformModel;
 
@@ -131,7 +131,7 @@ public class ConfigInitializer {
         }
     }
 
-    private static void AddMicroticks(List<Core> allCores){
+    private static void addMicroticks(List<Core> allCores){
         Singleton s = Singleton.getInstance();
 
         if (s.MICROTICK_VALUES.length == allCores.size()){
