@@ -1,9 +1,11 @@
 package util;
 
 import model.*;
+import org.xml.sax.SAXException;
 import testData.TestSingleton;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
@@ -46,6 +48,10 @@ public class TestInitializer {
         } catch (IOException | JAXBException e){
             e.printStackTrace();
         } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
             throw new RuntimeException(e);
         }
     }
@@ -90,7 +96,11 @@ public class TestInitializer {
         TestSingleton singleton = TestSingleton.getInstance();
         if (coreDistribution.equals(ConfigInitializer.CoreDistributionStrategy.Homogenous)) {
 
+            EndSystem endSystem = new EndSystem();
+
             CPUList cpuList = new CPUList(singleton.NUMBER_OF_HOSTS);
+
+            endSystem.setCpuList(cpuList);
 
             if (singleton.NUM_OF_CORES % singleton.NUMBER_OF_HOSTS == 0){
                 for (CPU cpu : cpuList.getCPUs()) {
@@ -117,7 +127,9 @@ public class TestInitializer {
                 }
             }
 
-            PlatformModel platformModel = new PlatformModel(cpuList);
+            PlatformModel platformModel = new PlatformModel();
+
+            platformModel.setEndSystems(List.of(endSystem));
 
             AddMicroticks(platformModel.getAllCores());
 

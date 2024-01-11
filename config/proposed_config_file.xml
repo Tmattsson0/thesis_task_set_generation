@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PlatformModel>
-    <EndSystem Id = "ES1">
-        <Cpu Id = "A" Name = "Cpu 1">
-            <Core Id = "A1" Name = "Core 1" MicroTick = "10" ScheduleType = "TT + ET"/>
-            <Core Id = "A2" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
+    <EndSystem id = "ES1">
+        <Cpu id = "A" Name = "Cpu 1">
+            <Core id = "A1" Name = "Core 1" MicroTick = "10" ScheduleType = "TT + ET"/>
+            <Core id = "A2" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
         </Cpu>
-        <Cpu Id = "B" Name = "Cpu 2">
-            <Core Id = "B1" Name = "Core 1" MicroTick = "10" ScheduleType = "TT + ET"/>
-            <Core Id = "B2" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
-            <Core Id = "B3" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
-            <Core Id = "B4" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
-        </Cpu>
-    </EndSystem>
-    <EndSystem Id = "ES2">
-        <Cpu Id = "C" Name = "Cpu 1">
-            <Core Id = "C1" Name = "Core 1" MicroTick = "10" ScheduleType = "TT + ET"/>
-            <Core Id = "C2" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
-            <Core Id = "C3" Name = "Core 3" MicroTick = "5" ScheduleType = "TT + ET"/>
-            <Core Id = "C4" Name = "Core 4" MicroTick = "20" ScheduleType = "TT + ET"/>
-            <Core Id = "C5" Name = "Core 5" MicroTick = "20" ScheduleType = "TT + ET"/>
-            <Core Id = "C6" Name = "Core 6" MicroTick = "10" ScheduleType = "TT + ET"/>
+        <Cpu id = "B" Name = "Cpu 2">
+            <Core id = "B1" Name = "Core 1" MicroTick = "10" ScheduleType = "TT + ET"/>
+            <Core id = "B2" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
+            <Core id = "B3" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
+            <Core id = "B4" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
         </Cpu>
     </EndSystem>
-    <EndSystem Id = "ES3">
-        <Cpu Id = "D" Name = "Cpu 1">
-            <Core Id = "D1" Name = "Core 1" MicroTick = "5" ScheduleType = "TT + ET"/>
+    <EndSystem id = "ES2">
+        <Cpu id = "C" Name = "Cpu 1">
+            <Core id = "C1" Name = "Core 1" MicroTick = "10" ScheduleType = "TT + ET"/>
+            <Core id = "C2" Name = "Core 2" MicroTick = "5" ScheduleType = "TT + ET"/>
+            <Core id = "C3" Name = "Core 3" MicroTick = "5" ScheduleType = "TT + ET"/>
+            <Core id = "C4" Name = "Core 4" MicroTick = "20" ScheduleType = "TT + ET"/>
+            <Core id = "C5" Name = "Core 5" MicroTick = "20" ScheduleType = "TT + ET"/>
+            <Core id = "C6" Name = "Core 6" MicroTick = "10" ScheduleType = "TT + ET"/>
+        </Cpu>
+    </EndSystem>
+    <EndSystem id = "ES3">
+        <Cpu id = "D" Name = "Cpu 1">
+            <Core id = "D1" Name = "Core 1" MicroTick = "5" ScheduleType = "TT + ET"/>
         </Cpu>
     </EndSystem>
 
     <Topology>
         <Switch id = "S1">
             <systems>
-                <EndsystemId>"ES1"</EndsystemId>
-                <EndsystemId>"ES3"</EndsystemId>
+                <EndsystemId>ES1</EndsystemId>
+                <EndsystemId>ES3</EndsystemId>
             </systems>
             <connections>
-                <coonection>"S2"</coonection>
+                <connection>S2</connection>
             </connections>
         </Switch>
         <Switch id = "S2">
             <systems>
-                <EndsystemId>"ES2"</EndsystemId>
+                <EndsystemId>ES2</EndsystemId>
             </systems>
             <connections>
-                <coonection>"S1"</coonection>
+                <connection>S1</connection>
             </connections>
         </Switch>
     </Topology>

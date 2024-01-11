@@ -5,30 +5,41 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@XmlRootElement(name = "PlatformModel")
 public class PlatformModel {
-    private CPUList cpus;
+    private List<EndSystem> endSystems;
+    private Topology topology;
     private double fitness;
-
-    public PlatformModel(CPUList cpus) {
-        this.cpus = cpus;
-    }
 
     public PlatformModel() {
     }
 
-    @XmlElement(name = "Cpus")
-    public CPUList getCpus() {
-        return cpus;
+    public List<EndSystem> getEndSystems() {
+        return endSystems;
+    }
+
+    public void setEndSystems(List<EndSystem> endSystems) {
+        this.endSystems = endSystems;
+    }
+
+    public Topology getTopology() {
+        return topology;
+    }
+
+    public void setTopology(Topology topology) {
+        this.topology = topology;
     }
 
     public List<Core> getAllCores(){
         List<Core> allCores = new ArrayList<>();
 
-        for (CPU cpu : this.cpus.getCPUs()) {
-            allCores.addAll(cpu.getCoreList().getCores());
+        for (CPU cpu : getCPUs()) {
+            allCores.addAll(cpu.getCoreList());
         }
         return allCores;
+    }
+
+    private List<CPU> getCPUs() {
+        return getEndSystems().stream().map(EndSystem::getCpus).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     public double getFitness() {
@@ -44,7 +55,7 @@ public class PlatformModel {
     }
 
     public CPU getCpuByCoreId(String coreID){
-        return cpus.getCPUs().stream().filter(cpu -> cpu.containsCore(coreID)).findAny().orElse(null);
+        return getCPUs().stream().filter(cpu -> cpu.containsCore(coreID)).findAny().orElse(null);
     }
 
     public Task getTaskById(String taskId){
@@ -146,7 +157,7 @@ public class PlatformModel {
 
     @Override
     public String toString() {
-        return "PlatformModel{" + cpus +
+        return "PlatformModel{" + endSystems +
                 '}';
     }
 }

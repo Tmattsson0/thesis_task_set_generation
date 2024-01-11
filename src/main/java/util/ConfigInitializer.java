@@ -2,9 +2,11 @@ package util;
 
 import data.Singleton;
 import model.*;
+import org.xml.sax.SAXException;
 
 
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
@@ -18,7 +20,7 @@ public class ConfigInitializer {
 
         try {
             singleton.PLATFORMMODEL = XmlUtil.readPlatformModelConfig("config/9proposed_config_file.cfg");
-            System.out.println(singleton.PLATFORMMODEL.toString());
+
             ParametersJsonReader paramReader = new ParametersJsonReader("config/parameters.json");
 
             singleton.NUMBER_OF_HOSTS = paramReader.getNumOfHosts();
@@ -45,7 +47,7 @@ public class ConfigInitializer {
             initializeOnlyParametersFile();
         } catch (IOException | JAXBException e){
             e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (ParseException | ParserConfigurationException | SAXException e) {
             throw new RuntimeException(e);
         }
     }
@@ -90,15 +92,26 @@ public class ConfigInitializer {
         Singleton singleton = Singleton.getInstance();
         if (coreDistribution.equals(CoreDistributionStrategy.Homogenous)) {
 
-            CPUList cpuList = new CPUList(singleton.NUMBER_OF_HOSTS);
+            EndSystem endSystem = new EndSystem();
+
+            List<CPU> cpuList = new ArrayList<>();
+
+            endSystem.setCpuList(cpuList);
 
             if (singleton.NUM_OF_CORES % singleton.NUMBER_OF_HOSTS == 0){
-                for (CPU cpu : cpuList.getCPUs()) {
-                    CoreList coreList = new CoreList(cpu.getId(), singleton.NUM_OF_CORES / singleton.NUMBER_OF_HOSTS);
+                for (CPU cpu : cpuList) {
+                    List<Core> coreList = new ArrayList<>();
+
+                    for (int i = 0; i < singleton.NUM_OF_CORES / singleton.NUMBER_OF_HOSTS; i++){
+                        Core tempCore = new Core("Core" + (i + 1), cpu.getId() + (i + 1), -1, ScheduleType.TTET);
+                        coreList.add(tempCore);
+                    }
+
                     cpu.setCoreList(coreList);
                 }
 
             } else {
+
                 int remainder = singleton.NUM_OF_CORES % singleton.NUMBER_OF_HOSTS;
                 //Create dict
                 Map<Integer, Integer> coreMap = new HashMap<>();
@@ -112,12 +125,20 @@ public class ConfigInitializer {
                 }
 
                 for (int i = 0; i < singleton.NUMBER_OF_HOSTS; i++) {
-                    CoreList coreList = new CoreList(cpuList.getCPUs().get(i).getId(), coreMap.get(i));
+                    List<Core> coreList = new ArrayList<>();
+
+                    for (int j = 0; j < coreMap.get(i); j++){
+                        Core tempCore = new Core("Core" + (j + 1), cpuList.get(i).getId() + (j + 1), -1, ScheduleType.TTET);
+                        coreList.add(tempCore);
+                    }
+
                     cpuList.get(i).setCoreList(coreList);
                 }
             }
 
-            PlatformModel platformModel = new PlatformModel(cpuList);
+            PlatformModel platformModel = new PlatformModel();
+
+            platformModel.setEndSystems(List.of(endSystem));
 
             addMicroticks(platformModel.getAllCores());
 

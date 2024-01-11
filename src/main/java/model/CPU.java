@@ -1,14 +1,15 @@
 package model;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
 public class CPU {
 
     private String name;
     private String id;
-    private CoreList coreList;
+    private List<Core> coreList;
 
-    public CPU(String name, String id, CoreList coreList) {
+    public CPU(String name, String id, List<Core> coreList) {
         this.name = name;
         this.id = id;
         this.coreList = coreList;
@@ -19,7 +20,6 @@ public class CPU {
         this.id = id;
     }
 
-    @XmlElement(name = "Name")
     public String getName() {
         return name;
     }
@@ -28,7 +28,6 @@ public class CPU {
         this.name = name;
     }
 
-    @XmlElement(name = "Id")
     public String getId() {
         return id;
     }
@@ -37,19 +36,17 @@ public class CPU {
         this.id = id;
     }
 
-    @XmlElement(name = "CoreList")
-    public CoreList getCoreList() {
+    public List<Core> getCoreList() {
         return coreList;
     }
 
-    public void setCoreList(CoreList coreList) {
+    public void setCoreList(List<Core> coreList) {
         this.coreList = coreList;
     }
 
     public boolean containsCore(String id){
-        return coreList.getCores().stream().anyMatch(core -> core.getId().equals(id));
+        return getCoreList().stream().anyMatch(core -> core.getId().equals(id));
     }
-
 
     @Override
     public String toString() {
