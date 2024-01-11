@@ -25,5 +25,16 @@ public class Main {
 
         s.PLATFORMMODEL.getAllCores().forEach(System.out::println);
 
+        System.out.println("Fitness: " + taskModifier.calculateFitness(s.PLATFORMMODEL, s.TT_UTILIZATION));
+
+        taskModifier.modifyTasksUsingHeuristic();
+
+        System.out.println("\n\n\n");
+
+        s.PLATFORMMODEL.getAllCores().forEach(System.out::println);
+
+        System.out.println("Fitness: " + taskModifier.calculateFitness(s.PLATFORMMODEL, s.TT_UTILIZATION));
+
+
     }
 }

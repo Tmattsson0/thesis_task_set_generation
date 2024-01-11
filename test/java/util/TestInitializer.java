@@ -18,7 +18,7 @@ public class TestInitializer {
         TestSingleton singleton = TestSingleton.getInstance();
 
         try {
-            singleton.PLATFORMMODEL = XmlUtil.readPlatformModelConfig("config/proposed_config_file.cfg");
+            singleton.PLATFORMMODEL = XmlUtil.readPlatformModelConfig("config/proposed_config_file.xml");
             ParametersJsonReader paramReader = new ParametersJsonReader("config/test_parameters.json");
 
             singleton.NUMBER_OF_HOSTS = paramReader.getNumOfHosts();

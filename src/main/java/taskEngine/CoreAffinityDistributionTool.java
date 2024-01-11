@@ -7,6 +7,7 @@ import java.util.*;
 public class CoreAffinityDistributionTool {
     static Random r = new Random(4);
 
+    //todo Fix so it works for 2 cores
     public static String[][] specificCoreAffinity(int numOfTasks, double[] coreAffinityDist, List<Core> coreList){
 
         int[] specificAmounts = calculateAmountsOfDifferentTypes(numOfTasks, coreAffinityDist);

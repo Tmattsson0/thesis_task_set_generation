@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 @XmlRootElement(name = "PlatformModel")
 public class PlatformModel {
     private CPUList cpus;
+    private double fitness;
 
     public PlatformModel(CPUList cpus) {
         this.cpus = cpus;
@@ -28,6 +29,14 @@ public class PlatformModel {
             allCores.addAll(cpu.getCoreList().getCores());
         }
         return allCores;
+    }
+
+    public double getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
     }
 
     public Core getCoreById(String coreId){
@@ -132,8 +141,7 @@ public class PlatformModel {
         //Intersection of sets
         coresWithCorrectScheduleType.retainAll(coresWithCorrectAffinity);
 
-        return coresWithCorrectScheduleType.stream().toList();
-
+        return new ArrayList<>(coresWithCorrectScheduleType);
     }
 
     @Override
