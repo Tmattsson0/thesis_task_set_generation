@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 import java.util.stream.Collectors;
-
 public class PlatformModel {
     private List<EndSystem> endSystems;
     private Topology topology;
@@ -102,7 +101,7 @@ public class PlatformModel {
         addTaskToCore(taskTwo, taskOneOriginalCoreId);
     }
 
-    public List<Task> getAllTasks(){
+    public List<? extends Task> getAllTasks(){
         //Returns a list of all tasks from all cores
         return getAllCores().stream().map(Core::getTasks).flatMap(Collection::stream).collect(Collectors.toList());
     }

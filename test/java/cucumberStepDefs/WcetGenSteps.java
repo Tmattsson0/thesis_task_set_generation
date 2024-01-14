@@ -6,8 +6,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import taskEngine.WcetGenerator;
 import testData.TestSingleton;
+import util.SpecificPeriodToll;
 import util.TestInitializer;
-import util.specificPeriodToll;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class WcetGenSteps {
 
     @When("the wcet generator is used")
     public void theWcetGeneratorIsUsed() {
-        wcetGenerator = new WcetGenerator(specificPeriodToll.getSpecificPeriods(s.PERIODS, s.NUM_OF_TT_TASKS), this.util, s.NUM_OF_TT_TASKS, lowerTaskUtilBound, upperTaskUtilBound);
+        wcetGenerator = new WcetGenerator(SpecificPeriodToll.getSpecificPeriods(s.PERIODS, s.NUM_OF_TT_TASKS), this.util, s.NUM_OF_TT_TASKS, lowerTaskUtilBound, upperTaskUtilBound);
     }
 
     @Then("a set of wcets is produced that is within individual task util bounds of {double} and {double}")

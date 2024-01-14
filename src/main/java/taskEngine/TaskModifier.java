@@ -15,11 +15,11 @@ public class TaskModifier {
     int numOfTasks;
     Singleton s = Singleton.getInstance();
 
-    public void generateInitialConfiguration(List<TTtask> taskList) {
+    public void generateInitialConfiguration(List<Task> taskList) {
         //Calculate a starting wcet for tasks
         //Assign tasks to cores that will take them. And do it after a "least utilized" order.
 
-        for (TTtask t : taskList) {
+        for (Task t : taskList) {
             t.setWcet(r.ints(1, 1, t.getPeriod()).sum());
             s.PLATFORMMODEL.addTaskToCore(t, s.PLATFORMMODEL.getLeastUtilizedCore(s.PLATFORMMODEL.getCoresThatTaskCanBeAssignedTo(t)).getId());
         }

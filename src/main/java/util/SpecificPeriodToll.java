@@ -2,7 +2,7 @@ package util;
 
 import java.util.ArrayList;
 
-public class specificPeriodToll {
+public class SpecificPeriodToll {
 
     public static int[] getSpecificPeriods(double[][] periods, int numOfTasks){
         ArrayList<Integer> periodDistributionArray = generatePeriodDistributionArray(periods);

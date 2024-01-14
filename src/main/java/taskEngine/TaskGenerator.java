@@ -3,6 +3,8 @@ package taskEngine;
 import model.DeadlineType;
 import model.PlatformModel;
 import model.TTtask;
+import model.Task;
+import util.SpecificPeriodToll;
 
 import java.util.*;
 
@@ -21,7 +23,7 @@ public class TaskGenerator {
         this.periodsDist = periodsDist;
         this.coreAffinityDist = coreAffinityDist;
         this.platform = platform;
-        this.wcetGenerator = new WcetGenerator(util.specificPeriodToll.getSpecificPeriods(periodsDist,
+        this.wcetGenerator = new WcetGenerator(SpecificPeriodToll.getSpecificPeriods(periodsDist,
                 numOfTasks),
                 utilization,
                 numOfTasks,
@@ -29,13 +31,13 @@ public class TaskGenerator {
                 0.5);
     }
 
-    public List<TTtask> initializeTTtasks() {
-        List<TTtask> initialTTtasks = new ArrayList<>();
-        int[] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periodsDist, numOfTasks);
+    public List<Task> initializeTTtasks() {
+        List<Task> initialTTtasks = new ArrayList<>();
+        int[] specificPeriods = SpecificPeriodToll.getSpecificPeriods(periodsDist, numOfTasks);
         String[][] specificCoreAffinity = CoreAffinityDistributionTool.specificCoreAffinity(numOfTasks, coreAffinityDist, platform.getAllCores());
 
         for (int i = 0; i < numOfTasks; i++) {
-            TTtask temp = new TTtask(String.valueOf(i), specificPeriods[i], new DeadlineType());
+            Task temp = new TTtask(String.valueOf(i), specificPeriods[i], new DeadlineType());
             initialTTtasks.add(temp);
         }
 
@@ -61,7 +63,7 @@ public class TaskGenerator {
 
 //    public List<Task> genTTTaskSet(int numOfTTTasks, double[][] periods, DeadlineType deadlineType) {
 //        List<Task> taskset = new ArrayList<>();
-//        int[] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfTTTasks);
+//        int[] specificPeriods = util.SpecificPeriodToll.getSpecificPeriods(periods, numOfTTTasks);
 //        List<Integer> randomWCETBasedOnTTUtil = wcetGenerator.generateRandomWCETValuesHC();
 //
 //        for (int i = 0; i < numOfTTTasks; i++) {
@@ -72,7 +74,7 @@ public class TaskGenerator {
 
 //    public List<Task> genETTaskSet(double etUtilization, int numOfETTasks, double[][] periods, DeadlineType deadlineType) {
 //        List<Task> taskset = new ArrayList<>();
-//        int[] specificPeriods = util.specificPeriodToll.getSpecificPeriods(periods, numOfETTasks);
+//        int[] specificPeriods = util.SpecificPeriodToll.getSpecificPeriods(periods, numOfETTasks);
 //        int[] randomMITBasedOnETUtil = getRandomMITBasedOnETUtil(numOfETTasks, etUtilization, Arrays.stream(specificPeriods).sum());
 //
 //        for (int i = 0; i < numOfETTasks; i++) {

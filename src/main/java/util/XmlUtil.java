@@ -1,14 +1,15 @@
 package util;
 
+import com.opencsv.CSVWriter;
+import com.sun.xml.txw2.output.XMLWriter;
 import model.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,13 +23,26 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import javax.xml.parsers.*;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
+import org.xml.sax.*;
+import org.w3c.dom.*;
 
 public class XmlUtil {
 
-    public static PlatformModel readPlatformModelConfig(String platformModelFilePath) throws IOException, FileNotFoundException, JAXBException, SAXException, ParserConfigurationException {
-        if (!Files.exists(Paths.get(platformModelFilePath))){
+    public static PlatformModel readPlatformModelConfig(String platformModelFilePath) throws IOException, JAXBException, SAXException, ParserConfigurationException {
+        if (!Files.exists(Paths.get(platformModelFilePath))) {
             throw new FileNotFoundException();
         }
 
@@ -71,10 +85,10 @@ public class XmlUtil {
 
                         NodeList cores = cpuElement.getElementsByTagName("Core");
 
-                        for (int k = 0; k < cores.getLength(); k++){
+                        for (int k = 0; k < cores.getLength(); k++) {
                             Node coreNode = cores.item(k);
 
-                            if(cpuNode.getNodeType() == Node.ELEMENT_NODE){
+                            if (cpuNode.getNodeType() == Node.ELEMENT_NODE) {
                                 Element coreElement = (Element) coreNode;
 
                                 Core core = new Core(coreElement.getAttribute("Name"),
@@ -109,7 +123,7 @@ public class XmlUtil {
             for (int i = 0; i < switches.getLength(); i++) {
                 Node switchNode = switches.item(i);
 
-                if (switchNode.getNodeType() == Node.ELEMENT_NODE){
+                if (switchNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element switchElement = (Element) switchNode;
 
                     Switch sw = new Switch();
@@ -125,7 +139,7 @@ public class XmlUtil {
                     Node systemNode = systems.item(0);
                     Node connectionNode = connections.item(0);
 
-                    if (systemNode.getNodeType() == Node.ELEMENT_NODE){
+                    if (systemNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element systemElement = (Element) systemNode;
 
                         NodeList esIds = systemElement.getElementsByTagName("EndsystemId");
@@ -133,7 +147,7 @@ public class XmlUtil {
                         for (int j = 0; j < esIds.getLength(); j++) {
                             Node endSystemId = esIds.item(j);
 
-                            if (endSystemId.getNodeType() == Node.ELEMENT_NODE){
+                            if (endSystemId.getNodeType() == Node.ELEMENT_NODE) {
                                 Element endSystemIdElement = (Element) endSystemId;
                                 String endSystemIdString = endSystemIdElement.getTextContent();
                                 systemList.add(endSystemIdString);
@@ -141,14 +155,14 @@ public class XmlUtil {
                         }
                     }
 
-                    if (connectionNode.getNodeType() == Node.ELEMENT_NODE){
+                    if (connectionNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element connectionElement = (Element) connectionNode;
                         NodeList connIds = connectionElement.getElementsByTagName("connection");
 
                         for (int j = 0; j < connIds.getLength(); j++) {
                             Node connId = connIds.item(j);
 
-                            if (connId.getNodeType() == Node.ELEMENT_NODE){
+                            if (connId.getNodeType() == Node.ELEMENT_NODE) {
                                 Element connIdElement = (Element) connId;
                                 String connIsString = connIdElement.getTextContent();
                                 systemList.add(connIsString);
@@ -178,11 +192,212 @@ public class XmlUtil {
         };
     }
 
-    public static void writePlatformModelConfig(PlatformModel platformModel, String filePath) throws JAXBException {
+    public static void writePlatformModelConfig(Task t, String filePath) throws JAXBException {
 
-        JAXBContext context = JAXBContext.newInstance(PlatformModel.class);
+        JAXBContext context = JAXBContext.newInstance(Task.class);
         Marshaller marshaller = context.createMarshaller();
-        marshaller.marshal(platformModel, new File(filePath));
+        marshaller.marshal(t, new File(filePath));
 
     }
+
+    public static void writeTaskList(PlatformModel platformModel, String fileName) {
+        String testCasesFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
+        Document dom;
+        Element element = null;
+
+        // instance of a DocumentBuilderFactory
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            //File stuff
+            File file = new File(testCasesFilePath + File.separator + LocalDate.now() + File.separator + fileName + ".xml");
+            Files.createDirectories(Paths.get(testCasesFilePath + File.separator + LocalDate.now()));
+//            FileWriter outputfile = new FileWriter(file);
+
+            //XML stuff
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            dom = db.newDocument();
+
+            Element rootEle = dom.createElement("Taskset");
+
+            List<? extends Task> tasks = platformModel.getAllTasks();
+
+            tasks.sort(Comparator.comparingInt((Task o) -> Integer.parseInt(o.getId())));
+
+            for (Task t : tasks) {
+                if (t instanceof TTtask) {
+                    element = dom.createElement("Task");
+                    element.setAttribute("A__Id", t.getId());
+                    element.setAttribute("B__Name", t.getName());
+                    element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));
+                    element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
+                    element.setAttribute("E__Period", String.valueOf(t.getPeriod()));
+                    element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
+                    element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
+                    element.setAttribute("H__Offset", String.valueOf(((TTtask) t).getOffset()));
+                    element.setAttribute("I__Priority", String.valueOf(((TTtask) t).getPriority()));
+                    element.setAttribute("J__CpuId", t.getCpuId());
+                    element.setAttribute("K__CoreId", t.getCoreId());
+
+                    rootEle.appendChild(element);
+                } else {
+                    element = dom.createElement("Task");
+                    element.setAttribute("A__Id", t.getId());
+                    element.setAttribute("B__Name", t.getName());
+                    element.setAttribute("C__Type", String.valueOf(((ETtask) t).getTaskType()));
+                    element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
+                    element.setAttribute("E__Period", String.valueOf(t.getPeriod()));
+                    element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
+                    element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
+                    element.setAttribute("H__Priority", String.valueOf(((ETtask) t).getPriority()));
+                    element.setAttribute("I__CpuId", t.getCpuId());
+                    element.setAttribute("J__CoreId", t.getCoreId());
+
+                    rootEle.appendChild(element);
+                }
+            }
+
+            dom.appendChild(rootEle);
+
+            try {
+                Transformer tr = TransformerFactory.newInstance().newTransformer();
+                tr.setOutputProperty(OutputKeys.INDENT, "yes");
+                tr.setOutputProperty(OutputKeys.METHOD, "xml");
+                tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+                StringWriter writer = new StringWriter();
+
+                tr.transform(new DOMSource(dom),
+                        new StreamResult(writer));
+
+                //Custom manipulation of string (sorting and stuff):_
+
+                String output = writer.getBuffer().toString();
+
+                output = output.replaceAll("[A-Z]__", "");
+
+                FileOutputStream outputStream = new FileOutputStream(file);
+
+                byte[] strToBytes = output.getBytes();
+                outputStream.write(strToBytes);
+
+                outputStream.close();
+
+            } catch (TransformerException te) {
+                System.out.println(te.getMessage());
+            }
+        } catch (IOException e) {
+            System.out.println("I failed");
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void writeTaskListWithUtil(PlatformModel platformModel, String fileName) {
+        String testCasesFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
+        Document dom;
+        Element element = null;
+
+        // instance of a DocumentBuilderFactory
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            //File stuff
+            File file = new File(testCasesFilePath + File.separator + LocalDate.now() + File.separator + fileName + ".xml");
+            Files.createDirectories(Paths.get(testCasesFilePath + File.separator + LocalDate.now()));
+//            FileWriter outputfile = new FileWriter(file);
+
+            //XML stuff
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            dom = db.newDocument();
+
+            Element rootEle = dom.createElement("Taskset");
+            rootEle.setAttribute("TotalUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+            rootEle.setAttribute("AverageUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateUtil).average().stream().sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+
+            List<? extends Task> tasks = platformModel.getAllTasks();
+
+            tasks.sort(Comparator.comparingInt((Task o) -> Integer.parseInt(o.getId())));
+
+            for (Task t : tasks) {
+                if (t instanceof TTtask) {
+                    element = dom.createElement("Task");
+                    element.setAttribute("A__Id", t.getId());
+                    element.setAttribute("B__Name", t.getName());
+                    element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));
+                    element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
+                    element.setAttribute("E__Period", String.valueOf(t.getPeriod()));
+                    element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
+                    element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
+                    element.setAttribute("H__Offset", String.valueOf(((TTtask) t).getOffset()));
+                    element.setAttribute("I__Priority", String.valueOf(((TTtask) t).getPriority()));
+                    element.setAttribute("J__CpuId", t.getCpuId());
+                    element.setAttribute("K__CoreId", t.getCoreId());
+
+                    rootEle.appendChild(element);
+                } else {
+                    element = dom.createElement("Task");
+                    element.setAttribute("A__Id", t.getId());
+                    element.setAttribute("B__Name", t.getName());
+                    element.setAttribute("C__Type", String.valueOf(((ETtask) t).getTaskType()));
+                    element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
+                    element.setAttribute("E__Period", String.valueOf(t.getPeriod()));
+                    element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
+                    element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
+                    element.setAttribute("H__Priority", String.valueOf(((ETtask) t).getPriority()));
+                    element.setAttribute("I__CpuId", t.getCpuId());
+                    element.setAttribute("J__CoreId", t.getCoreId());
+
+                    rootEle.appendChild(element);
+                }
+            }
+
+            for (Core c : platformModel.getAllCores()){
+                element = dom.createElement("Core");
+                element.setAttribute("A__Id", c.getId());
+                element.setAttribute("B__Name", c.getName());
+                element.setAttribute("C__Util", String.valueOf(c.calculateUtil()));
+                rootEle.appendChild(element);
+
+            }
+            dom.appendChild(rootEle);
+
+
+
+            try {
+                Transformer tr = TransformerFactory.newInstance().newTransformer();
+                tr.setOutputProperty(OutputKeys.INDENT, "yes");
+                tr.setOutputProperty(OutputKeys.METHOD, "xml");
+                tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+                StringWriter writer = new StringWriter();
+
+                tr.transform(new DOMSource(dom),
+                        new StreamResult(writer));
+
+                //Custom manipulation of string (sorting and stuff):_
+
+                String output = writer.getBuffer().toString();
+
+                output = output.replaceAll("[A-Z]__", "");
+
+                FileOutputStream outputStream = new FileOutputStream(file);
+
+                byte[] strToBytes = output.getBytes();
+                outputStream.write(strToBytes);
+
+                outputStream.close();
+
+            } catch (TransformerException te) {
+                System.out.println(te.getMessage());
+            }
+        } catch (IOException e) {
+            System.out.println("I failed");
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

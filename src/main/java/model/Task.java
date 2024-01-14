@@ -1,10 +1,10 @@
 package model;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Arrays;
-
 public class Task {
-    private final String id;
-    private final String name;
+    private  String id;
+    private  String name;
     private int period; //MIT for ET tasks
     private int deadline;
     private int wcet;
@@ -13,6 +13,7 @@ public class Task {
     private int maxJitter;
     private String[] coreAffinity;
     private DeadlineType deadlineType;
+
 
     public Task(String id, int period, DeadlineType deadlineType) {
         this.id = id;
@@ -25,6 +26,9 @@ public class Task {
         this.coreId = "";
         this.maxJitter = -1;
         this.coreAffinity = new String[]{};
+    }
+
+    public Task() {
     }
 
     private int generateDeadline(DeadlineType deadlineType) {

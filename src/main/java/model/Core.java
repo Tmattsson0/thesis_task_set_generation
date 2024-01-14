@@ -1,6 +1,8 @@
 package model;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -90,7 +92,7 @@ public class Core {
             for (Task t : tasks){
                 util += t.calculateUtil();
             }
-            return util;
+            return new BigDecimal(util).setScale(3, RoundingMode.HALF_UP).doubleValue();
         }
     }
 }
