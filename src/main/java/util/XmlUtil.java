@@ -1,12 +1,8 @@
 package util;
 
-import com.opencsv.CSVWriter;
-import com.sun.xml.txw2.output.XMLWriter;
 import model.*;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,19 +21,14 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.xml.parsers.*;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
-import org.xml.sax.*;
-import org.w3c.dom.*;
+
 
 public class XmlUtil {
 
@@ -49,7 +40,6 @@ public class XmlUtil {
         PlatformModel platformModel = new PlatformModel();
 
         List<EndSystem> endSystemList = new ArrayList<>();
-
 
         File fXmlFile = new File(platformModelFilePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -74,7 +64,6 @@ public class XmlUtil {
 
                 for (int j = 0; j < cpus.getLength(); j++) {
                     Node cpuNode = cpus.item(j);
-
 
                     if (cpuNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element cpuElement = (Element) cpuNode;
@@ -192,26 +181,16 @@ public class XmlUtil {
         };
     }
 
-    public static void writePlatformModelConfig(Task t, String filePath) throws JAXBException {
-
-        JAXBContext context = JAXBContext.newInstance(Task.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.marshal(t, new File(filePath));
-
-    }
-
     public static void writeTaskList(PlatformModel platformModel, String fileName) {
         String testCasesFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
         Document dom;
-        Element element = null;
+        Element element;
 
-        // instance of a DocumentBuilderFactory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             //File stuff
             File file = new File(testCasesFilePath + File.separator + LocalDate.now() + File.separator + fileName + ".xml");
             Files.createDirectories(Paths.get(testCasesFilePath + File.separator + LocalDate.now()));
-//            FileWriter outputfile = new FileWriter(file);
 
             //XML stuff
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -224,36 +203,24 @@ public class XmlUtil {
             tasks.sort(Comparator.comparingInt((Task o) -> Integer.parseInt(o.getId())));
 
             for (Task t : tasks) {
-                if (t instanceof TTtask) {
-                    element = dom.createElement("Task");
-                    element.setAttribute("A__Id", t.getId());
-                    element.setAttribute("B__Name", t.getName());
-                    element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));
-                    element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
-                    element.setAttribute("E__Period", String.valueOf(t.getPeriod()));
-                    element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
-                    element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
-                    element.setAttribute("H__Offset", String.valueOf(((TTtask) t).getOffset()));
-                    element.setAttribute("I__Priority", String.valueOf(((TTtask) t).getPriority()));
-                    element.setAttribute("J__CpuId", t.getCpuId());
-                    element.setAttribute("K__CoreId", t.getCoreId());
+                element = dom.createElement("Task");
+                element.setAttribute("A__Id", t.getId());
+                element.setAttribute("B__Name", t.getName());
+                if (t instanceof TTtask) {element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));}
+                element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
+                if (t instanceof TTtask) {element.setAttribute("E__Period", String.valueOf(t.getPeriod()));}
+                if (t instanceof ETtask) {element.setAttribute("E__MIT", String.valueOf(t.getPeriod()));}
+                element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
+                element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
+                if (t instanceof TTtask) {element.setAttribute("H__Offset", String.valueOf(((TTtask) t).getOffset()));}
+                if (t instanceof TTtask){element.setAttribute("I__Priority", String.valueOf(((TTtask) t).getPriority()));}
+                if (t instanceof ETtask){element.setAttribute("I__Priority", String.valueOf(((ETtask) t).getPriority()));}
+                element.setAttribute("J__CpuId", t.getCpuId());
+                element.setAttribute("K__CoreId", t.getCoreId());
+                element.setAttribute("L__CoreAffinity", Arrays.toString(t.getCoreAffinity()));
 
-                    rootEle.appendChild(element);
-                } else {
-                    element = dom.createElement("Task");
-                    element.setAttribute("A__Id", t.getId());
-                    element.setAttribute("B__Name", t.getName());
-                    element.setAttribute("C__Type", String.valueOf(((ETtask) t).getTaskType()));
-                    element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
-                    element.setAttribute("E__Period", String.valueOf(t.getPeriod()));
-                    element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
-                    element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
-                    element.setAttribute("H__Priority", String.valueOf(((ETtask) t).getPriority()));
-                    element.setAttribute("I__CpuId", t.getCpuId());
-                    element.setAttribute("J__CoreId", t.getCoreId());
+                rootEle.appendChild(element);
 
-                    rootEle.appendChild(element);
-                }
             }
 
             dom.appendChild(rootEle);
@@ -271,7 +238,6 @@ public class XmlUtil {
                         new StreamResult(writer));
 
                 //Custom manipulation of string (sorting and stuff):_
-
                 String output = writer.getBuffer().toString();
 
                 output = output.replaceAll("[A-Z]__", "");
@@ -297,15 +263,13 @@ public class XmlUtil {
     public static void writeTaskListWithUtil(PlatformModel platformModel, String fileName) {
         String testCasesFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
         Document dom;
-        Element element = null;
+        Element element;
 
-        // instance of a DocumentBuilderFactory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             //File stuff
             File file = new File(testCasesFilePath + File.separator + LocalDate.now() + File.separator + fileName + ".xml");
             Files.createDirectories(Paths.get(testCasesFilePath + File.separator + LocalDate.now()));
-//            FileWriter outputfile = new FileWriter(file);
 
             //XML stuff
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -320,36 +284,23 @@ public class XmlUtil {
             tasks.sort(Comparator.comparingInt((Task o) -> Integer.parseInt(o.getId())));
 
             for (Task t : tasks) {
-                if (t instanceof TTtask) {
-                    element = dom.createElement("Task");
-                    element.setAttribute("A__Id", t.getId());
-                    element.setAttribute("B__Name", t.getName());
-                    element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));
-                    element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
-                    element.setAttribute("E__Period", String.valueOf(t.getPeriod()));
-                    element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
-                    element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
-                    element.setAttribute("H__Offset", String.valueOf(((TTtask) t).getOffset()));
-                    element.setAttribute("I__Priority", String.valueOf(((TTtask) t).getPriority()));
-                    element.setAttribute("J__CpuId", t.getCpuId());
-                    element.setAttribute("K__CoreId", t.getCoreId());
+                element = dom.createElement("Task");
+                element.setAttribute("A__Id", t.getId());
+                element.setAttribute("B__Name", t.getName());
+                if (t instanceof TTtask) {element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));}
+                element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
+                if (t instanceof TTtask) {element.setAttribute("E__Period", String.valueOf(t.getPeriod()));}
+                if (t instanceof ETtask) {element.setAttribute("E__MIT", String.valueOf(t.getPeriod()));}
+                element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
+                element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
+                if (t instanceof TTtask) {element.setAttribute("H__Offset", String.valueOf(((TTtask) t).getOffset()));}
+                if (t instanceof TTtask){element.setAttribute("I__Priority", String.valueOf(((TTtask) t).getPriority()));}
+                if (t instanceof ETtask){element.setAttribute("I__Priority", String.valueOf(((ETtask) t).getPriority()));}
+                element.setAttribute("J__CpuId", t.getCpuId());
+                element.setAttribute("K__CoreId", t.getCoreId());
+                element.setAttribute("L__CoreAffinity", Arrays.toString(t.getCoreAffinity()));
 
-                    rootEle.appendChild(element);
-                } else {
-                    element = dom.createElement("Task");
-                    element.setAttribute("A__Id", t.getId());
-                    element.setAttribute("B__Name", t.getName());
-                    element.setAttribute("C__Type", String.valueOf(((ETtask) t).getTaskType()));
-                    element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
-                    element.setAttribute("E__Period", String.valueOf(t.getPeriod()));
-                    element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
-                    element.setAttribute("G__MaxJitter", String.valueOf(t.getMaxJitter()));
-                    element.setAttribute("H__Priority", String.valueOf(((ETtask) t).getPriority()));
-                    element.setAttribute("I__CpuId", t.getCpuId());
-                    element.setAttribute("J__CoreId", t.getCoreId());
-
-                    rootEle.appendChild(element);
-                }
+                rootEle.appendChild(element);
             }
 
             for (Core c : platformModel.getAllCores()){
@@ -361,8 +312,6 @@ public class XmlUtil {
 
             }
             dom.appendChild(rootEle);
-
-
 
             try {
                 Transformer tr = TransformerFactory.newInstance().newTransformer();
@@ -376,8 +325,7 @@ public class XmlUtil {
                 tr.transform(new DOMSource(dom),
                         new StreamResult(writer));
 
-                //Custom manipulation of string (sorting and stuff):_
-
+                //Custom manipulation of string (sorting and stuff):
                 String output = writer.getBuffer().toString();
 
                 output = output.replaceAll("[A-Z]__", "");
@@ -399,5 +347,4 @@ public class XmlUtil {
             throw new RuntimeException(e);
         }
     }
-
 }
