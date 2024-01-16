@@ -6,6 +6,7 @@ import model.PlatformModel;
 import model.TTtask;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Singleton {
     // Static variable reference of single_instance
@@ -36,6 +37,7 @@ public class Singleton {
 //    public List<TTtask> TTtasks;
 //    public List<ETtask> ETtasks;
     public double[] coreAffinityDist = {0.75, 0.1, 0.15};
+
 
     // Constructor
     // Here we will be creating private constructor

@@ -207,6 +207,7 @@ public class XmlUtil {
                 element.setAttribute("A__Id", t.getId());
                 element.setAttribute("B__Name", t.getName());
                 if (t instanceof TTtask) {element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));}
+                if (t instanceof ETtask) {element.setAttribute("C__Type", String.valueOf(((ETtask) t).getTaskType()));}
                 element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
                 if (t instanceof TTtask) {element.setAttribute("E__Period", String.valueOf(t.getPeriod()));}
                 if (t instanceof ETtask) {element.setAttribute("E__MIT", String.valueOf(t.getPeriod()));}
@@ -288,6 +289,7 @@ public class XmlUtil {
                 element.setAttribute("A__Id", t.getId());
                 element.setAttribute("B__Name", t.getName());
                 if (t instanceof TTtask) {element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));}
+                if (t instanceof ETtask) {element.setAttribute("C__Type", String.valueOf(((ETtask) t).getTaskType()));}
                 element.setAttribute("D__WCET", String.valueOf(t.getWcet()));
                 if (t instanceof TTtask) {element.setAttribute("E__Period", String.valueOf(t.getPeriod()));}
                 if (t instanceof ETtask) {element.setAttribute("E__MIT", String.valueOf(t.getPeriod()));}

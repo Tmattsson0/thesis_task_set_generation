@@ -1,55 +1,86 @@
 package taskEngine;
 
-import model.DeadlineType;
-import model.PlatformModel;
-import model.TTtask;
-import model.Task;
+import model.*;
 import util.SpecificPeriodToll;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskGenerator {
     Random random = new Random();
-    int numOfTasks;
+    int numOfTTTasks;
+    int numOfETTasks;
     double utilization;
     double[][] periodsDist;
     double [] coreAffinityDist;
     PlatformModel platform;
-    WcetGenerator wcetGenerator;
+    private final AtomicInteger seq = new AtomicInteger();
 
-    public TaskGenerator(int numOfTasks, double utilization, double[][] periodsDist, double[] coreAffinityDist, PlatformModel platform) {
-        this.numOfTasks = numOfTasks;
+    public TaskGenerator(int numOfTTTasks, int numOfETTasks, double utilization, double[][] periodsDist, double[] coreAffinityDist, PlatformModel platform) {
+        this.numOfTTTasks = numOfTTTasks;
+        this.numOfETTasks = numOfETTasks;
         this.utilization = utilization;
         this.periodsDist = periodsDist;
         this.coreAffinityDist = coreAffinityDist;
         this.platform = platform;
-        this.wcetGenerator = new WcetGenerator(SpecificPeriodToll.getSpecificPeriods(periodsDist,
-                numOfTasks),
-                utilization,
-                numOfTasks,
-                0.01,
-                0.5);
     }
 
     public List<Task> initializeTTtasks() {
         List<Task> initialTTtasks = new ArrayList<>();
-        int[] specificPeriods = SpecificPeriodToll.getSpecificPeriods(periodsDist, numOfTasks);
-        String[][] specificCoreAffinity = CoreAffinityDistributionTool.specificCoreAffinity(numOfTasks, coreAffinityDist, platform.getAllCores());
+        int[] specificPeriods = SpecificPeriodToll.getSpecificPeriods(periodsDist, numOfTTTasks);
+        String[][] specificCoreAffinity = CoreAffinityDistributionTool.specificCoreAffinity(numOfTTTasks,
+                coreAffinityDist,
+                platform.getAllCores()
+                .stream()
+                .filter(core -> core
+                        .getScheduleType()
+                        .getValue()
+                        .contains("TT"))
+                .toList());
 
-        for (int i = 0; i < numOfTasks; i++) {
-            Task temp = new TTtask(String.valueOf(i), specificPeriods[i], new DeadlineType());
+        for (int i = 0; i < numOfTTTasks; i++) {
+            Task temp = new TTtask(String.valueOf(seq.incrementAndGet()), specificPeriods[i], new DeadlineType());
             initialTTtasks.add(temp);
         }
 
         Collections.shuffle(initialTTtasks);
 
-        for (int i = 0; i < numOfTasks; i++) {
+        for (int i = 0; i < numOfTTTasks; i++) {
             initialTTtasks.get(i).setCoreAffinity(specificCoreAffinity[i]);
         }
 
         initialTTtasks.sort(Comparator.comparingInt(d -> Integer.parseInt(d.getId())));
 
         return initialTTtasks;
+    }
+
+    public List<Task> initializeETtasks() {
+        List<Task> initialETTasks = new ArrayList<>();
+        int[] specificPeriods = SpecificPeriodToll.getSpecificPeriods(periodsDist, numOfETTasks);
+        String[][] specificCoreAffinity = CoreAffinityDistributionTool.specificCoreAffinity(numOfETTasks,
+                coreAffinityDist,
+                platform.getAllCores()
+                        .stream()
+                        .filter(core -> core
+                                .getScheduleType()
+                                .getValue()
+                                .contains("ET"))
+                        .toList());
+
+        for (int i = 0; i < numOfETTasks; i++) {
+            Task temp = new ETtask(String.valueOf(seq.incrementAndGet()), specificPeriods[i], new DeadlineType());
+            initialETTasks.add(temp);
+        }
+
+        Collections.shuffle(initialETTasks);
+
+        for (int i = 0; i < numOfETTasks; i++) {
+            initialETTasks.get(i).setCoreAffinity(specificCoreAffinity[i]);
+        }
+
+        initialETTasks.sort(Comparator.comparingInt(d -> Integer.parseInt(d.getId())));
+
+        return initialETTasks;
     }
 
 
