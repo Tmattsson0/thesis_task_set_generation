@@ -1,16 +1,13 @@
 package util;
 
-import model.Core;
 import model.PlatformModel;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class LogUtil {
     static String testCasesLogFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
@@ -46,16 +43,8 @@ public class LogUtil {
     public static void addLineToLog(PlatformModel solution, PlatformModel oldSolutionForLogging) {
         if (!(solution == null) && !(oldSolutionForLogging == null)){
             try {
-                String oldTotalUtil = String.valueOf(BigDecimal.valueOf(oldSolutionForLogging.getAllCores().stream().mapToDouble(Core::calculateUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue());
-                String oldAverageUtil = String.valueOf(BigDecimal.valueOf(oldSolutionForLogging.getAllCores().stream().mapToDouble(Core::calculateUtil).average().stream().sum()).setScale(3, RoundingMode.HALF_UP).doubleValue());
-                String newTotalUtil = String.valueOf(BigDecimal.valueOf(solution.getAllCores().stream().mapToDouble(Core::calculateUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue());
-                String newAverageUtil = String.valueOf(BigDecimal.valueOf(solution.getAllCores().stream().mapToDouble(Core::calculateUtil).average().stream().sum()).setScale(3, RoundingMode.HALF_UP).doubleValue());
-
                 String differences = findDifferences(solution, oldSolutionForLogging);
 
-//                writeToLog("Old Average Util: " + oldAverageUtil + "\t" + "Old Total Util: " + oldTotalUtil);
-//                writeToLog("New Average Util: " + newAverageUtil + "\t" + "New Total Util: " + newTotalUtil);
-//
                 writeToLog(differences);
 
             } catch (IOException e) {
