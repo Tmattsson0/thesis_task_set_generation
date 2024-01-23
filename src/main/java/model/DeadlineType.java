@@ -22,6 +22,13 @@ public class DeadlineType {
         this.isArbitrary = false;
     }
 
+    public DeadlineType(DeadlineType deadlineType) {
+        this.x = deadlineType.getX();
+        this.y = deadlineType.getY();
+        this.isArbitrary = deadlineType.isArbitrary();
+        this.isImplicit = deadlineType.isImplicit();
+    }
+
     public int getX() {
         return x;
     }

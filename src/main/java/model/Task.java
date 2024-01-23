@@ -1,7 +1,11 @@
 package model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Task {
     private  String id;
     private  String name;
@@ -30,6 +34,21 @@ public class Task {
 
     public Task() {
     }
+
+    public static List<Task> deepCopyUsingCopyConstructor(List<Task> tasks) {
+        List<Task> tasksToReturn = new ArrayList<>();
+
+        for (Task t : tasks) {
+            if (t instanceof TTtask) {
+                tasksToReturn.add(new TTtask((TTtask) t));
+            } else {
+                tasksToReturn.add(new ETtask((ETtask) t));
+            }
+        }
+        return tasksToReturn;
+    }
+
+
 
     private int generateDeadline(DeadlineType deadlineType) {
         if (deadlineType.isImplicit()) {
@@ -117,6 +136,10 @@ public class Task {
 
     public double calculateUtil() {
         return (double) wcet /period;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
 

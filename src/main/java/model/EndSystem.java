@@ -1,10 +1,22 @@
 package model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EndSystem {
     private String id;
     private List<CPU> cpuList;
+
+    public EndSystem(){}
+
+    public EndSystem(EndSystem es){
+        this.id = es.getId();
+        this.cpuList = CPU.deepCopyUsingCopyConstructor(es.getCpus());
+    }
+
+    public static List<EndSystem> deepCopyUsingCopyConstructor(List<EndSystem> endSystems) {
+        return endSystems.stream().map(EndSystem::new).collect(Collectors.toList());
+    }
 
     public String getId() {
         return id;

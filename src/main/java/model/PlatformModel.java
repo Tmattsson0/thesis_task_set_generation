@@ -12,6 +12,12 @@ public class PlatformModel {
     public PlatformModel() {
     }
 
+    public PlatformModel(PlatformModel old) {
+        this.endSystems = EndSystem.deepCopyUsingCopyConstructor(old.getEndSystems());
+        this.topology = new Topology(old.getTopology());
+        this.fitness = old.getFitness();
+    }
+
     public List<EndSystem> getEndSystems() {
         return endSystems;
     }
@@ -156,7 +162,7 @@ public class PlatformModel {
 
     @Override
     public String toString() {
-        return "PlatformModel{" + endSystems +
+        return "PlatformModel{" + endSystems.toString() +
                 '}';
     }
 }

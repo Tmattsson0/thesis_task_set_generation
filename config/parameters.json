@@ -9,7 +9,7 @@
   "system": {
     "tt_utilization": 0.7,
     "et_utilization": 0.7,
-    "num_of_tt_tasks": 100,
+    "num_of_tt_tasks": 10,
     "num_of_et_tasks": 10,
     "periods":
     [[1000, 0.2],

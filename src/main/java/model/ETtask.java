@@ -13,6 +13,21 @@ public class ETtask extends Task {
         this.priority = -1;
     }
 
+    public ETtask(ETtask t) {
+        super(t.getId(), t.getPeriod(), new DeadlineType(t.getDeadlineType()));
+
+        super.setName(t.getName());
+        super.setDeadline(t.getDeadline());
+        super.setWcet(t.getWcet());
+        super.setCpuId(t.getCpuId());
+        super.setCoreId(t.getCoreId());
+        super.setMaxJitter(t.getMaxJitter());
+        super.setCoreAffinity(t.getCoreAffinity().clone());
+
+        this.taskType = t.getTaskType();
+        this.priority = t.getPriority();
+    }
+
     public int getPriority() {
         return priority;
     }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Core {
     private final String name;
@@ -22,17 +23,26 @@ public class Core {
         this.scheduleType = scheduleType;
     }
 
-    @XmlElement(name = "Name")
+    public Core(Core core) {
+        this.name = core.getName();
+        this.id = core.getId();
+        this.microTick = core.getMicroTick();
+        this.scheduleType = core.getScheduleType();
+        this.tasks = Task.deepCopyUsingCopyConstructor(core.getTasks());
+    }
+
+    public static List<Core> deepCopyUsingCopyConstructor(List<Core> coreList) {
+        return coreList.stream().map(Core::new).collect(Collectors.toList());
+    }
+
     public String getName() {
         return name;
     }
 
-    @XmlElement(name = "Id")
     public String getId() {
         return id;
     }
 
-    @XmlElement(name = "MicroTick")
     public int getMicroTick() {
         return microTick;
     }

@@ -14,6 +14,24 @@ public class TTtask extends Task {
         this.offset = -1;
     }
 
+    public TTtask(TTtask t) {
+
+        super(t.getId(), t.getPeriod(), new DeadlineType(t.getDeadlineType()));
+
+        super.setName(t.getName());
+        super.setDeadline(t.getDeadline());
+        super.setWcet(t.getWcet());
+        super.setCpuId(t.getCpuId());
+        super.setCoreId(t.getCoreId());
+        super.setMaxJitter(t.getMaxJitter());
+        super.setCoreAffinity(t.getCoreAffinity().clone());
+
+        this.taskType = t.getTaskType();
+        this.priority = t.getPriority();
+        this.offset = t.getOffset();
+    }
+
+
     @Override
     public String toString() {
         return "Task{" +

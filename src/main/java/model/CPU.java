@@ -2,6 +2,7 @@ package model;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CPU {
 
@@ -18,6 +19,16 @@ public class CPU {
     public CPU(String name, String id){
         this.name = name;
         this.id = id;
+    }
+
+    public CPU(CPU cpu) {
+        this.name = cpu.getName();
+        this.id = cpu.getId();
+        this.coreList = Core.deepCopyUsingCopyConstructor(cpu.getCoreList());
+    }
+
+    public static List<CPU> deepCopyUsingCopyConstructor(List<CPU> cpus) {
+        return cpus.stream().map(CPU::new).collect(Collectors.toList());
     }
 
     public String getName() {

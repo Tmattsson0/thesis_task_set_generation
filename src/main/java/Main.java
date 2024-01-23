@@ -5,6 +5,7 @@ import model.*;
 import taskEngine.TaskGenerator;
 import taskEngine.TaskModifier;
 import util.ConfigInitializer;
+import util.LogUtil;
 import util.XmlUtil;
 
 import javax.xml.bind.JAXBException;
@@ -35,8 +36,10 @@ public class Main {
 
         taskModifier.generateInitialConfiguration(tasks);
 
+        LogUtil.deleteLogFile();
         taskModifier.modifyTasksUsingHeuristic();
-
         XmlUtil.writeTaskListWithUtil(s.PLATFORMMODEL, "test");
+
+
     }
 }

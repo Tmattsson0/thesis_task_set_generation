@@ -3,10 +3,12 @@ package taskEngine;
 import data.Singleton;
 import model.Core;
 import model.PlatformModel;
-import model.TTtask;
 import model.Task;
 
 import java.util.*;
+
+import static util.LogUtil.addLineToLog;
+import static util.LogUtil.initialAddToLog;
 
 public class TaskModifier {
     //The heuristic class. Should access from singleton and parameters should be not be list of task.
@@ -14,6 +16,7 @@ public class TaskModifier {
     double utilization;
     int numOfTasks;
     Singleton s = Singleton.getInstance();
+
 
     public void generateInitialConfiguration(List<Task> taskList) {
         //Calculate a starting wcet for tasks
@@ -26,8 +29,11 @@ public class TaskModifier {
     }
 
     public void modifyTasksUsingHeuristic() {
-        PlatformModel currentSolution = s.PLATFORMMODEL;
+
+        PlatformModel currentSolution;
+        currentSolution = s.PLATFORMMODEL;
         currentSolution.setFitness(calculateFitness(currentSolution, s.TT_UTILIZATION));
+        initialAddToLog(currentSolution);
 
         // Initial and final temperature
         double T = 1;
@@ -69,8 +75,10 @@ public class TaskModifier {
                 double ap = Math.pow(Math.E, (currentSolution.getFitness() - newSolution.getFitness() / T));
 
                 if (newSolution.getFitness() < currentSolution.getFitness()) {
+                    addLineToLog(newSolution, new PlatformModel(currentSolution));
                     currentSolution = newSolution;
                 } else if (ap < Math.random()) {
+                    addLineToLog(newSolution, new PlatformModel(currentSolution));
                     currentSolution = newSolution;
                 }
             }
@@ -100,12 +108,12 @@ public class TaskModifier {
     }
 
     private PlatformModel generateCandidateMove(PlatformModel currentModel, double [] moveTypeProbability) {
-        PlatformModel candidateModel;
-        candidateModel = currentModel;
+        PlatformModel candidateModel = new PlatformModel(currentModel);
+
         double moveDice = r.doubles(1, 0, Arrays.stream(moveTypeProbability).sum()).sum();
         Task randomTask = candidateModel.getAllCores().stream().map(Core::getTasks).flatMap(Collection::stream).toList().get(r.ints(1, 0, s.NUM_OF_TT_TASKS).sum());
 
-        //todo find better that just +- 1
+        //todo find better than just +- 1
         //changeWCET of task
         if (moveDice <= moveTypeProbability[0]){
             int moveSize = 10;
@@ -119,7 +127,7 @@ public class TaskModifier {
             }
 
         } else if (moveDice > moveTypeProbability[0] && moveDice <= moveTypeProbability[0] + moveTypeProbability[1]) {
-        //Move task
+            //Move task
             List<Core> validCores = candidateModel.getCoresThatTaskCanBeAssignedTo(randomTask);
             Collections.shuffle(validCores);
             String coreIdToMoveTo = validCores.get(0).getId();
