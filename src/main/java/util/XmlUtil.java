@@ -364,6 +364,7 @@ public class XmlUtil {
             Element rootEle = dom.createElement("Taskset");
             rootEle.setAttribute("TotalUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
             rootEle.setAttribute("AverageUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateUtil).average().stream().sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+            rootEle.setAttribute("Fitness", String.valueOf(BigDecimal.valueOf(platformModel.getFitness()).setScale(4, RoundingMode.HALF_UP)));
 
             List<? extends Task> tasks = platformModel.getAllTasks();
 

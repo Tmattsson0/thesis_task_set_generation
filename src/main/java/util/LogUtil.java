@@ -13,7 +13,6 @@ public class LogUtil {
     static String testCasesLogFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
     static String fileName = "test";
 
-
     public static void writeToLog(String str) throws IOException {
         File file = new File(testCasesLogFilePath + File.separator + LocalDate.now() + File.separator + fileName + ".log");
         if (!file.isFile()) {
