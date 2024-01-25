@@ -1,12 +1,9 @@
 package model;
 
-import javax.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Core {
@@ -101,6 +98,34 @@ public class Core {
             double util = 0.0;
             for (Task t : tasks){
                 util += t.calculateUtil();
+            }
+            return new BigDecimal(util).setScale(3, RoundingMode.HALF_UP).doubleValue();
+        }
+    }
+
+    public double calculateTTUtil() {
+        if (tasks.isEmpty()){
+            return 0.0;
+        } else {
+            double util = 0.0;
+            for (Task t : tasks){
+                if (t instanceof TTtask) {
+                    util += t.calculateUtil();
+                }
+            }
+            return new BigDecimal(util).setScale(3, RoundingMode.HALF_UP).doubleValue();
+        }
+    }
+
+    public double calculateETUtil() {
+        if (tasks.isEmpty()){
+            return 0.0;
+        } else {
+            double util = 0.0;
+            for (Task t : tasks){
+                if (t instanceof ETtask) {
+                    util += t.calculateUtil();
+                }
             }
             return new BigDecimal(util).setScale(3, RoundingMode.HALF_UP).doubleValue();
         }

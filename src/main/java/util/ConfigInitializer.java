@@ -19,7 +19,7 @@ public class ConfigInitializer {
         Singleton singleton = Singleton.getInstance();
 
         try {
-            singleton.PLATFORMMODEL = XmlUtil.readPlatformModelConfig("config/proposed_config_file.xml");
+            singleton.PLATFORMMODEL = XmlUtil.readPlatformModelConfig("config/config_small.xml");
 
             ParametersJsonReader paramReader = new ParametersJsonReader("config/parameters.json");
 

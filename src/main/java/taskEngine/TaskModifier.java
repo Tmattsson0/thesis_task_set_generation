@@ -1,20 +1,16 @@
 package taskEngine;
 
 import data.Singleton;
-import model.Core;
-import model.PlatformModel;
-import model.Task;
+import model.*;
 
 import java.util.*;
 
 import static util.LogUtil.addLineToLog;
 import static util.LogUtil.initialAddToLog;
+import static taskEngine.FitnessCalculator.calculateFitness;
 
 public class TaskModifier {
-    //The heuristic class. Should access from singleton and parameters should be not be list of task.
     Random r = new Random();
-    double utilization;
-    int numOfTasks;
     Singleton s = Singleton.getInstance();
 
 
@@ -24,7 +20,11 @@ public class TaskModifier {
 
         for (Task t : taskList) {
             t.setWcet(r.ints(1, 1, t.getPeriod()).sum());
-            s.PLATFORMMODEL.addTaskToCore(t, s.PLATFORMMODEL.getLeastUtilizedCore(s.PLATFORMMODEL.getCoresThatTaskCanBeAssignedTo(t)).getId());
+            if (t instanceof TTtask) {
+                s.PLATFORMMODEL.addTaskToCore(t, s.PLATFORMMODEL.getLeastUtilizedCore(s.PLATFORMMODEL.getCoresThatTaskCanBeAssignedTo(t), ScheduleType.TT).getId());
+            } else {
+                s.PLATFORMMODEL.addTaskToCore(t, s.PLATFORMMODEL.getLeastUtilizedCore(s.PLATFORMMODEL.getCoresThatTaskCanBeAssignedTo(t), ScheduleType.ET).getId());
+            }
         }
     }
 
@@ -32,7 +32,7 @@ public class TaskModifier {
 
         PlatformModel currentSolution;
         currentSolution = s.PLATFORMMODEL;
-        currentSolution.setFitness(calculateFitness(currentSolution, s.TT_UTILIZATION));
+        currentSolution.setFitness(calculateFitness(currentSolution));
         initialAddToLog(currentSolution);
 
         // Initial and final temperature
@@ -57,7 +57,7 @@ public class TaskModifier {
         while (T > Tmin) {
             for (int i = 0; i < numIterations; i++) {
 
-                if (calculateFitness(currentSolution, s.TT_UTILIZATION) == 0.0) {
+                if (calculateFitness(currentSolution) == 0.0) {
                     minFitness = currentSolution.getFitness();
                     bestSolution = currentSolution;
                     T = Double.MIN_VALUE;
@@ -70,7 +70,7 @@ public class TaskModifier {
                 }
 
                 PlatformModel newSolution = generateCandidateMove(s.PLATFORMMODEL, new double[]{0.75, 0.25});
-                newSolution.setFitness(calculateFitness(newSolution, s.TT_UTILIZATION));
+                newSolution.setFitness(calculateFitness(newSolution));
 
                 double ap = Math.pow(Math.E, (currentSolution.getFitness() - newSolution.getFitness() / T));
 
@@ -142,16 +142,5 @@ public class TaskModifier {
 //        }
 
         return candidateModel;
-    }
-
-    public double calculateFitness(PlatformModel candidate, double desiredUtilization){
-
-        double utilDelta = 0;
-
-        for (Core c : candidate.getAllCores()){
-            utilDelta += Math.abs(c.calculateUtil() - desiredUtilization);
-        }
-
-        return utilDelta;
     }
 }

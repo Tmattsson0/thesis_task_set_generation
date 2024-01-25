@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Taskset TotalTTUtil="5.03" TotalETUtil="4.992" Fitness="3.4040">
+    <Task Id="1" Name="Task1" Type="TT" WCET="1512" Period="3000" Deadline="3000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Task Id="2" Name="Task2" Type="TT" WCET="1210" Period="3000" Deadline="3000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Task Id="3" Name="Task3" Type="TT" WCET="1226" Period="2000" Deadline="2000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Task Id="4" Name="Task4" Type="TT" WCET="476" Period="1000" Deadline="1000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Task Id="5" Name="Task5" Type="TT" WCET="3980" Period="4000" Deadline="4000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Task Id="6" Name="Task6" Type="TT" WCET="1877" Period="3000" Deadline="3000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Task Id="7" Name="Task7" Type="TT" WCET="1164" Period="2000" Deadline="2000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Task Id="8" Name="Task8" Type="TT" WCET="74" Period="2000" Deadline="2000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, A2]"/>
+    <Task Id="9" Name="Task9" Type="TT" WCET="2193" Period="3000" Deadline="3000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Task Id="10" Name="Task10" Type="TT" WCET="126" Period="2000" Deadline="2000" MaxJitter="-1" Offset="-1" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Task Id="11" Name="Task11" Type="ET" WCET="138" MIT="4000" Deadline="4000" MaxJitter="-1" Priority="-1" CpuId="B" CoreId="B1" CoreAffinity="[B1, A1]"/>
+    <Task Id="12" Name="Task12" Type="ET" WCET="417" MIT="4000" Deadline="4000" MaxJitter="-1" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Task Id="13" Name="Task13" Type="ET" WCET="913" MIT="1000" Deadline="1000" MaxJitter="-1" Priority="-1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Task Id="14" Name="Task14" Type="ET" WCET="708" MIT="3000" Deadline="3000" MaxJitter="-1" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Task Id="15" Name="Task15" Type="ET" WCET="636" MIT="2000" Deadline="2000" MaxJitter="-1" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Task Id="16" Name="Task16" Type="ET" WCET="2440" MIT="3000" Deadline="3000" MaxJitter="-1" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Task Id="17" Name="Task17" Type="ET" WCET="1795" MIT="2000" Deadline="2000" MaxJitter="-1" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Task Id="18" Name="Task18" Type="ET" WCET="623" MIT="1000" Deadline="1000" MaxJitter="-1" Priority="-1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Task Id="19" Name="Task19" Type="ET" WCET="3708" MIT="4000" Deadline="4000" MaxJitter="-1" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[B1, A1]"/>
+    <Task Id="20" Name="Task20" Type="ET" WCET="125" MIT="1000" Deadline="1000" MaxJitter="-1" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" Util="1.671"/>
+    <Core Id="A2" Name="Core 2" Util="1.461"/>
+    <Core Id="B1" Name="Core 1" Util="1.898"/>
+    <Core Id="B2" Name="Core 2" Util="0.0"/>
+</Taskset>

@@ -278,8 +278,13 @@ public class XmlUtil {
             dom = db.newDocument();
 
             Element rootEle = dom.createElement("Taskset");
-            rootEle.setAttribute("TotalUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
-            rootEle.setAttribute("AverageUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateUtil).average().stream().sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+            rootEle.setAttribute("A__TotalTTUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateTTUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+
+            rootEle.setAttribute("B__TotalETUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateETUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+
+            rootEle.setAttribute("C__Fitness", String.valueOf(BigDecimal.valueOf(platformModel.getFitness()).setScale(4, RoundingMode.HALF_UP)));
+
+
 
             List<? extends Task> tasks = platformModel.getAllTasks();
 
@@ -310,7 +315,7 @@ public class XmlUtil {
                 element = dom.createElement("Core");
                 element.setAttribute("A__Id", c.getId());
                 element.setAttribute("B__Name", c.getName());
-                element.setAttribute("C__Util", String.valueOf(c.calculateUtil()));
+                element.setAttribute("C__Util", String.valueOf(c.calculateTTUtil()));
                 rootEle.appendChild(element);
 
             }
@@ -362,9 +367,11 @@ public class XmlUtil {
             dom = db.newDocument();
 
             Element rootEle = dom.createElement("Taskset");
-            rootEle.setAttribute("TotalUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
-            rootEle.setAttribute("AverageUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateUtil).average().stream().sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
-            rootEle.setAttribute("Fitness", String.valueOf(BigDecimal.valueOf(platformModel.getFitness()).setScale(4, RoundingMode.HALF_UP)));
+            rootEle.setAttribute("A__TotalTTUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateTTUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+
+            rootEle.setAttribute("B__TotalETUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateETUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+
+            rootEle.setAttribute("C__Fitness", String.valueOf(BigDecimal.valueOf(platformModel.getFitness()).setScale(4, RoundingMode.HALF_UP)));
 
             List<? extends Task> tasks = platformModel.getAllTasks();
 
@@ -395,7 +402,8 @@ public class XmlUtil {
                 element = dom.createElement("Core");
                 element.setAttribute("A__Id", c.getId());
                 element.setAttribute("B__Name", c.getName());
-                element.setAttribute("C__Util", String.valueOf(c.calculateUtil()));
+                element.setAttribute("C__TTUtil", String.valueOf(c.calculateTTUtil()));
+                element.setAttribute("D__ETUtil", String.valueOf(c.calculateETUtil()));
                 rootEle.appendChild(element);
 
             }

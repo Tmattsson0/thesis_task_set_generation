@@ -1,7 +1,5 @@
 package model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 import java.util.stream.Collectors;
 public class PlatformModel {
@@ -125,7 +123,14 @@ public class PlatformModel {
 
     }
 
-    public Core getLeastUtilizedCore(List<Core> cores) {
+    public Core getLeastUtilizedCore(List<Core> cores, ScheduleType scheduleType) {
+        if (scheduleType == ScheduleType.TTET) {
+            return cores.stream().min(Comparator.comparing(Core::calculateUtil)).orElse(null);
+        } else if (scheduleType == ScheduleType.TT) {
+            return cores.stream().min(Comparator.comparing(Core::calculateTTUtil)).orElse(null);
+        } else if (scheduleType == ScheduleType.ET) {
+            return cores.stream().min(Comparator.comparing(Core::calculateETUtil)).orElse(null);
+        }
         return cores.stream().min(Comparator.comparing(Core::calculateUtil)).orElse(null);
     }
 
