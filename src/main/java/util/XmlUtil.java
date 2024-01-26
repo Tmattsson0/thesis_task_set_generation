@@ -315,7 +315,8 @@ public class XmlUtil {
                 element = dom.createElement("Core");
                 element.setAttribute("A__Id", c.getId());
                 element.setAttribute("B__Name", c.getName());
-                element.setAttribute("C__Util", String.valueOf(c.calculateTTUtil()));
+                element.setAttribute("C__TTUtil", String.valueOf(c.calculateTTUtil()));
+                element.setAttribute("D__ETUtil", String.valueOf(c.calculateETUtil()));
                 rootEle.appendChild(element);
 
             }

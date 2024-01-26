@@ -30,8 +30,7 @@ public class TaskModifier {
 
     public void modifyTasksUsingHeuristic() {
 
-        PlatformModel currentSolution;
-        currentSolution = s.PLATFORMMODEL;
+        PlatformModel currentSolution = new PlatformModel(s.PLATFORMMODEL);
         currentSolution.setFitness(calculateFitness(currentSolution));
         initialAddToLog(currentSolution);
 
@@ -69,7 +68,7 @@ public class TaskModifier {
                     bestSolution = currentSolution;
                 }
 
-                PlatformModel newSolution = generateCandidateMove(s.PLATFORMMODEL, new double[]{0.75, 0.25});
+                PlatformModel newSolution = generateCandidateMove(currentSolution, new double[]{0.75, 0.25});
                 newSolution.setFitness(calculateFitness(newSolution));
 
                 double ap = Math.pow(Math.E, (currentSolution.getFitness() - newSolution.getFitness() / T));
@@ -107,30 +106,39 @@ public class TaskModifier {
         //SA approach
     }
 
+    //Neighbourhood function
     private PlatformModel generateCandidateMove(PlatformModel currentModel, double [] moveTypeProbability) {
         PlatformModel candidateModel = new PlatformModel(currentModel);
 
         double moveDice = r.doubles(1, 0, Arrays.stream(moveTypeProbability).sum()).sum();
-        Task randomTask = candidateModel.getAllCores().stream().map(Core::getTasks).flatMap(Collection::stream).toList().get(r.ints(1, 0, s.NUM_OF_TT_TASKS).sum());
+        Task randomTask = candidateModel.getRandomTask();
 
-        //todo find better than just +- 1
         //changeWCET of task
         if (moveDice <= moveTypeProbability[0]){
-            int moveSize = 10;
-            //Common sense rules that wcet cannot be more than period.
-            if ((moveDice > 0.5 || randomTask.getWcet() == 1) && randomTask.getWcet() < randomTask.getPeriod() - moveSize){
-                randomTask.setWcet(randomTask.getWcet() + moveSize);
-            } else if (moveDice <= 0.5 && randomTask.getWcet() > moveSize){
-                randomTask.setWcet(randomTask.getWcet() - moveSize);
+            if (randomTask instanceof TTtask) {
+                if (candidateModel.getCoreByTaskId(randomTask.getId()).calculateTTUtil() > s.TT_UTILIZATION) {
+                    //Lower util
+                    randomTask.setWcet(r.ints(1, 1, randomTask.getWcet() + 1).sum());
+                } else if (candidateModel.getCoreByTaskId(randomTask.getId()).calculateTTUtil() < s.TT_UTILIZATION) {
+                    //raise util
+                    randomTask.setWcet(r.ints(1, randomTask.getWcet() - 1, randomTask.getPeriod()).sum());
+                }
             } else {
-                randomTask.setWcet(randomTask.getWcet());
+                if (candidateModel.getCoreByTaskId(randomTask.getId()).calculateETUtil() > s.ET_UTILIZATION) {
+                    //Lower util
+                    randomTask.setWcet(r.ints(1, 1, randomTask.getWcet() + 1).sum());
+                } else if (candidateModel.getCoreByTaskId(randomTask.getId()).calculateETUtil() < s.ET_UTILIZATION) {
+                    //raise util
+                    randomTask.setWcet(r.ints(1, 1, randomTask.getWcet() + 1 ).sum());
+                }
             }
 
         } else if (moveDice > moveTypeProbability[0] && moveDice <= moveTypeProbability[0] + moveTypeProbability[1]) {
             //Move task
             List<Core> validCores = candidateModel.getCoresThatTaskCanBeAssignedTo(randomTask);
             Collections.shuffle(validCores);
-            String coreIdToMoveTo = validCores.get(0).getId();
+            candidateModel.getLeastUtilizedCore(validCores, ScheduleType.TTET);
+            String coreIdToMoveTo = candidateModel.getLeastUtilizedCore(validCores, ScheduleType.TTET).getId();
             candidateModel.moveTask(randomTask.getId(), coreIdToMoveTo);
         }
         //todo make swap

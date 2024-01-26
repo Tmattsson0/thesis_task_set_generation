@@ -38,8 +38,6 @@ public class Main {
 
         LogUtil.deleteLogFile();
         taskModifier.modifyTasksUsingHeuristic();
-        XmlUtil.writeTaskListWithUtil(s.PLATFORMMODEL, "test");
-
-
+        XmlUtil.writeTaskListWithUtil(s.PLATFORMMODEL, "test_newFit");
     }
 }

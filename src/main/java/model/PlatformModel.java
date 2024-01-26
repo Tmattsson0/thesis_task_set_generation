@@ -2,6 +2,7 @@ package model;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 public class PlatformModel {
     private List<EndSystem> endSystems;
     private Topology topology;
@@ -165,9 +166,19 @@ public class PlatformModel {
         return new ArrayList<>(coresWithCorrectScheduleType);
     }
 
+
+
     @Override
     public String toString() {
         return "PlatformModel{" + endSystems.toString() +
                 '}';
+    }
+
+    public Task getRandomTask() {
+        Random r = new Random();
+
+        List<Task> temp = getAllCores().stream().map(Core::getTasks).flatMap(Collection::stream).toList();
+
+        return temp.get(r.ints(1, 0, temp.size()).sum());
     }
 }
