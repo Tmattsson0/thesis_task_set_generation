@@ -26,12 +26,20 @@ public class FitnessCalculator {
         }
 
         for (Core c : candidate.getAllCores()) {
-            if (c.calculateETUtil() <= 0.01 && c.getScheduleType().getValue().contains("ET")) {
-                fitness += 5;
-            } else if (c.calculateTTUtil() <= 0.01 && c.getScheduleType().getValue().contains("TT")) {
-                fitness += 5;
+            if (isWithinPenaltyValue(c.calculateETUtil()) && c.getScheduleType().getValue().contains("ET")) {
+                fitness += calculateBadUtilPenalty(c.calculateETUtil());
+            } else if (isWithinPenaltyValue(c.calculateTTUtil()) && c.getScheduleType().getValue().contains("TT")) {
+                fitness += calculateBadUtilPenalty(c.calculateTTUtil());
             }
         }
         return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    private static boolean isWithinPenaltyValue(double util) {
+        return util <= 0.01 || util >= 0.99;
+    }
+
+    private static double calculateBadUtilPenalty(double util) {
+        return Math.max(5, 5 * util + 1);
     }
 }

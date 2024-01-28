@@ -56,16 +56,16 @@ public class TaskModifier {
         while (T > Tmin) {
             for (int i = 0; i < numIterations; i++) {
 
-                if (calculateFitness(currentSolution) == 0.0) {
+                if (calculateFitness(currentSolution) <= 0.1) {
                     minFitness = currentSolution.getFitness();
-                    bestSolution = currentSolution;
-                    T = Double.MIN_VALUE;
+                    bestSolution = new PlatformModel(currentSolution);
+                    T = 0;
                     break;
                 }
 
                 if (currentSolution.getFitness() < minFitness) {
                     minFitness = currentSolution.getFitness();
-                    bestSolution = currentSolution;
+                    bestSolution = new PlatformModel(currentSolution);
                 }
 
                 PlatformModel newSolution = generateCandidateMove(currentSolution, new double[]{0.75, 0.25});
@@ -74,11 +74,11 @@ public class TaskModifier {
                 double ap = Math.pow(Math.E, (currentSolution.getFitness() - newSolution.getFitness() / T));
 
                 if (newSolution.getFitness() < currentSolution.getFitness()) {
-                    addLineToLog(newSolution, new PlatformModel(currentSolution));
-                    currentSolution = newSolution;
+                    addLineToLog(newSolution, currentSolution);
+                    currentSolution = new PlatformModel(newSolution);
                 } else if (ap < Math.random()) {
-                    addLineToLog(newSolution, new PlatformModel(currentSolution));
-                    currentSolution = newSolution;
+                    addLineToLog(newSolution, currentSolution);
+                    currentSolution = new PlatformModel(newSolution);
                 }
             }
             T *= alpha;
@@ -111,34 +111,31 @@ public class TaskModifier {
         PlatformModel candidateModel = new PlatformModel(currentModel);
 
         double moveDice = r.doubles(1, 0, Arrays.stream(moveTypeProbability).sum()).sum();
-        Task randomTask = candidateModel.getRandomTask();
+        Task randomTask = getIdealRandomTask(candidateModel);
 
         //changeWCET of task
         if (moveDice <= moveTypeProbability[0]){
             if (randomTask instanceof TTtask) {
                 if (candidateModel.getCoreByTaskId(randomTask.getId()).calculateTTUtil() > s.TT_UTILIZATION) {
                     //Lower util
-                    randomTask.setWcet(r.ints(1, 1, randomTask.getWcet() + 1).sum());
+                    randomTask.setWcet(getRandomLowerWCET(randomTask));
                 } else if (candidateModel.getCoreByTaskId(randomTask.getId()).calculateTTUtil() < s.TT_UTILIZATION) {
                     //raise util
-                    randomTask.setWcet(r.ints(1, randomTask.getWcet() - 1, randomTask.getPeriod()).sum());
+                    randomTask.setWcet(getRandomHigherWCET(randomTask));
                 }
             } else {
                 if (candidateModel.getCoreByTaskId(randomTask.getId()).calculateETUtil() > s.ET_UTILIZATION) {
                     //Lower util
-                    randomTask.setWcet(r.ints(1, 1, randomTask.getWcet() + 1).sum());
+                    randomTask.setWcet(getRandomLowerWCET(randomTask));
                 } else if (candidateModel.getCoreByTaskId(randomTask.getId()).calculateETUtil() < s.ET_UTILIZATION) {
                     //raise util
-                    randomTask.setWcet(r.ints(1, 1, randomTask.getWcet() + 1 ).sum());
+                    randomTask.setWcet(getRandomHigherWCET(randomTask));
                 }
             }
-
         } else if (moveDice > moveTypeProbability[0] && moveDice <= moveTypeProbability[0] + moveTypeProbability[1]) {
             //Move task
             List<Core> validCores = candidateModel.getCoresThatTaskCanBeAssignedTo(randomTask);
-            Collections.shuffle(validCores);
-            candidateModel.getLeastUtilizedCore(validCores, ScheduleType.TTET);
-            String coreIdToMoveTo = candidateModel.getLeastUtilizedCore(validCores, ScheduleType.TTET).getId();
+            String coreIdToMoveTo = candidateModel.getLeastUtilizedCore(validCores, ScheduleType.NONE).getId();
             candidateModel.moveTask(randomTask.getId(), coreIdToMoveTo);
         }
         //todo make swap
@@ -150,5 +147,56 @@ public class TaskModifier {
 //        }
 
         return candidateModel;
+    }
+
+    private Task getIdealRandomTask(PlatformModel model) {
+        //get a random task from the core with the biggest util delta
+        double rand = Math.random();
+
+        if (rand <= 0.5) {
+            //TT
+            return getRandomTaskFromWorstUtilizedCore(model, ScheduleType.TT);
+        } else {
+            //ET
+            return getRandomTaskFromWorstUtilizedCore(model, ScheduleType.ET);
+        }
+    }
+
+    private int getRandomLowerWCET(Task t) {
+        if (t.getWcet() == 1) {
+            return 1;
+        } else {
+            return (r.ints(1, 1, t.getWcet()).sum());
+        }
+    }
+
+    private int getRandomHigherWCET(Task t) {
+        if (t.getWcet() == t.getPeriod()) {
+            return t.getWcet();
+        } else {
+            return r.ints(1, t.getWcet(), t.getPeriod()).sum();
+        }
+    }
+
+    private Task getRandomTaskFromWorstUtilizedCore(PlatformModel model, ScheduleType scheduleType) {
+        List<Core> cores = model.getAllCores(scheduleType);
+        if (scheduleType == ScheduleType.TT) {
+            cores.sort(Comparator.comparing(core -> (Math.abs(core.calculateTTUtil() - s.TT_UTILIZATION)), Collections.reverseOrder()));
+            for (Core c : cores) {
+                if (c.getTasks().stream().anyMatch(t -> t instanceof TTtask)){
+                    List<Task> tasks = c.getTasks().stream().filter(t -> t instanceof TTtask).toList();
+                    return tasks.get(r.ints(1, 0, tasks.size()).sum());
+                }
+            }
+        } else {
+            cores.sort(Comparator.comparing(core -> (Math.abs(core.calculateETUtil() - s.ET_UTILIZATION)), Collections.reverseOrder()));
+            for (Core c : cores) {
+                if (c.getTasks().stream().anyMatch(t -> t instanceof ETtask)) {
+                    List<Task> tasks = c.getTasks().stream().filter(t -> t instanceof ETtask).toList();
+                    return tasks.get(r.ints(1, 0, tasks.size()).sum());
+                }
+            }
+        }
+        return model.getRandomTask();
     }
 }

@@ -42,6 +42,48 @@ public class PlatformModel {
         return allCores;
     }
 
+    public List<Core> getAllCores(ScheduleType scheduleType) {
+        if (scheduleType == ScheduleType.TTET || scheduleType == ScheduleType.NONE) {
+            List<Core> allCores = new ArrayList<>();
+
+            for (CPU cpu : getCPUs()) {
+                allCores.addAll(cpu.getCoreList());
+            }
+
+            return allCores;
+
+        } else if (scheduleType == ScheduleType.TT){
+            List<Core> allCores = new ArrayList<>();
+
+            for (CPU cpu : getCPUs()) {
+
+                List<Core> tempCoreList = cpu.getCoreList();
+
+                for (Core core : tempCoreList){
+                    if (core.getScheduleType().getValue().contains("TT")){
+                        allCores.add(core);
+                    }
+                }
+            }
+            return allCores;
+
+        } else {
+            List<Core> allCores = new ArrayList<>();
+
+            for (CPU cpu : getCPUs()) {
+
+                List<Core> tempCoreList = cpu.getCoreList();
+
+                for (Core core : tempCoreList){
+                    if (core.getScheduleType().getValue().contains("ET")){
+                        allCores.add(core);
+                    }
+                }
+            }
+            return allCores;
+        }
+    }
+
     private List<CPU> getCPUs() {
         return getEndSystems().stream().map(EndSystem::getCpus).flatMap(Collection::stream).collect(Collectors.toList());
     }
@@ -125,7 +167,7 @@ public class PlatformModel {
     }
 
     public Core getLeastUtilizedCore(List<Core> cores, ScheduleType scheduleType) {
-        if (scheduleType == ScheduleType.TTET) {
+        if (scheduleType == ScheduleType.TTET || scheduleType == ScheduleType.NONE) {
             return cores.stream().min(Comparator.comparing(Core::calculateUtil)).orElse(null);
         } else if (scheduleType == ScheduleType.TT) {
             return cores.stream().min(Comparator.comparing(Core::calculateTTUtil)).orElse(null);
@@ -165,8 +207,6 @@ public class PlatformModel {
 
         return new ArrayList<>(coresWithCorrectScheduleType);
     }
-
-
 
     @Override
     public String toString() {

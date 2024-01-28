@@ -11,12 +11,14 @@ import util.XmlUtil;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main {
-    public static void main(String[] args) throws JAXBException, IOException, ParserConfigurationException, SAXException {
+    public static void main(String[] args) {
 
         ConfigInitializer.initialize();
 
@@ -33,11 +35,16 @@ public class Main {
 
         tasks.addAll(tttasks);
         tasks.addAll(ettasks);
-
+        Instant start = Instant.now();
         taskModifier.generateInitialConfiguration(tasks);
 
         LogUtil.deleteLogFile();
         taskModifier.modifyTasksUsingHeuristic();
+        Instant end = Instant.now();
+
+
         XmlUtil.writeTaskListWithUtil(s.PLATFORMMODEL, "test_newFit");
+
+        System.out.println("Elapsed time in seconds: " + Duration.between(start, end).getSeconds());
     }
 }
