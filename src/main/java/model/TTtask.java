@@ -8,7 +8,7 @@ public class TTtask extends Task {
     private final int priority;
 
     public TTtask(String id, int period, DeadlineType deadlineType) {
-        super(id, period, deadlineType);
+        super(id, period, DeadlineType.getConstrainedDeadline(deadlineType));
         this.taskType = TaskType.TT;
         this.priority = 1;
         this.offset = -1;

@@ -29,6 +29,13 @@ public class DeadlineType {
         this.isImplicit = deadlineType.isImplicit();
     }
 
+    public static DeadlineType getConstrainedDeadline(DeadlineType deadlineType) {
+        if (deadlineType.y > 100) {
+            return new DeadlineType(deadlineType.getX(), 100);
+        }
+        return deadlineType;
+    }
+
     public int getX() {
         return x;
     }

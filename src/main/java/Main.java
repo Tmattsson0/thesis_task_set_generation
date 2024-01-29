@@ -23,9 +23,7 @@ public class Main {
         ConfigInitializer.initialize();
 
         Singleton s = Singleton.getInstance();
-
-        TaskGenerator t = new TaskGenerator(s.NUM_OF_TT_TASKS, s.NUM_OF_ET_TASKS, s.TT_UTILIZATION, s.PERIODS, s.coreAffinityDist, s.PLATFORMMODEL);
-
+        TaskGenerator t = new TaskGenerator();
         TaskModifier taskModifier = new TaskModifier();
 
         List<Task> tttasks = t.initializeTTtasks();
