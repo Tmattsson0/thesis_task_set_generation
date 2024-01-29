@@ -1,5 +1,7 @@
 package util;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.DeadlineType;
@@ -75,13 +77,16 @@ public class ParametersJsonReader {
         try {
             return new ObjectMapper().readValue(root.path("system").path("periods").traverse(), double[][].class);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-    public double getAllowedJitter(){
-        return root.path("task").path("allowed_jitter").asDouble();
+    public double[] getAllowedJitter(){
+        try {
+            return new ObjectMapper().readValue(root.path("task").path("allowed_jitter").traverse(), double[].class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public double getReleaseTime(){

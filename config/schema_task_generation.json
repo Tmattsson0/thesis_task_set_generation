@@ -89,7 +89,18 @@
       "type": "object",
       "properties": {
         "allowed_jitter": {
-          "type": "number"
+          "type": "array",
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
         },
         "release_time": {
           "type": "number"

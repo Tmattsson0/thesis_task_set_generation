@@ -48,8 +48,6 @@ public class Task {
         return tasksToReturn;
     }
 
-
-
     private int generateDeadline(DeadlineType deadlineType) {
         if (deadlineType.isImplicit()) {
             return this.period;
@@ -57,6 +55,8 @@ public class Task {
             return deadlineType.calculateDeadline(this.period);
         }
     }
+
+
 
     private String generateName(String id) {
         return "Task" + id;
@@ -124,6 +124,21 @@ public class Task {
 
     public void setMaxJitter(int maxJitter) {
         this.maxJitter = maxJitter;
+    }
+
+    public void calculateAndSetMaxJitter(double[] maxJitterDist) {
+        double diceRoll = Math.random();
+        if (diceRoll <= maxJitterDist[0]){
+        //unrestricted maxJitterDist[0]
+            setMaxJitter((int) Math.round(Math.random() * period));
+        } else if (diceRoll > maxJitterDist[0] && diceRoll <= (maxJitterDist[0] + maxJitterDist[1])) {
+        //0% of period maxJitterDist[1]
+            setMaxJitter(0);
+        }
+        //10% of period maxJitterDist[2]
+        else {
+            setMaxJitter((int) Math.round(0.1 * period));
+        }
     }
 
     public String[] getCoreAffinity() {

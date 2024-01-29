@@ -19,7 +19,7 @@
     ]
   },
   "task": {
-    "allowed_jitter": 2.2,
+    "allowed_jitter": [0.05, 0.85, 0.10],
     "release_time": 2.2,
     "deadline_type": "arbitrary;50,150"
   },

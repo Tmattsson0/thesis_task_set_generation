@@ -81,9 +81,7 @@ public class ConfigInitializer {
 
         singleton.PLATFORMMODEL = createPlatformModelFromParameters(CoreDistributionStrategy.Homogenous);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (ParseException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
