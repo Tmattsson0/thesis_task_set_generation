@@ -66,4 +66,15 @@ public class TTtask extends Task {
     public int getPriority() {
         return priority;
     }
+
+    public void calculateAndSetOffset(double[] releaseTimeDist) {
+        double diceRoll = Math.random();
+        if (diceRoll <= releaseTimeDist[0]){
+            //0 releaseTimeDist[0]
+            setOffset(0);
+        } else {
+            //up to 10% of period releaseTimeDist[1]
+            setOffset((int) (Math.round((Math.random() * 0.1) * super.getPeriod())));
+        }
+    }
 }

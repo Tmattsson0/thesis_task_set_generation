@@ -103,7 +103,15 @@
           ]
         },
         "release_time": {
-          "type": "number"
+          "type": "array",
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
         },
         "deadline_type": {
           "type": "string"

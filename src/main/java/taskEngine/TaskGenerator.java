@@ -15,6 +15,7 @@ public class TaskGenerator {
     double[][] periodsDist = s.PERIODS;
     double [] coreAffinityDist = s.coreAffinityDist;
     double[] allowedJitterDist = s.ALLOWED_JITTER;
+    double[] releaseTimeDist = s.RELEASE_TIME;
     PlatformModel platform = s.PLATFORMMODEL;
     DeadlineType deadlineType = s.DEADLINE_TYPE;
     private final AtomicInteger seq = new AtomicInteger();
@@ -42,6 +43,7 @@ public class TaskGenerator {
         for (int i = 0; i < numOfTTTasks; i++) {
             initialTTtasks.get(i).setCoreAffinity(specificCoreAffinity[i]);
             initialTTtasks.get(i).calculateAndSetMaxJitter(allowedJitterDist);
+            ((TTtask) initialTTtasks.get(i)).calculateAndSetOffset(releaseTimeDist);
         }
 
         initialTTtasks.sort(Comparator.comparingInt(d -> Integer.parseInt(d.getId())));
@@ -74,19 +76,8 @@ public class TaskGenerator {
             initialETTasks.get(i).calculateAndSetMaxJitter(allowedJitterDist);
         }
 
-
-
         initialETTasks.sort(Comparator.comparingInt(d -> Integer.parseInt(d.getId())));
 
         return initialETTasks;
     }
-
-//    private int calculateDeadline(DeadlineType deadlineType, int specificPeriod) {
-//        if (deadlineType.isArbitrary()) {
-//            double deadlineMultiplier = random.ints(1, deadlineType.getX(), deadlineType.getY()).sum();
-//            return (int) ((deadlineMultiplier / 100) * specificPeriod);
-//        } else {
-//            return specificPeriod;
-//        }
-//    }
 }

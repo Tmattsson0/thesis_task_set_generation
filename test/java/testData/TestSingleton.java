@@ -20,8 +20,8 @@ public class TestSingleton {
     public int NUM_OF_TT_TASKS;
     public int NUM_OF_ET_TASKS;
     public double[][] PERIODS;
-    public double ALLOWED_JITTER;
-    public double RELEASE_TIME;
+    public double[] ALLOWED_JITTER;
+    public double[] RELEASE_TIME;
     public DeadlineType DEADLINE_TYPE;
     public int NUM_OF_CHAINS;
     public int NUM_OF_TASKS_IN_CHAINS;

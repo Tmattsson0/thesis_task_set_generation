@@ -89,8 +89,12 @@ public class ParametersJsonReader {
         }
     }
 
-    public double getReleaseTime(){
-        return root.path("task").path("release_time").asDouble();
+    public double[] getReleaseTime(){
+        try {
+            return new ObjectMapper().readValue(root.path("task").path("release_time").traverse(), double[].class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public DeadlineType getDeadlineType() throws ParseException {
