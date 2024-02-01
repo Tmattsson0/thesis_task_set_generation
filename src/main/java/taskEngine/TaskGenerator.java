@@ -2,13 +2,13 @@ package taskEngine;
 
 import data.Singleton;
 import model.*;
+import util.RandomUtil;
 import util.SpecificPeriodToll;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskGenerator {
-    Random random = new Random();
     Singleton s = Singleton.getInstance();
     int numOfTTTasks = s.NUM_OF_TT_TASKS;
     int numOfETTasks = s.NUM_OF_ET_TASKS;
@@ -38,7 +38,7 @@ public class TaskGenerator {
             initialTTtasks.add(temp);
         }
 
-        Collections.shuffle(initialTTtasks);
+        Collections.shuffle(initialTTtasks, RandomUtil.getRandom());
 
         for (int i = 0; i < numOfTTTasks; i++) {
             initialTTtasks.get(i).setCoreAffinity(specificCoreAffinity[i]);
@@ -69,7 +69,7 @@ public class TaskGenerator {
             initialETTasks.add(temp);
         }
 
-        Collections.shuffle(initialETTasks);
+        Collections.shuffle(initialETTasks, RandomUtil.getRandom());
 
         for (int i = 0; i < numOfETTasks; i++) {
             initialETTasks.get(i).setCoreAffinity(specificCoreAffinity[i]);

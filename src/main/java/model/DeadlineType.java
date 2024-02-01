@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Random;
+import util.RandomUtil;
 
 public class DeadlineType {
     private final int x;
@@ -53,8 +53,7 @@ public class DeadlineType {
     }
 
     public int calculateDeadline(int period) {
-        Random r = new Random();
-        return r.ints(1, (int)(period * ((double) this.x/100)), (int)(period * ((double) this.y/100))).sum();
+        return RandomUtil.getRandom().ints(1, (int)(period * ((double) this.x/100)), (int)(period * ((double) this.y/100))).sum();
     }
 
     @Override

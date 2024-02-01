@@ -2,6 +2,7 @@ package taskEngine;
 
 import data.Singleton;
 import model.*;
+import util.RandomUtil;
 
 import java.util.*;
 
@@ -10,7 +11,6 @@ import static util.LogUtil.initialAddToLog;
 import static taskEngine.FitnessCalculator.calculateFitness;
 
 public class TaskModifier {
-    Random r = new Random();
     Singleton s = Singleton.getInstance();
 
 
@@ -19,7 +19,7 @@ public class TaskModifier {
         //Assign tasks to cores that will take them. And do it after a "least utilized" order.
 
         for (Task t : taskList) {
-            t.setWcet(r.ints(1, 1, t.getPeriod()).sum());
+            t.setWcet(RandomUtil.getRandom().ints(1, 1, t.getPeriod()).sum());
             if (t instanceof TTtask) {
                 s.PLATFORMMODEL.addTaskToCore(t, s.PLATFORMMODEL.getLeastUtilizedCore(s.PLATFORMMODEL.getCoresThatTaskCanBeAssignedTo(t), ScheduleType.TT).getId());
             } else {
@@ -76,7 +76,7 @@ public class TaskModifier {
                 if (newSolution.getFitness() < currentSolution.getFitness()) {
                     addLineToLog(newSolution, currentSolution);
                     currentSolution = new PlatformModel(newSolution);
-                } else if (ap < Math.random()) {
+                } else if (ap < RandomUtil.getRandom().doubles(1, 0, 1).sum()) {
                     addLineToLog(newSolution, currentSolution);
                     currentSolution = new PlatformModel(newSolution);
                 }
@@ -110,7 +110,7 @@ public class TaskModifier {
     private PlatformModel generateCandidateMove(PlatformModel currentModel, double [] moveTypeProbability) {
         PlatformModel candidateModel = new PlatformModel(currentModel);
 
-        double moveDice = r.doubles(1, 0, Arrays.stream(moveTypeProbability).sum()).sum();
+        double moveDice = RandomUtil.getRandom().doubles(1, 0, Arrays.stream(moveTypeProbability).sum()).sum();
         Task randomTask = getIdealRandomTask(candidateModel);
 
         //changeWCET of task
@@ -151,7 +151,7 @@ public class TaskModifier {
 
     private Task getIdealRandomTask(PlatformModel model) {
         //get a random task from the core with the biggest util delta
-        double rand = Math.random();
+        double rand = RandomUtil.getRandom().doubles(1, 0, 1).sum();
 
         if (rand <= 0.5) {
             //TT
@@ -166,7 +166,7 @@ public class TaskModifier {
         if (t.getWcet() == 1) {
             return 1;
         } else {
-            return (r.ints(1, 1, t.getWcet()).sum());
+            return (RandomUtil.getRandom().ints(1, 1, t.getWcet()).sum());
         }
     }
 
@@ -174,7 +174,7 @@ public class TaskModifier {
         if (t.getWcet() == t.getPeriod()) {
             return t.getWcet();
         } else {
-            return r.ints(1, t.getWcet(), t.getPeriod()).sum();
+            return RandomUtil.getRandom().ints(1, t.getWcet(), t.getPeriod()).sum();
         }
     }
 
@@ -185,7 +185,7 @@ public class TaskModifier {
             for (Core c : cores) {
                 if (c.getTasks().stream().anyMatch(t -> t instanceof TTtask)){
                     List<Task> tasks = c.getTasks().stream().filter(t -> t instanceof TTtask).toList();
-                    return tasks.get(r.ints(1, 0, tasks.size()).sum());
+                    return tasks.get(RandomUtil.getRandom().ints(1, 0, tasks.size()).sum());
                 }
             }
         } else {
@@ -193,7 +193,7 @@ public class TaskModifier {
             for (Core c : cores) {
                 if (c.getTasks().stream().anyMatch(t -> t instanceof ETtask)) {
                     List<Task> tasks = c.getTasks().stream().filter(t -> t instanceof ETtask).toList();
-                    return tasks.get(r.ints(1, 0, tasks.size()).sum());
+                    return tasks.get(RandomUtil.getRandom().ints(1, 0, tasks.size()).sum());
                 }
             }
         }

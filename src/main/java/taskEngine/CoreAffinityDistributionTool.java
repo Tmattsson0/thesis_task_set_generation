@@ -1,11 +1,11 @@
 package taskEngine;
 
 import model.Core;
+import util.RandomUtil;
 
 import java.util.*;
 
 public class CoreAffinityDistributionTool {
-    static Random r = new Random(4);
 
     public static String[][] specificCoreAffinity(int numOfTasks, double[] coreAffinityDist, List<Core> coreList){
 
@@ -20,7 +20,7 @@ public class CoreAffinityDistributionTool {
 
         //single
         for (int i = specificAmounts[0]; i < specificAmounts[0] + specificAmounts[1]; i++) {
-            arr[i] = new String[]{coreList.get(r.ints(1, 0, coreList.size() - 1).sum()).getId()};
+            arr[i] = new String[]{coreList.get(RandomUtil.getRandom().ints(1, 0, coreList.size() - 1).sum()).getId()};
         }
 
         //multi
@@ -35,16 +35,16 @@ public class CoreAffinityDistributionTool {
         if (coreList.size() == 1) {
             amountOfCoresToReturn = 1;
         } else if (coreList.size() <= 3) {
-            amountOfCoresToReturn = r.ints(1, 1, coreList.size()).sum();
+            amountOfCoresToReturn = RandomUtil.getRandom().ints(1, 1, coreList.size()).sum();
         } else {
-            amountOfCoresToReturn = r.ints(1, 2, coreList.size() - 1).sum();
+            amountOfCoresToReturn = RandomUtil.getRandom().ints(1, 2, coreList.size() - 1).sum();
         }
 
         String[] cores = new String[amountOfCoresToReturn];
 
         Stack<Core> coreStack = new Stack<>();
         coreStack.addAll(coreList);
-        Collections.shuffle(coreStack);
+        Collections.shuffle(coreStack, RandomUtil.getRandom());
 
         for (int i = 0; i < amountOfCoresToReturn; i++) {
             cores[i] = coreStack.pop().getId();

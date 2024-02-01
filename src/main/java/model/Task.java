@@ -1,5 +1,7 @@
 package model;
 
+import util.RandomUtil;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,10 +129,10 @@ public class Task {
     }
 
     public void calculateAndSetMaxJitter(double[] maxJitterDist) {
-        double diceRoll = Math.random();
+        double diceRoll = RandomUtil.getRandom().doubles(1, 0, 1).sum();
         if (diceRoll <= maxJitterDist[0]){
         //unrestricted maxJitterDist[0]
-            setMaxJitter((int) Math.round(Math.random() * period));
+            setMaxJitter((int) Math.round(RandomUtil.getRandom().doubles(1, 0, 1).sum() * period));
         } else if (diceRoll > maxJitterDist[0] && diceRoll <= (maxJitterDist[0] + maxJitterDist[1])) {
         //0% of period maxJitterDist[1]
             setMaxJitter(0);

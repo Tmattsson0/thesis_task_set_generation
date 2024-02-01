@@ -37,11 +37,12 @@ public class Main {
         taskModifier.generateInitialConfiguration(tasks);
 
         LogUtil.deleteLogFile();
+
         taskModifier.modifyTasksUsingHeuristic();
         Instant end = Instant.now();
 
 
-        XmlUtil.writeTaskListWithUtil(s.PLATFORMMODEL, "test_newFit");
+        XmlUtil.writeTaskListWithUtil(s.PLATFORMMODEL, "test_newFitRand");
 
         System.out.println("Elapsed time in seconds: " + Duration.between(start, end).getSeconds());
     }

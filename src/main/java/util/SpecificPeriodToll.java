@@ -8,7 +8,7 @@ public class SpecificPeriodToll {
         ArrayList<Integer> periodDistributionArray = generatePeriodDistributionArray(periods);
         int[] specificPeriods = new int[numOfTasks];
         for (int i = 0; i < specificPeriods.length; i++) {
-            specificPeriods[i] = periodDistributionArray.get((int)(Math.random() * periodDistributionArray.size()));
+            specificPeriods[i] = periodDistributionArray.get((int)(RandomUtil.getRandom().doubles(1, 0, 1).sum() * periodDistributionArray.size()));
         }
         return specificPeriods;
     }
@@ -39,7 +39,7 @@ public class SpecificPeriodToll {
         ArrayList<Integer> periodDistributionArray = generatePeriodDistributionArray(periods);
         int[] specificPeriods = new int[numOfPeriods];
         for (int i = 0; i < specificPeriods.length; i++) {
-            specificPeriods[i] = periodDistributionArray.get((int)(Math.random() * periodDistributionArray.size()));
+            specificPeriods[i] = periodDistributionArray.get((int)(RandomUtil.getRandom().doubles(1, 0, 1).sum()) * periodDistributionArray.size());
         }
         return specificPeriods;
     }

@@ -38,7 +38,6 @@ public class Singleton {
 //    public List<ETtask> ETtasks;
     public double[] coreAffinityDist = {0.75, 0.1, 0.15};
 
-
     // Constructor
     // Here we will be creating private constructor
     // restricted to this class itself

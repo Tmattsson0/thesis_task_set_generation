@@ -19,7 +19,7 @@ public class ConfigInitializer {
         Singleton singleton = Singleton.getInstance();
 
         try {
-            singleton.PLATFORMMODEL = XmlUtil.readPlatformModelConfig("config/proposed_config_file.xml");
+            singleton.PLATFORMMODEL = XmlUtil.readPlatformModelConfig("config/config_small.xml");
 
             ParametersJsonReader paramReader = new ParametersJsonReader("config/parameters.json");
 
@@ -36,7 +36,7 @@ public class ConfigInitializer {
             singleton.ALLOWED_JITTER = paramReader.getAllowedJitter();
             singleton.RELEASE_TIME = paramReader.getReleaseTime();
             singleton.DEADLINE_TYPE = paramReader.getDeadlineType();
-            singleton.NUM_OF_CHAINS = paramReader.getNumOfChains();
+            singleton.NUM_OF_CHAINS = normalizeNumOfChainsWithinBounds(singleton.NUM_OF_TT_TASKS + singleton.NUM_OF_ET_TASKS, paramReader.getNumOfChains());
             singleton.NUM_OF_TASKS_IN_CHAINS = paramReader.getNumOfTasksInChains();
             singleton.NUM_OF_LOW = paramReader.getNumOfLow();
             singleton.NUM_OF_HIGH = paramReader.getNumOfHigh();
@@ -159,8 +159,16 @@ public class ConfigInitializer {
             }
         } else {
             for (Core core: allCores) {
-                core.setMicroTick(s.MICROTICK_VALUES[(int) Math.floor(Math.random() * s.MICROTICK_VALUES.length)]);
+                core.setMicroTick(s.MICROTICK_VALUES[(int) Math.floor(RandomUtil.getRandom().doubles(1, 0, 1).sum() * s.MICROTICK_VALUES.length)]);
             }
+        }
+    }
+
+    private static int normalizeNumOfChainsWithinBounds(int numOfTotalTasks, int numOfChainsParam) {
+        if (Math.round(numOfTotalTasks * 0.3) < numOfChainsParam) {
+            return (int) Math.round(numOfTotalTasks * 0.3);
+        } else {
+            return numOfChainsParam;
         }
     }
 

@@ -1,10 +1,14 @@
 package model;
 
+import data.Singleton;
+import util.RandomUtil;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlatformModel {
     private List<EndSystem> endSystems;
+    private List<Chain> chains;
     private Topology topology;
     private double fitness;
 
@@ -15,6 +19,11 @@ public class PlatformModel {
         this.endSystems = EndSystem.deepCopyUsingCopyConstructor(old.getEndSystems());
         this.topology = new Topology(old.getTopology());
         this.fitness = old.getFitness();
+        this.chains = Chain.deepCopyUsingCopyConstructor(old.getChains());
+    }
+
+    private List<Chain> getChains() {
+        return chains;
     }
 
     public List<EndSystem> getEndSystems() {
@@ -118,7 +127,7 @@ public class PlatformModel {
     public void addTaskToCore(Task task, String coreId){
         //Change CPU and Core assignment on task object in singleton and add task ID to list on core in singleton.'
         task.setCoreId(coreId);
-        task.setCpuId(this.getCpuByCoreId(coreId).getId());
+        task.setCpuId(getCpuByCoreId(coreId).getId());
         getCoreById(coreId).addTask(task);
     }
 
@@ -215,10 +224,9 @@ public class PlatformModel {
     }
 
     public Task getRandomTask() {
-        Random r = new Random();
 
         List<Task> temp = getAllCores().stream().map(Core::getTasks).flatMap(Collection::stream).toList();
 
-        return temp.get(r.ints(1, 0, temp.size()).sum());
+        return temp.get(RandomUtil.getRandom().ints(1, 0, temp.size()).sum());
     }
 }
