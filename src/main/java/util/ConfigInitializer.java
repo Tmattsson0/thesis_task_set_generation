@@ -41,7 +41,7 @@ public class ConfigInitializer {
             singleton.NUM_OF_LOW = paramReader.getNumOfLow();
             singleton.NUM_OF_HIGH = paramReader.getNumOfHigh();
             singleton.NUM_OF_HOST_TRANSITIONS = paramReader.getNumOfHostTransitions();
-            singleton.LATENCY = paramReader.getLatency();
+            singleton.LATENCY_TIGHTNESS = paramReader.getLatency();
 
         } catch (FileNotFoundException e) {
             initializeOnlyParametersFile();
@@ -74,10 +74,10 @@ public class ConfigInitializer {
         singleton.DEADLINE_TYPE = paramReader.getDeadlineType();
         singleton.NUM_OF_CHAINS = paramReader.getNumOfChains();
         singleton.NUM_OF_TASKS_IN_CHAINS = paramReader.getNumOfTasksInChains();
+        singleton.NUM_OF_HOST_TRANSITIONS = paramReader.getNumOfHostTransitions();
         singleton.NUM_OF_LOW = paramReader.getNumOfLow();
         singleton.NUM_OF_HIGH = paramReader.getNumOfHigh();
-        singleton.NUM_OF_HOST_TRANSITIONS = paramReader.getNumOfHostTransitions();
-        singleton.LATENCY = paramReader.getLatency();
+        singleton.LATENCY_TIGHTNESS = paramReader.getLatency();
 
         singleton.PLATFORMMODEL = createPlatformModelFromParameters(CoreDistributionStrategy.Homogenous);
 
@@ -166,6 +166,7 @@ public class ConfigInitializer {
 
     private static int normalizeNumOfChainsWithinBounds(int numOfTotalTasks, int numOfChainsParam) {
         if (Math.round(numOfTotalTasks * 0.3) < numOfChainsParam) {
+            System.out.println("Number of desired chains: " + numOfChainsParam + " is too high. Regulating to the maximum of 30% of total tasks: " + (Math.round(numOfTotalTasks * 0.3)));
             return (int) Math.round(numOfTotalTasks * 0.3);
         } else {
             return numOfChainsParam;

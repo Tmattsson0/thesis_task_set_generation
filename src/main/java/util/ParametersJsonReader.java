@@ -1,7 +1,5 @@
 package util;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.DeadlineType;
@@ -12,6 +10,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ParametersJsonReader {
     File parametersFile;
@@ -75,15 +76,56 @@ public class ParametersJsonReader {
 
     public double[][] getPeriods() {
         try {
-            return new ObjectMapper().readValue(root.path("system").path("periods").traverse(), double[][].class);
+
+            double[][] periods = new ObjectMapper().readValue(root.path("system").path("periods").traverse(), double[][].class);
+
+            if (!isPeriodParamCorrect(periods)){
+                throw new IllegalArgumentException("Period probabilities do not sum to 1");
+            }
+            return periods;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private boolean isPeriodParamCorrect(double[][] periods) {
+        double[] periodNumbers = new double[periods.length];
+        double[] probabilityNumbers = new double[periods.length];
+
+        for (int i = 0; i < periods.length; i++) {
+            periodNumbers[i] = periods[i][0];
+            probabilityNumbers[i] = periods[i][1];
+        }
+
+        return hasNoDuplicates(periodNumbers) && sumsToOne(probabilityNumbers);
+    }
+
+    private boolean sumsToOne(double[] probabilityNumbers) {
+
+        return Math.round(Arrays.stream(probabilityNumbers).sum()) == 1;
+    }
+
+    boolean hasNoDuplicates(final double[] list)
+    {
+        Set<Double> lump = new HashSet<>();
+        for (double i : list)
+        {
+            if (lump.contains(i)) return false;
+            lump.add(i);
+        }
+        return true;
+    }
+
     public double[] getAllowedJitter(){
         try {
-            return new ObjectMapper().readValue(root.path("task").path("allowed_jitter").traverse(), double[].class);
+            double[] jitter = new ObjectMapper().readValue(root.path("task").path("allowed_jitter").traverse(), double[].class);
+
+            if (sumsToOne(jitter)) {
+                return jitter;
+            } else {
+                throw new IllegalArgumentException("Jitter values do not sum to 1");
+            }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -91,7 +133,13 @@ public class ParametersJsonReader {
 
     public double[] getReleaseTime(){
         try {
-            return new ObjectMapper().readValue(root.path("task").path("release_time").traverse(), double[].class);
+            double[] releaseTime = new ObjectMapper().readValue(root.path("task").path("release_time").traverse(), double[].class);
+
+            if (sumsToOne(releaseTime)) {
+                return releaseTime;
+            } else {
+                throw new IllegalArgumentException("Release time does not sum to 1");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -118,18 +166,36 @@ public class ParametersJsonReader {
     }
 
     public int getNumOfLow(){
-        return root.path("chain").path("num_of_low").asInt();
+        int numberOfLowToHigh = root.path("chain").path("num_of_low").asInt();
+
+        if (numberOfLowToHigh > getPeriods().length - 1) {
+            throw new IllegalArgumentException("Number of period transitions exceed number of period values");
+        }
+
+        return numberOfLowToHigh;
     }
 
     public int getNumOfHigh(){
-        return root.path("chain").path("num_of_high").asInt();
+        int numberOfHighToLow = root.path("chain").path("num_of_high").asInt();
+
+        if (numberOfHighToLow > getPeriods().length - 1) {
+            throw new IllegalArgumentException("Number of period transitions exceed number of period values");
+        }
+
+        return numberOfHighToLow;
     }
 
     public int getNumOfHostTransitions(){
-        return root.path("chain").path("num_of_host_transitions").asInt();
+        int numOfHostTransitions = root.path("chain").path("num_of_host_transitions").asInt();
+
+        if (getNumOfCores() <= 1 && numOfHostTransitions > 0) {
+            throw new IllegalArgumentException("Host transitions cannot happen with only 1 core");
+        }
+
+        return numOfHostTransitions;
     }
 
     public double getLatency(){
-        return root.path("chain").path("latency").asDouble();
+        return root.path("chain").path("latency_tightness").asDouble();
     }
 }

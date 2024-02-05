@@ -1,6 +1,7 @@
 package taskEngine;
 
 import data.Singleton;
+import model.Chain;
 import model.Core;
 import model.PlatformModel;
 import model.Task;
@@ -85,5 +86,74 @@ public class FitnessCalculator {
 
     private static double calculateBadUtilPenalty(double util) {
         return Math.max(5, 5 * util + 1);
+    }
+
+    public static double calculateChainFitness(Chain c) {
+        double fitness = 0;
+
+        //Task in chain = essential
+        //Host transitions = important
+        //Period trans = not as important
+        int specificNumberOfTasksInChain = c.getTasks().size();
+        int specificNumOfHostTransitions = calculateNumOfHostTransitions(c);
+        int specificNumOfLowToHighPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.LOWHIGH);
+        int specificNumOfHighToLowPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.HIGHLOW);
+
+        if (c.getDict().get("desiredNumTasksInChain") != specificNumberOfTasksInChain) {
+            fitness += Math.abs(c.getDict().get("desiredNumTasksInChain") - specificNumberOfTasksInChain) * 5;
+        }
+
+        if(c.getDict().get("desiredNumOfHostTransitions") != specificNumOfHostTransitions) {
+            fitness += Math.abs(c.getDict().get("desiredNumOfHostTransitions") - specificNumOfHostTransitions) * 3;
+        }
+
+        if(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") != specificNumOfLowToHighPeriodTransitions) {
+            fitness += Math.abs(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") - specificNumOfLowToHighPeriodTransitions);
+        }
+
+        if(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") != specificNumOfHighToLowPeriodTransitions) {
+            fitness += Math.abs(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") - specificNumOfHighToLowPeriodTransitions);
+        }
+        return fitness;
+    }
+
+    private static int calculateNumOfPeriodTransitions(Chain c, PeriodTransitionType periodTransitionType) {
+        int transitions = 0;
+        int previousPeriod = c.getTasks().get(0).getPeriod();
+
+        if (periodTransitionType.equals(PeriodTransitionType.HIGHLOW)) {
+            for (Task t : c.getTasks()) {
+                if (t.getPeriod() > previousPeriod) {
+                    transitions++;
+                }
+                previousPeriod = t.getPeriod();
+            }
+        } else {
+            for (Task t : c.getTasks()) {
+                if (t.getPeriod() < previousPeriod) {
+                    transitions++;
+                }
+                previousPeriod = t.getPeriod();
+            }
+        }
+        return transitions;
+    }
+
+    private static int calculateNumOfHostTransitions(Chain c) {
+        int transitions = 0;
+        String previousHost = c.getTasks().get(0).getCoreId();
+
+        for (Task t : c.getTasks()) {
+            if (!t.getCoreId().equals(previousHost)) {
+                transitions++;
+            };
+            previousHost = t.getCoreId();
+        }
+        return transitions;
+    }
+
+    enum PeriodTransitionType {
+        LOWHIGH,
+        HIGHLOW
     }
 }

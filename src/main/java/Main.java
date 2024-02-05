@@ -1,4 +1,5 @@
 import org.xml.sax.SAXException;
+import taskEngine.ChainGenerator;
 import taskEngine.TaskAssignmentManager;
 import data.Singleton;
 import model.*;
@@ -42,7 +43,11 @@ public class Main {
         Instant end = Instant.now();
 
 
-        XmlUtil.writeTaskListWithUtil(s.PLATFORMMODEL, "test_newFitRand");
+
+        ChainGenerator chainGenerator = new ChainGenerator();
+        chainGenerator.initializeChains();
+
+        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "test_newFitRand");
 
         System.out.println("Elapsed time in seconds: " + Duration.between(start, end).getSeconds());
     }

@@ -22,8 +22,12 @@ public class PlatformModel {
         this.chains = Chain.deepCopyUsingCopyConstructor(old.getChains());
     }
 
-    private List<Chain> getChains() {
+    public List<Chain> getChains() {
         return chains;
+    }
+
+    public void setChains(List<Chain> chains) {
+        this.chains = chains;
     }
 
     public List<EndSystem> getEndSystems() {

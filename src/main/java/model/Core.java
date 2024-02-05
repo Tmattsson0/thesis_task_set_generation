@@ -1,5 +1,7 @@
 package model;
 
+import util.RandomUtil;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -58,6 +60,27 @@ public class Core {
 
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    public List<Task> getTasks(ScheduleType scheduleType) {
+        if (scheduleType == ScheduleType.NONE || scheduleType == ScheduleType.TTET){
+            return getTasks();
+        } else if (scheduleType == ScheduleType.TT) {
+            return getTasks().stream().filter(task -> task instanceof TTtask).toList();
+        } else {
+            return getTasks().stream().filter(task -> task instanceof ETtask).toList();
+        }
+    }
+
+    public Task getRandomTask(ScheduleType scheduleType){
+        if (scheduleType == ScheduleType.NONE || scheduleType == ScheduleType.TTET){
+            return getTasks().get(RandomUtil.getRandom().ints(1, 0, getTasks().size()).sum());
+        } else if (scheduleType == ScheduleType.TT) {
+            List<Task> temp = getTasks(ScheduleType.TT);
+            return temp.get(RandomUtil.getRandom().ints(1, 0, temp.size()).sum());
+        } else {
+            List<Task> temp = getTasks(ScheduleType.ET);
+            return temp.get(RandomUtil.getRandom().ints(1, 0, temp.size()).sum());        }
     }
 
     public void setTasks(List<Task> tasks) {

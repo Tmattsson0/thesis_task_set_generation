@@ -141,7 +141,7 @@
         "num_of_host_transitions": {
           "type": "integer"
         },
-        "latency": {
+        "latency_tightness": {
           "type": "number"
         }
       },
@@ -151,7 +151,7 @@
         "num_of_low",
         "num_of_high",
         "num_of_host_transitions",
-        "latency"
+        "latency_tightness"
       ]
     }
   },

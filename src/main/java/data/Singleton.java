@@ -1,12 +1,7 @@
 package data;
 
 import model.DeadlineType;
-import model.ETtask;
 import model.PlatformModel;
-import model.TTtask;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Singleton {
     // Static variable reference of single_instance
@@ -32,7 +27,7 @@ public class Singleton {
     public int NUM_OF_LOW;
     public int NUM_OF_HIGH;
     public int NUM_OF_HOST_TRANSITIONS;
-    public double LATENCY;
+    public double LATENCY_TIGHTNESS;
     public PlatformModel PLATFORMMODEL;
 //    public List<TTtask> TTtasks;
 //    public List<ETtask> ETtasks;
