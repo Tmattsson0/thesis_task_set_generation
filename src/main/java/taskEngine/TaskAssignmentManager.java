@@ -6,7 +6,7 @@ import model.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TaskAssignmentManager {
+//public class TaskAssignmentManager {
     //To contain helper methods to move tasks around the different cores. No checks are done with regard to if the core can run the task or not. These must happen elsewhere.
 //    Singleton s = Singleton.getInstance();
 //
@@ -117,4 +117,4 @@ public class TaskAssignmentManager {
 //    public PlatformModel getPlatform() {
 //        return s.PLATFORMMODEL;
 //    }
-}
+//}

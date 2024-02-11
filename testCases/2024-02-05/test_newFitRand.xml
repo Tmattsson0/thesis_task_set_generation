@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Taskset TotalTTUtil="258.549" TotalETUtil="49.793" Fitness="952.9920">
-    <Task Id="1" Name="Task1" Type="TT" WCET="1286" Period="3000" Deadline="2237" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <TaCsk Id=" T1" Name="Task1" Type="TT" WCET="1286" Period="3000" Deadline="2237" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
     <Task Id="2" Name="Task2" Type="TT" WCET="572" Period="3000" Deadline="2015" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A1, A2]"/>
     <Task Id="3" Name="Task3" Type="TT" WCET="1267" Period="2000" Deadline="1193" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, A1]"/>
     <Task Id="4" Name="Task4" Type="TT" WCET="1980" Period="2000" Deadline="1728" MaxJitter="775" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
@@ -610,176 +610,141 @@
         <Runnable Name="Task485"/>
         <Runnable Name="Task51"/>
     </Chain>
-    <Chain Latency="2334999" Priority="-1" Name="Chain2" Fitness="12.0">
-        <Runnable Name="Task453"/>
-        <Runnable Name="Task483"/>
-        <Runnable Name="Task137"/>
-        <Runnable Name="Task376"/>
-        <Runnable Name="Task183"/>
-        <Runnable Name="Task272"/>
-        <Runnable Name="Task448"/>
-        <Runnable Name="Task352"/>
-        <Runnable Name="Task101"/>
-        <Runnable Name="Task449"/>
-        <Runnable Name="Task121"/>
-        <Runnable Name="Task467"/>
-        <Runnable Name="Task288"/>
-        <Runnable Name="Task9"/>
-        <Runnable Name="Task407"/>
-        <Runnable Name="Task292"/>
-        <Runnable Name="Task103"/>
-        <Runnable Name="Task410"/>
-        <Runnable Name="Task345"/>
-    </Chain>
-    <Chain Latency="2922931" Priority="-1" Name="Chain3" Fitness="18.0">
-        <Runnable Name="Task193"/>
-        <Runnable Name="Task31"/>
-        <Runnable Name="Task135"/>
-        <Runnable Name="Task302"/>
-        <Runnable Name="Task321"/>
-        <Runnable Name="Task448"/>
-        <Runnable Name="Task499"/>
-        <Runnable Name="Task265"/>
-        <Runnable Name="Task127"/>
-        <Runnable Name="Task344"/>
-        <Runnable Name="Task305"/>
-        <Runnable Name="Task376"/>
-        <Runnable Name="Task344"/>
-        <Runnable Name="Task278"/>
-        <Runnable Name="Task85"/>
-        <Runnable Name="Task416"/>
-        <Runnable Name="Task171"/>
-        <Runnable Name="Task280"/>
-        <Runnable Name="Task192"/>
-        <Runnable Name="Task213"/>
-    </Chain>
-    <Chain Latency="1121079" Priority="-1" Name="Chain4" Fitness="8.0">
-        <Runnable Name="Task233"/>
-        <Runnable Name="Task488"/>
-        <Runnable Name="Task136"/>
-        <Runnable Name="Task211"/>
-        <Runnable Name="Task23"/>
-        <Runnable Name="Task233"/>
-        <Runnable Name="Task167"/>
-        <Runnable Name="Task267"/>
-        <Runnable Name="Task156"/>
-        <Runnable Name="Task359"/>
-        <Runnable Name="Task190"/>
-        <Runnable Name="Task144"/>
-    </Chain>
-    <Chain Latency="1748126" Priority="-1" Name="Chain5" Fitness="2.0">
-        <Runnable Name="Task160"/>
-        <Runnable Name="Task194"/>
-        <Runnable Name="Task233"/>
-        <Runnable Name="Task48"/>
-        <Runnable Name="Task325"/>
-        <Runnable Name="Task125"/>
-        <Runnable Name="Task159"/>
-        <Runnable Name="Task69"/>
-        <Runnable Name="Task136"/>
-        <Runnable Name="Task243"/>
-        <Runnable Name="Task194"/>
-        <Runnable Name="Task452"/>
-        <Runnable Name="Task477"/>
-        <Runnable Name="Task197"/>
-    </Chain>
-    <Chain Latency="1761095" Priority="-1" Name="Chain6" Fitness="4.0">
-        <Runnable Name="Task81"/>
-        <Runnable Name="Task27"/>
-        <Runnable Name="Task87"/>
-        <Runnable Name="Task70"/>
-        <Runnable Name="Task426"/>
-        <Runnable Name="Task46"/>
-        <Runnable Name="Task137"/>
-        <Runnable Name="Task13"/>
-        <Runnable Name="Task338"/>
-        <Runnable Name="Task317"/>
-        <Runnable Name="Task317"/>
-        <Runnable Name="Task14"/>
-        <Runnable Name="Task80"/>
-        <Runnable Name="Task344"/>
-        <Runnable Name="Task145"/>
-    </Chain>
-    <Chain Latency="1925000" Priority="-1" Name="Chain7" Fitness="1.0">
-        <Runnable Name="Task454"/>
-        <Runnable Name="Task129"/>
-        <Runnable Name="Task277"/>
-        <Runnable Name="Task427"/>
-        <Runnable Name="Task424"/>
-        <Runnable Name="Task121"/>
-        <Runnable Name="Task164"/>
-        <Runnable Name="Task142"/>
-        <Runnable Name="Task275"/>
-        <Runnable Name="Task490"/>
-        <Runnable Name="Task178"/>
-        <Runnable Name="Task367"/>
-        <Runnable Name="Task404"/>
-        <Runnable Name="Task48"/>
-        <Runnable Name="Task373"/>
-    </Chain>
-    <Chain Latency="1008001" Priority="-1" Name="Chain8" Fitness="0.0">
-        <Runnable Name="Task442"/>
-        <Runnable Name="Task94"/>
-        <Runnable Name="Task253"/>
-        <Runnable Name="Task63"/>
-        <Runnable Name="Task397"/>
-        <Runnable Name="Task131"/>
-        <Runnable Name="Task178"/>
-        <Runnable Name="Task489"/>
-        <Runnable Name="Task271"/>
-    </Chain>
-    <Chain Latency="3067483" Priority="-1" Name="Chain9" Fitness="28.0">
-        <Runnable Name="Task440"/>
-        <Runnable Name="Task69"/>
-        <Runnable Name="Task332"/>
-        <Runnable Name="Task104"/>
-        <Runnable Name="Task255"/>
-        <Runnable Name="Task76"/>
-        <Runnable Name="Task270"/>
-        <Runnable Name="Task322"/>
-        <Runnable Name="Task38"/>
-        <Runnable Name="Task401"/>
-        <Runnable Name="Task122"/>
-        <Runnable Name="Task176"/>
-        <Runnable Name="Task367"/>
-        <Runnable Name="Task471"/>
-        <Runnable Name="Task365"/>
-        <Runnable Name="Task173"/>
-        <Runnable Name="Task423"/>
-        <Runnable Name="Task281"/>
-        <Runnable Name="Task184"/>
-        <Runnable Name="Task139"/>
-        <Runnable Name="Task303"/>
-        <Runnable Name="Task368"/>
-        <Runnable Name="Task400"/>
-        <Runnable Name="Task199"/>
-        <Runnable Name="Task455"/>
-        <Runnable Name="Task469"/>
-        <Runnable Name="Task266"/>
-        <Runnable Name="Task155"/>
-        <Runnable Name="Task119"/>
-    </Chain>
-    <Chain Latency="3517021" Priority="-1" Name="Chain10" Fitness="12.0">
-        <Runnable Name="Task135"/>
-        <Runnable Name="Task189"/>
-        <Runnable Name="Task271"/>
-        <Runnable Name="Task248"/>
+    <Chain Latency="2703775" Priority="-1" Name="Chain2" Fitness="9.0">
         <Runnable Name="Task222"/>
-        <Runnable Name="Task116"/>
-        <Runnable Name="Task397"/>
-        <Runnable Name="Task422"/>
-        <Runnable Name="Task131"/>
-        <Runnable Name="Task139"/>
-        <Runnable Name="Task165"/>
-        <Runnable Name="Task154"/>
-        <Runnable Name="Task500"/>
-        <Runnable Name="Task50"/>
-        <Runnable Name="Task56"/>
-        <Runnable Name="Task464"/>
+        <Runnable Name="Task382"/>
+        <Runnable Name="Task462"/>
+        <Runnable Name="Task29"/>
+        <Runnable Name="Task363"/>
+        <Runnable Name="Task438"/>
+        <Runnable Name="Task453"/>
+        <Runnable Name="Task62"/>
+        <Runnable Name="Task490"/>
+        <Runnable Name="Task71"/>
+        <Runnable Name="Task424"/>
+        <Runnable Name="Task21"/>
+        <Runnable Name="Task270"/>
+        <Runnable Name="Task329"/>
+        <Runnable Name="Task52"/>
+        <Runnable Name="Task495"/>
+        <Runnable Name="Task255"/>
+        <Runnable Name="Task195"/>
+        <Runnable Name="Task45"/>
+    </Chain>
+    <Chain Latency="2570372" Priority="-1" Name="Chain3" Fitness="6.0">
+        <Runnable Name="Task158"/>
+        <Runnable Name="Task112"/>
+        <Runnable Name="Task192"/>
+        <Runnable Name="Task387"/>
+        <Runnable Name="Task333"/>
+        <Runnable Name="Task230"/>
+        <Runnable Name="Task333"/>
+        <Runnable Name="Task125"/>
+        <Runnable Name="Task82"/>
+        <Runnable Name="Task493"/>
+        <Runnable Name="Task355"/>
+        <Runnable Name="Task430"/>
+        <Runnable Name="Task253"/>
+        <Runnable Name="Task206"/>
+        <Runnable Name="Task124"/>
+        <Runnable Name="Task402"/>
+        <Runnable Name="Task226"/>
+        <Runnable Name="Task300"/>
+        <Runnable Name="Task96"/>
+        <Runnable Name="Task162"/>
+    </Chain>
+    <Chain Latency="598971" Priority="-1" Name="Chain4" Fitness="0.0">
+        <Runnable Name="Task324"/>
         <Runnable Name="Task137"/>
-        <Runnable Name="Task110"/>
-        <Runnable Name="Task313"/>
+        <Runnable Name="Task477"/>
+        <Runnable Name="Task438"/>
+    </Chain>
+    <Chain Latency="1812753" Priority="-1" Name="Chain5" Fitness="1.0">
+        <Runnable Name="Task429"/>
+        <Runnable Name="Task73"/>
+        <Runnable Name="Task204"/>
+        <Runnable Name="Task413"/>
+        <Runnable Name="Task497"/>
+        <Runnable Name="Task492"/>
+        <Runnable Name="Task355"/>
+        <Runnable Name="Task434"/>
+        <Runnable Name="Task253"/>
+        <Runnable Name="Task494"/>
+        <Runnable Name="Task392"/>
+        <Runnable Name="Task80"/>
+    </Chain>
+    <Chain Latency="2273916" Priority="-1" Name="Chain6" Fitness="9.0">
+        <Runnable Name="Task385"/>
+        <Runnable Name="Task15"/>
+        <Runnable Name="Task26"/>
+        <Runnable Name="Task149"/>
+        <Runnable Name="Task14"/>
+        <Runnable Name="Task332"/>
+        <Runnable Name="Task219"/>
+        <Runnable Name="Task455"/>
+        <Runnable Name="Task387"/>
+        <Runnable Name="Task457"/>
+        <Runnable Name="Task300"/>
+        <Runnable Name="Task58"/>
+        <Runnable Name="Task201"/>
+        <Runnable Name="Task264"/>
+        <Runnable Name="Task293"/>
+        <Runnable Name="Task281"/>
+        <Runnable Name="Task297"/>
+        <Runnable Name="Task312"/>
+        <Runnable Name="Task175"/>
+    </Chain>
+    <Chain Latency="1425356" Priority="-1" Name="Chain7" Fitness="2.0">
+        <Runnable Name="Task477"/>
+        <Runnable Name="Task221"/>
+        <Runnable Name="Task268"/>
+        <Runnable Name="Task188"/>
+        <Runnable Name="Task469"/>
+        <Runnable Name="Task214"/>
+        <Runnable Name="Task401"/>
+        <Runnable Name="Task204"/>
+        <Runnable Name="Task204"/>
+        <Runnable Name="Task69"/>
+        <Runnable Name="Task402"/>
+        <Runnable Name="Task430"/>
+        <Runnable Name="Task387"/>
+        <Runnable Name="Task369"/>
+        <Runnable Name="Task36"/>
+        <Runnable Name="Task242"/>
+    </Chain>
+    <Chain Latency="644838" Priority="-1" Name="Chain8" Fitness="1.0">
+        <Runnable Name="Task350"/>
+        <Runnable Name="Task447"/>
+        <Runnable Name="Task324"/>
+        <Runnable Name="Task231"/>
+    </Chain>
+    <Chain Latency="2079460" Priority="-1" Name="Chain9" Fitness="6.0">
+        <Runnable Name="Task162"/>
+        <Runnable Name="Task437"/>
+        <Runnable Name="Task6"/>
+        <Runnable Name="Task492"/>
+        <Runnable Name="Task307"/>
+        <Runnable Name="Task47"/>
+        <Runnable Name="Task493"/>
+        <Runnable Name="Task218"/>
+        <Runnable Name="Task334"/>
+        <Runnable Name="Task126"/>
+        <Runnable Name="Task285"/>
+        <Runnable Name="Task46"/>
+        <Runnable Name="Task246"/>
+        <Runnable Name="Task54"/>
+        <Runnable Name="Task87"/>
         <Runnable Name="Task404"/>
-        <Runnable Name="Task74"/>
+        <Runnable Name="Task41"/>
+        <Runnable Name="Task170"/>
+    </Chain>
+    <Chain Latency="1168806" Priority="-1" Name="Chain10" Fitness="0.0">
+        <Runnable Name="Task8"/>
+        <Runnable Name="Task14"/>
+        <Runnable Name="Task244"/>
+        <Runnable Name="Task70"/>
+        <Runnable Name="Task46"/>
+        <Runnable Name="Task169"/>
+        <Runnable Name="Task464"/>
     </Chain>
 </Taskset>

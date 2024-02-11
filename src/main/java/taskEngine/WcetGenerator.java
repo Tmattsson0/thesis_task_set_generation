@@ -3,7 +3,7 @@ package taskEngine;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class WcetGenerator {
+//public class WcetGenerator {
 //    Random random = new Random(123);
 //    int[] specificPeriods;
 //    double util;
@@ -382,4 +382,4 @@ public class WcetGenerator {
 //                    '}';
 //        }
 //    }
-}
+//}

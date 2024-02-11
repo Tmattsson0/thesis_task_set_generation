@@ -74,7 +74,7 @@ public class ChainGenerator {
         final double Tmin = .001;
 
         // Decrease in temperature
-        final double alpha = 0.99;
+        final double alpha = 0.999;
 
         // Number of iterations of annealing
         // before decreasing temperature

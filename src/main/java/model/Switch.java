@@ -10,6 +10,7 @@ public class Switch {
     List<String> connections;
 
     public Switch(){};
+
     public Switch(Switch aSwitch) {
         this.id = aSwitch.getId();
         this.connectedSystemIds = new ArrayList<>(aSwitch.getConnectedSystemIds());

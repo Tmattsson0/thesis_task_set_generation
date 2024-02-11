@@ -1,6 +1,6 @@
-import org.xml.sax.SAXException;
+package main;
+
 import taskEngine.ChainGenerator;
-import taskEngine.TaskAssignmentManager;
 import data.Singleton;
 import model.*;
 import taskEngine.TaskGenerator;
@@ -9,9 +9,6 @@ import util.ConfigInitializer;
 import util.LogUtil;
 import util.XmlUtil;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        ConfigInitializer.initialize();
+        ConfigInitializer.initialize("config/parameters.json", "config/config_small.xml");
 
         Singleton s = Singleton.getInstance();
         TaskGenerator t = new TaskGenerator();
@@ -31,21 +28,21 @@ public class Main {
         List<Task> ettasks = t.initializeETtasks();
 
         List<Task> tasks = new ArrayList<>();
-
         tasks.addAll(tttasks);
         tasks.addAll(ettasks);
+
         Instant start = Instant.now();
+
         taskModifier.generateInitialConfiguration(tasks);
 
         LogUtil.deleteLogFile();
 
         taskModifier.modifyTasksUsingHeuristic();
-        Instant end = Instant.now();
-
-
 
         ChainGenerator chainGenerator = new ChainGenerator();
         chainGenerator.initializeChains();
+
+        Instant end = Instant.now();
 
         XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "test_newFitRand");
 

@@ -1,0 +1,1258 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Taskset TotalTTUtil="5.636" TotalETUtil="2.738" Fitness="35.0160">
+    <Task Id="1" Name="Task1" Type="TT" WCET="2774" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Task Id="2" Name="Task2" Type="TT" WCET="716" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Task Id="3" Name="Task3" Type="TT" WCET="1288" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Task Id="4" Name="Task4" Type="TT" WCET="680" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Task Id="5" Name="Task5" Type="TT" WCET="4695" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Task Id="6" Name="Task6" Type="TT" WCET="511" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Task Id="7" Name="Task7" Type="TT" WCET="2371" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Task Id="8" Name="Task8" Type="TT" WCET="869" Period="5000" Deadline="2689" MaxJitter="0" Offset="123" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Task Id="9" Name="Task9" Type="TT" WCET="2915" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Task Id="10" Name="Task10" Type="TT" WCET="4042" Period="5000" Deadline="3075" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Task Id="11" Name="Task11" Type="ET" WCET="453" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Task Id="12" Name="Task12" Type="ET" WCET="2777" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A2" CoreAffinity="[A2, A1]"/>
+    <Task Id="13" Name="Task13" Type="ET" WCET="3039" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Task Id="14" Name="Task14" Type="ET" WCET="1287" MIT="2000" Deadline="1967" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Task Id="15" Name="Task15" Type="ET" WCET="217" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.733" ETUtil="0.561"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.506" ETUtil="0.926"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.279" ETUtil="0.643"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.118" ETUtil="0.608"/>
+</Taskset>
+
+
+
+Old solution: <Taskset TotalTTUtil="5.636" TotalETUtil="2.738" Fitness="35.0160">
+    <Task Id="10" Name="Task10" Type="TT" WCET="4042" Period="5000" Deadline="3075" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.733" ETUtil="0.561"/>
+
+New solution: <Taskset TotalTTUtil="5.063" TotalETUtil="2.738" Fitness="31.5780">
+    <Task Id="10" Name="Task10" Type="TT" WCET="1179" Period="5000" Deadline="3075" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.16" ETUtil="0.561"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="5.063" TotalETUtil="2.738" Fitness="31.5780">
+    <Task Id="9" Name="Task9" Type="TT" WCET="2915" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.506" ETUtil="0.926"/>
+
+New solution: <Taskset TotalTTUtil="4.551" TotalETUtil="2.738" Fitness="28.5060">
+    <Task Id="9" Name="Task9" Type="TT" WCET="351" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.994" ETUtil="0.926"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="4.551" TotalETUtil="2.738" Fitness="28.5060">
+    <Task Id="4" Name="Task4" Type="TT" WCET="680" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.279" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="4.5" TotalETUtil="2.738" Fitness="28.2000">
+    <Task Id="4" Name="Task4" Type="TT" WCET="579" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.228" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="4.5" TotalETUtil="2.738" Fitness="28.2000">
+    <Task Id="4" Name="Task4" Type="TT" WCET="579" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.228" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="4.307" TotalETUtil="2.738" Fitness="27.0420">
+    <Task Id="4" Name="Task4" Type="TT" WCET="192" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.035" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="4.307" TotalETUtil="2.738" Fitness="27.0420">
+    <Task Id="10" Name="Task10" Type="TT" WCET="1179" Period="5000" Deadline="3075" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.16" ETUtil="0.561"/>
+
+New solution: <Taskset TotalTTUtil="4.3" TotalETUtil="2.738" Fitness="27.0000">
+    <Task Id="10" Name="Task10" Type="TT" WCET="1140" Period="5000" Deadline="3075" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.153" ETUtil="0.561"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="4.3" TotalETUtil="2.738" Fitness="27.0000">
+    <Task Id="1" Name="Task1" Type="TT" WCET="2774" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.153" ETUtil="0.561"/>
+
+New solution: <Taskset TotalTTUtil="3.716" TotalETUtil="2.738" Fitness="19.9130">
+    <Task Id="1" Name="Task1" Type="TT" WCET="1024" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.569" ETUtil="0.561"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.716" TotalETUtil="2.738" Fitness="19.9130">
+    <Task Id="7" Name="Task7" Type="TT" WCET="2371" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.118" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="3.43" TotalETUtil="2.738" Fitness="13.0370">
+    <Task Id="7" Name="Task7" Type="TT" WCET="942" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.832" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.43" TotalETUtil="2.738" Fitness="13.0370">
+    <Task Id="5" Name="Task5" Type="TT" WCET="4695" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.035" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="3.013" TotalETUtil="2.738" Fitness="6.6090">
+    <Task Id="5" Name="Task5" Type="TT" WCET="2610" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.618" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.013" TotalETUtil="2.738" Fitness="6.6090">
+    <Task Id="12" Name="Task12" Type="ET" WCET="2777" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A2" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.569" ETUtil="0.561"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.994" ETUtil="0.926"/>
+
+New solution: <Taskset TotalTTUtil="3.013" TotalETUtil="2.738" Fitness="14.0740">
+    <Task Id="12" Name="Task12" Type="ET" WCET="2777" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.569" ETUtil="1.487"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.994" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.013" TotalETUtil="2.738" Fitness="14.0740">
+    <Task Id="11" Name="Task11" Type="ET" WCET="453" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.569" ETUtil="1.487"/>
+
+New solution: <Taskset TotalTTUtil="3.013" TotalETUtil="2.695" Fitness="13.8590">
+    <Task Id="11" Name="Task11" Type="ET" WCET="410" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.569" ETUtil="1.444"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.013" TotalETUtil="2.695" Fitness="13.8590">
+    <Task Id="2" Name="Task2" Type="TT" WCET="716" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.994" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.961" TotalETUtil="2.695" Fitness="13.8070">
+    <Task Id="2" Name="Task2" Type="TT" WCET="560" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.942" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.961" TotalETUtil="2.695" Fitness="13.8070">
+    <Task Id="12" Name="Task12" Type="ET" WCET="2777" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.569" ETUtil="1.444"/>
+
+New solution: <Taskset TotalTTUtil="2.961" TotalETUtil="1.943" Fitness="5.5870">
+    <Task Id="12" Name="Task12" Type="ET" WCET="519" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.569" ETUtil="0.692"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.961" TotalETUtil="1.943" Fitness="5.5870">
+    <Task Id="2" Name="Task2" Type="TT" WCET="560" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.942" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.85" TotalETUtil="1.943" Fitness="5.4760">
+    <Task Id="2" Name="Task2" Type="TT" WCET="228" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.831" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.85" TotalETUtil="1.943" Fitness="5.4760">
+    <Task Id="7" Name="Task7" Type="TT" WCET="942" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.832" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="2.836" TotalETUtil="1.943" Fitness="5.4620">
+    <Task Id="7" Name="Task7" Type="TT" WCET="871" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.818" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.836" TotalETUtil="1.943" Fitness="5.4620">
+    <Task Id="10" Name="Task10" Type="TT" WCET="1140" Period="5000" Deadline="3075" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.569" ETUtil="0.692"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.831" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.836" TotalETUtil="1.943" Fitness="5.9180">
+    <Task Id="10" Name="Task10" Type="TT" WCET="1140" Period="5000" Deadline="3075" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.341" ETUtil="0.692"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.059" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.836" TotalETUtil="1.943" Fitness="5.9180">
+    <Task Id="9" Name="Task9" Type="TT" WCET="351" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.059" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.808" TotalETUtil="1.943" Fitness="5.8900">
+    <Task Id="9" Name="Task9" Type="TT" WCET="213" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.031" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.808" TotalETUtil="1.943" Fitness="5.8900">
+    <Task Id="1" Name="Task1" Type="TT" WCET="1024" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.341" ETUtil="0.692"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.031" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.809" TotalETUtil="1.943" Fitness="11.5730">
+    <Task Id="1" Name="Task1" Type="TT" WCET="1024" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.692"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.373" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.809" TotalETUtil="1.943" Fitness="11.5730">
+    <Task Id="9" Name="Task9" Type="TT" WCET="213" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.373" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.803" TotalETUtil="1.943" Fitness="11.5670">
+    <Task Id="9" Name="Task9" Type="TT" WCET="184" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.367" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.803" TotalETUtil="1.943" Fitness="11.5670">
+    <Task Id="1" Name="Task1" Type="TT" WCET="1024" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.367" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.697" TotalETUtil="1.943" Fitness="11.4610">
+    <Task Id="1" Name="Task1" Type="TT" WCET="705" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.261" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.697" TotalETUtil="1.943" Fitness="11.4610">
+    <Task Id="6" Name="Task6" Type="TT" WCET="511" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="1.261" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.298" TotalETUtil="1.943" Fitness="11.0620">
+    <Task Id="6" Name="Task6" Type="TT" WCET="112" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.862" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.298" TotalETUtil="1.943" Fitness="11.0620">
+    <Task Id="2" Name="Task2" Type="TT" WCET="228" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.862" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.284" TotalETUtil="1.943" Fitness="11.0480">
+    <Task Id="2" Name="Task2" Type="TT" WCET="186" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.848" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.284" TotalETUtil="1.943" Fitness="11.0480">
+    <Task Id="6" Name="Task6" Type="TT" WCET="112" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.848" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.243" TotalETUtil="1.943" Fitness="11.0070">
+    <Task Id="6" Name="Task6" Type="TT" WCET="71" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.807" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.243" TotalETUtil="1.943" Fitness="11.0070">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3039" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.692"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.818" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="2.243" TotalETUtil="1.942" Fitness="18.5020">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3039" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.299"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.818" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.243" TotalETUtil="1.942" Fitness="18.5020">
+    <Task Id="7" Name="Task7" Type="TT" WCET="871" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.818" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.942" Fitness="18.4340">
+    <Task Id="7" Name="Task7" Type="TT" WCET="532" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.75" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.942" Fitness="18.4340">
+    <Task Id="12" Name="Task12" Type="ET" WCET="519" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.299"/>
+
+New solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.885" Fitness="18.1490">
+    <Task Id="12" Name="Task12" Type="ET" WCET="348" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.242"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.885" Fitness="18.1490">
+    <Task Id="11" Name="Task11" Type="ET" WCET="410" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.242"/>
+
+New solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.744" Fitness="17.4440">
+    <Task Id="11" Name="Task11" Type="ET" WCET="269" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.101"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.744" Fitness="17.4440">
+    <Task Id="11" Name="Task11" Type="ET" WCET="269" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.101"/>
+
+New solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.707" Fitness="17.2590">
+    <Task Id="11" Name="Task11" Type="ET" WCET="232" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.064"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.707" Fitness="17.2590">
+    <Task Id="12" Name="Task12" Type="ET" WCET="348" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.064"/>
+
+New solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.663" Fitness="17.0390">
+    <Task Id="12" Name="Task12" Type="ET" WCET="214" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.02"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.663" Fitness="17.0390">
+    <Task Id="11" Name="Task11" Type="ET" WCET="232" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.02"/>
+
+New solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.52" Fitness="15.9390">
+    <Task Id="11" Name="Task11" Type="ET" WCET="89" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.877"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.175" TotalETUtil="1.52" Fitness="15.9390">
+    <Task Id="2" Name="Task2" Type="TT" WCET="186" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.807" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.161" TotalETUtil="1.52" Fitness="15.9250">
+    <Task Id="2" Name="Task2" Type="TT" WCET="144" Period="3000" Deadline="1705" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[A2, B1]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.793" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.161" TotalETUtil="1.52" Fitness="15.9250">
+    <Task Id="9" Name="Task9" Type="TT" WCET="184" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.793" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.157" TotalETUtil="1.52" Fitness="15.9210">
+    <Task Id="9" Name="Task9" Type="TT" WCET="168" Period="5000" Deadline="3320" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.789" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.157" TotalETUtil="1.52" Fitness="15.9210">
+    <Task Id="12" Name="Task12" Type="ET" WCET="214" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.877"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.789" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.157" TotalETUtil="1.519" Fitness="10.9210">
+    <Task Id="12" Name="Task12" Type="ET" WCET="214" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A2" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.805"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.789" ETUtil="0.071"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.157" TotalETUtil="1.519" Fitness="10.9210">
+    <Task Id="1" Name="Task1" Type="TT" WCET="705" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.789" ETUtil="0.071"/>
+
+New solution: <Taskset TotalTTUtil="2.156" TotalETUtil="1.519" Fitness="10.9200">
+    <Task Id="1" Name="Task1" Type="TT" WCET="701" Period="3000" Deadline="1802" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.788" ETUtil="0.071"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.156" TotalETUtil="1.519" Fitness="10.9200">
+    <Task Id="12" Name="Task12" Type="ET" WCET="214" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A2" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.805"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.788" ETUtil="0.071"/>
+
+New solution: <Taskset TotalTTUtil="2.156" TotalETUtil="1.52" Fitness="15.9200">
+    <Task Id="12" Name="Task12" Type="ET" WCET="214" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.877"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.788" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.156" TotalETUtil="1.52" Fitness="15.9200">
+    <Task Id="6" Name="Task6" Type="TT" WCET="71" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.788" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.113" TotalETUtil="1.52" Fitness="15.8770">
+    <Task Id="6" Name="Task6" Type="TT" WCET="28" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.745" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.113" TotalETUtil="1.52" Fitness="15.8770">
+    <Task Id="5" Name="Task5" Type="TT" WCET="2610" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.618" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.563" TotalETUtil="1.52" Fitness="22.5030">
+    <Task Id="5" Name="Task5" Type="TT" WCET="4861" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.068" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.563" TotalETUtil="1.52" Fitness="22.5030">
+    <Task Id="5" Name="Task5" Type="TT" WCET="4861" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.068" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.0" TotalETUtil="1.52" Fitness="15.9900">
+    <Task Id="5" Name="Task5" Type="TT" WCET="2046" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.505" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.0" TotalETUtil="1.52" Fitness="15.9900">
+    <Task Id="4" Name="Task4" Type="TT" WCET="192" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.505" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.26" TotalETUtil="1.52" Fitness="15.8600">
+    <Task Id="4" Name="Task4" Type="TT" WCET="712" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.765" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.26" TotalETUtil="1.52" Fitness="15.8600">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3039" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.877"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.745" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.26" TotalETUtil="1.52" Fitness="10.8600">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3039" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.269"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.745" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.26" TotalETUtil="1.52" Fitness="10.8600">
+    <Task Id="12" Name="Task12" Type="ET" WCET="214" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.269"/>
+
+New solution: <Taskset TotalTTUtil="2.26" TotalETUtil="2.412" Fitness="12.6650">
+    <Task Id="12" Name="Task12" Type="ET" WCET="2890" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.161"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.26" TotalETUtil="2.412" Fitness="12.6650">
+    <Task Id="12" Name="Task12" Type="ET" WCET="2890" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.161"/>
+
+New solution: <Taskset TotalTTUtil="2.26" TotalETUtil="2.182" Fitness="10.8600">
+    <Task Id="12" Name="Task12" Type="ET" WCET="2200" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.931"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.26" TotalETUtil="2.182" Fitness="10.8600">
+    <Task Id="5" Name="Task5" Type="TT" WCET="2046" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.765" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.149" TotalETUtil="2.182" Fitness="10.8410">
+    <Task Id="5" Name="Task5" Type="TT" WCET="1489" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.654" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.149" TotalETUtil="2.182" Fitness="10.8410">
+    <Task Id="7" Name="Task7" Type="TT" WCET="532" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.75" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.108" TotalETUtil="2.182" Fitness="10.8000">
+    <Task Id="7" Name="Task7" Type="TT" WCET="326" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.709" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.108" TotalETUtil="2.182" Fitness="10.8000">
+    <Task Id="5" Name="Task5" Type="TT" WCET="1489" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.654" ETUtil="0.643"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.709" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.108" TotalETUtil="2.182" Fitness="11.3960">
+    <Task Id="5" Name="Task5" Type="TT" WCET="1489" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.356" ETUtil="0.643"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.007" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.108" TotalETUtil="2.182" Fitness="11.3960">
+    <Task Id="4" Name="Task4" Type="TT" WCET="712" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.356" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="11.2270">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1751" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.875" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="11.2270">
+    <Task Id="7" Name="Task7" Type="TT" WCET="326" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.931"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.007" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="6.0970">
+    <Task Id="7" Name="Task7" Type="TT" WCET="326" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.065" ETUtil="0.931"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.942" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="6.0970">
+    <Task Id="7" Name="Task7" Type="TT" WCET="326" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.065" ETUtil="0.931"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.942" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="11.2270">
+    <Task Id="7" Name="Task7" Type="TT" WCET="326" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.931"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.007" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="11.2270">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1288" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.931"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.007" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="5.6130">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1288" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.644" ETUtil="0.931"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.363" ETUtil="0.0"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="5.6130">
+    <Task Id="12" Name="Task12" Type="ET" WCET="2200" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.644" ETUtil="0.931"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.745" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="13.3180">
+    <Task Id="12" Name="Task12" Type="ET" WCET="2200" MIT="3000" Deadline="2403" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A2" CoreAffinity="[A2, A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.644" ETUtil="0.198"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.745" ETUtil="1.341"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="13.3180">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3039" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.745" ETUtil="1.341"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.363" ETUtil="0.0"/>
+
+New solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="0.6130">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3039" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.745" ETUtil="0.733"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.363" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.627" TotalETUtil="2.182" Fitness="0.6130">
+    <Task Id="7" Name="Task7" Type="TT" WCET="326" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.363" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="3.416" TotalETUtil="2.182" Fitness="7.4880">
+    <Task Id="7" Name="Task7" Type="TT" WCET="4270" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.152" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.416" TotalETUtil="2.182" Fitness="7.4880">
+    <Task Id="7" Name="Task7" Type="TT" WCET="4270" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.152" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="2.916" TotalETUtil="2.182" Fitness="0.3240">
+    <Task Id="7" Name="Task7" Type="TT" WCET="1770" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.652" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.916" TotalETUtil="2.182" Fitness="0.3240">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1751" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.875" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.78" TotalETUtil="2.182" Fitness="0.1880">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1478" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.739" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.78" TotalETUtil="2.182" Fitness="0.1880">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1288" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.644" ETUtil="0.198"/>
+
+New solution: <Taskset TotalTTUtil="3.028" TotalETUtil="2.182" Fitness="0.3240">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1784" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.892" ETUtil="0.198"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.028" TotalETUtil="2.182" Fitness="0.3240">
+    <Task Id="15" Name="Task15" Type="ET" WCET="217" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.892" ETUtil="0.198"/>
+
+New solution: <Taskset TotalTTUtil="3.028" TotalETUtil="3.016" Fitness="6.4840">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1885" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.892" ETUtil="1.032"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.028" TotalETUtil="3.016" Fitness="6.4840">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1784" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.892" ETUtil="1.032"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.652" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="3.028" TotalETUtil="3.016" Fitness="16.5080">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1784" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.032"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.544" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.028" TotalETUtil="3.016" Fitness="16.5080">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1885" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="1.032"/>
+
+New solution: <Taskset TotalTTUtil="3.028" TotalETUtil="2.831" Fitness="15.3480">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1516" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.847"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.028" TotalETUtil="2.831" Fitness="15.3480">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1784" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.544" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="2.796" TotalETUtil="2.831" Fitness="13.9560">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1320" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.312" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.796" TotalETUtil="2.831" Fitness="13.9560">
+    <Task Id="7" Name="Task7" Type="TT" WCET="1770" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.847"/>
+    <Core Id="B2" Name="Core 2" TTUtil="1.312" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="2.796" TotalETUtil="2.831" Fitness="0.6880">
+    <Task Id="7" Name="Task7" Type="TT" WCET="1770" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.354" ETUtil="0.847"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.958" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.796" TotalETUtil="2.831" Fitness="0.6880">
+    <Task Id="7" Name="Task7" Type="TT" WCET="1770" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.354" ETUtil="0.847"/>
+
+New solution: <Taskset TotalTTUtil="3.291" TotalETUtil="2.831" Fitness="0.4910">
+    <Task Id="7" Name="Task7" Type="TT" WCET="4245" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.849" ETUtil="0.847"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.291" TotalETUtil="2.831" Fitness="0.4910">
+    <Task Id="5" Name="Task5" Type="TT" WCET="1489" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.958" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="3.184" TotalETUtil="2.831" Fitness="0.3840">
+    <Task Id="5" Name="Task5" Type="TT" WCET="954" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.851" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.184" TotalETUtil="2.831" Fitness="0.3840">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1516" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.849" ETUtil="0.847"/>
+
+New solution: <Taskset TotalTTUtil="3.184" TotalETUtil="2.152" Fitness="0.3840">
+    <Task Id="15" Name="Task15" Type="ET" WCET="159" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.849" ETUtil="0.168"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.184" TotalETUtil="2.152" Fitness="0.3840">
+    <Task Id="11" Name="Task11" Type="ET" WCET="89" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.849" ETUtil="0.168"/>
+
+New solution: <Taskset TotalTTUtil="3.184" TotalETUtil="3.026" Fitness="6.5940">
+    <Task Id="11" Name="Task11" Type="ET" WCET="963" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.849" ETUtil="1.042"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.184" TotalETUtil="3.026" Fitness="6.5940">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1320" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.851" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="3.109" TotalETUtil="3.026" Fitness="6.5190">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1170" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.776" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.109" TotalETUtil="3.026" Fitness="6.5190">
+    <Task Id="7" Name="Task7" Type="TT" WCET="4245" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.849" ETUtil="1.042"/>
+
+New solution: <Taskset TotalTTUtil="2.949" TotalETUtil="3.026" Fitness="6.3810">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3445" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.689" ETUtil="1.042"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.949" TotalETUtil="3.026" Fitness="6.3810">
+    <Task Id="5" Name="Task5" Type="TT" WCET="954" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.776" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="2.886" TotalETUtil="3.026" Fitness="6.3180">
+    <Task Id="5" Name="Task5" Type="TT" WCET="639" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.713" ETUtil="0.608"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.886" TotalETUtil="3.026" Fitness="6.3180">
+    <Task Id="6" Name="Task6" Type="TT" WCET="28" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.745" ETUtil="0.733"/>
+
+New solution: <Taskset TotalTTUtil="2.884" TotalETUtil="3.026" Fitness="6.3160">
+    <Task Id="6" Name="Task6" Type="TT" WCET="26" Period="1000" Deadline="863" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.743" ETUtil="0.733"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.884" TotalETUtil="3.026" Fitness="6.3160">
+    <Task Id="8" Name="Task8" Type="TT" WCET="869" Period="5000" Deadline="2689" MaxJitter="0" Offset="123" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.743" ETUtil="0.733"/>
+
+New solution: <Taskset TotalTTUtil="2.84" TotalETUtil="3.026" Fitness="6.2740">
+    <Task Id="8" Name="Task8" Type="TT" WCET="647" Period="5000" Deadline="2689" MaxJitter="0" Offset="123" Priority="1" CpuId="A" CoreId="A2" CoreAffinity="[]"/>
+    <Core Id="A2" Name="Core 2" TTUtil="0.699" ETUtil="0.733"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.84" TotalETUtil="3.026" Fitness="6.2740">
+    <Task Id="11" Name="Task11" Type="ET" WCET="963" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.689" ETUtil="1.042"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.713" ETUtil="0.608"/>
+
+New solution: <Taskset TotalTTUtil="2.84" TotalETUtil="3.027" Fitness="8.9190">
+    <Task Id="11" Name="Task11" Type="ET" WCET="963" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.689" ETUtil="0.08"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.713" ETUtil="1.571"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.84" TotalETUtil="3.027" Fitness="8.9190">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1478" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.739" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.813" TotalETUtil="3.027" Fitness="8.8920">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1423" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.712" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.813" TotalETUtil="3.027" Fitness="8.8920">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3039" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.713" ETUtil="1.571"/>
+
+New solution: <Taskset TotalTTUtil="2.813" TotalETUtil="2.845" Fitness="7.9820">
+    <Task Id="13" Name="Task13" Type="ET" WCET="2131" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.713" ETUtil="1.389"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.813" TotalETUtil="2.845" Fitness="7.9820">
+    <Task Id="13" Name="Task13" Type="ET" WCET="2131" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.713" ETUtil="1.389"/>
+
+New solution: <Taskset TotalTTUtil="2.813" TotalETUtil="2.666" Fitness="7.0870">
+    <Task Id="13" Name="Task13" Type="ET" WCET="1234" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.713" ETUtil="1.21"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.813" TotalETUtil="2.666" Fitness="7.0870">
+    <Task Id="5" Name="Task5" Type="TT" WCET="639" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.713" ETUtil="1.21"/>
+
+New solution: <Taskset TotalTTUtil="2.714" TotalETUtil="2.666" Fitness="7.1600">
+    <Task Id="5" Name="Task5" Type="TT" WCET="143" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.614" ETUtil="1.21"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.714" TotalETUtil="2.666" Fitness="7.1600">
+    <Task Id="5" Name="Task5" Type="TT" WCET="143" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.712" ETUtil="0.643"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.614" ETUtil="1.21"/>
+
+New solution: <Taskset TotalTTUtil="2.713" TotalETUtil="2.666" Fitness="7.2170">
+    <Task Id="5" Name="Task5" Type="TT" WCET="143" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.74" ETUtil="0.643"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.585" ETUtil="1.21"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.713" TotalETUtil="2.666" Fitness="7.2170">
+    <Task Id="15" Name="Task15" Type="ET" WCET="159" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.689" ETUtil="0.08"/>
+
+New solution: <Taskset TotalTTUtil="2.713" TotalETUtil="2.753" Fitness="7.2170">
+    <Task Id="15" Name="Task15" Type="ET" WCET="334" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.689" ETUtil="0.167"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.713" TotalETUtil="2.753" Fitness="7.2170">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1170" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.585" ETUtil="1.21"/>
+
+New solution: <Taskset TotalTTUtil="2.898" TotalETUtil="2.753" Fitness="7.1720">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1541" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.77" ETUtil="1.21"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.898" TotalETUtil="2.753" Fitness="7.1720">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1541" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.77" ETUtil="1.21"/>
+
+New solution: <Taskset TotalTTUtil="2.854" TotalETUtil="2.753" Fitness="7.1280">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1452" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.726" ETUtil="1.21"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.854" TotalETUtil="2.753" Fitness="7.1280">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1423" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.74" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.331" TotalETUtil="2.753" Fitness="7.5710">
+    <Task Id="4" Name="Task4" Type="TT" WCET="376" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.217" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.331" TotalETUtil="2.753" Fitness="7.5710">
+    <Task Id="4" Name="Task4" Type="TT" WCET="376" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.217" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="3.017" TotalETUtil="2.753" Fitness="7.2910">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1749" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.903" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="3.017" TotalETUtil="2.753" Fitness="7.2910">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1749" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.903" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.797" TotalETUtil="2.753" Fitness="7.1050">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1309" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.683" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.797" TotalETUtil="2.753" Fitness="7.1050">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1452" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.726" ETUtil="1.21"/>
+
+New solution: <Taskset TotalTTUtil="2.747" TotalETUtil="2.753" Fitness="7.1030">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1353" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.676" ETUtil="1.21"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.747" TotalETUtil="2.753" Fitness="7.1030">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1353" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.689" ETUtil="0.167"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.676" ETUtil="1.21"/>
+
+New solution: <Taskset TotalTTUtil="2.747" TotalETUtil="2.753" Fitness="16.2580">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1353" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.365" ETUtil="0.167"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.0" ETUtil="1.21"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.747" TotalETUtil="2.753" Fitness="16.2580">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1353" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.365" ETUtil="0.167"/>
+
+New solution: <Taskset TotalTTUtil="2.138" TotalETUtil="2.753" Fitness="7.8240">
+    <Task Id="3" Name="Task3" Type="TT" WCET="135" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.756" ETUtil="0.167"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.138" TotalETUtil="2.753" Fitness="7.8240">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3445" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.756" ETUtil="0.167"/>
+
+New solution: <Taskset TotalTTUtil="1.965" TotalETUtil="2.753" Fitness="7.8850">
+    <Task Id="7" Name="Task7" Type="TT" WCET="2575" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.583" ETUtil="0.167"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="1.965" TotalETUtil="2.753" Fitness="7.8850">
+    <Task Id="3" Name="Task3" Type="TT" WCET="135" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.583" ETUtil="0.167"/>
+
+New solution: <Taskset TotalTTUtil="1.99" TotalETUtil="2.753" Fitness="7.8600">
+    <Task Id="3" Name="Task3" Type="TT" WCET="185" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.608" ETUtil="0.167"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="1.99" TotalETUtil="2.753" Fitness="7.8600">
+    <Task Id="3" Name="Task3" Type="TT" WCET="185" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.608" ETUtil="0.167"/>
+
+New solution: <Taskset TotalTTUtil="2.518" TotalETUtil="2.753" Fitness="14.8840">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1242" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.136" ETUtil="0.167"/>
+
+
+
+Old solution: 
+New solution: 
+
+
+
+Old solution: <Taskset TotalTTUtil="2.518" TotalETUtil="2.753" Fitness="14.8840">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1242" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="1.136" ETUtil="0.167"/>
+
+New solution: <Taskset TotalTTUtil="2.071" TotalETUtil="2.753" Fitness="7.7790">
+    <Task Id="3" Name="Task3" Type="TT" WCET="348" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.689" ETUtil="0.167"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.071" TotalETUtil="2.753" Fitness="7.7790">
+    <Task Id="5" Name="Task5" Type="TT" WCET="143" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.683" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.092" TotalETUtil="2.753" Fitness="7.7660">
+    <Task Id="5" Name="Task5" Type="TT" WCET="247" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.704" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.092" TotalETUtil="2.753" Fitness="7.7660">
+    <Task Id="7" Name="Task7" Type="TT" WCET="2575" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.689" ETUtil="0.167"/>
+
+New solution: <Taskset TotalTTUtil="2.357" TotalETUtil="2.753" Fitness="8.0090">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3899" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.954" ETUtil="0.167"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.357" TotalETUtil="2.753" Fitness="8.0090">
+    <Task Id="15" Name="Task15" Type="ET" WCET="334" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.954" ETUtil="0.167"/>
+
+New solution: <Taskset TotalTTUtil="2.357" TotalETUtil="3.583" Fitness="13.9940">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1994" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.954" ETUtil="0.997"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.357" TotalETUtil="3.583" Fitness="13.9940">
+    <Task Id="11" Name="Task11" Type="ET" WCET="963" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.0" ETUtil="1.21"/>
+
+New solution: <Taskset TotalTTUtil="2.357" TotalETUtil="3.009" Fitness="11.9440">
+    <Task Id="11" Name="Task11" Type="ET" WCET="389" MIT="1000" Deadline="1043" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.0" ETUtil="0.636"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.357" TotalETUtil="3.009" Fitness="11.9440">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1994" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.954" ETUtil="0.997"/>
+
+New solution: <Taskset TotalTTUtil="2.357" TotalETUtil="2.288" Fitness="5.9590">
+    <Task Id="15" Name="Task15" Type="ET" WCET="552" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.954" ETUtil="0.276"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.357" TotalETUtil="2.288" Fitness="5.9590">
+    <Task Id="3" Name="Task3" Type="TT" WCET="348" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.954" ETUtil="0.276"/>
+
+New solution: <Taskset TotalTTUtil="2.259" TotalETUtil="2.288" Fitness="5.8610">
+    <Task Id="3" Name="Task3" Type="TT" WCET="153" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.856" ETUtil="0.276"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.259" TotalETUtil="2.288" Fitness="5.8610">
+    <Task Id="3" Name="Task3" Type="TT" WCET="153" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.856" ETUtil="0.276"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.0" ETUtil="0.636"/>
+
+New solution: <Taskset TotalTTUtil="2.259" TotalETUtil="2.288" Fitness="0.7090">
+    <Task Id="3" Name="Task3" Type="TT" WCET="153" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.78" ETUtil="0.276"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.076" ETUtil="0.636"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.259" TotalETUtil="2.288" Fitness="0.7090">
+    <Task Id="3" Name="Task3" Type="TT" WCET="153" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.076" ETUtil="0.636"/>
+
+New solution: <Taskset TotalTTUtil="2.712" TotalETUtil="2.288" Fitness="0.2560">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1059" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.529" ETUtil="0.636"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.712" TotalETUtil="2.288" Fitness="0.2560">
+    <Task Id="15" Name="Task15" Type="ET" WCET="552" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.78" ETUtil="0.276"/>
+
+New solution: <Taskset TotalTTUtil="2.712" TotalETUtil="3.007" Fitness="6.2310">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1989" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.78" ETUtil="0.995"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.712" TotalETUtil="3.007" Fitness="6.2310">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1989" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.78" ETUtil="0.995"/>
+
+New solution: <Taskset TotalTTUtil="2.712" TotalETUtil="2.79" Fitness="0.2560">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1557" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.78" ETUtil="0.778"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.712" TotalETUtil="2.79" Fitness="0.2560">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1059" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.529" ETUtil="0.636"/>
+
+New solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.79" Fitness="0.1110">
+    <Task Id="3" Name="Task3" Type="TT" WCET="1452" Period="2000" Deadline="1854" MaxJitter="322" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.726" ETUtil="0.636"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.79" Fitness="0.1110">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3899" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.78" ETUtil="0.778"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.704" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.79" Fitness="14.9310">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3899" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.778"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.484" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.79" Fitness="14.9310">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3899" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.778"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.484" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.79" Fitness="0.1110">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3899" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.78" ETUtil="0.778"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.704" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.79" Fitness="0.1110">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3899" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.78" ETUtil="0.778"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.704" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.79" Fitness="14.9310">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3899" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.778"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.484" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.79" Fitness="14.9310">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1557" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.778"/>
+
+New solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.742" Fitness="14.9310">
+    <Task Id="15" Name="Task15" Type="ET" WCET="1459" MIT="2000" Deadline="1180" MaxJitter="0" Priority="-1" CpuId="A" CoreId="A1" CoreAffinity="[A1]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.73"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.909" TotalETUtil="2.742" Fitness="14.9310">
+    <Task Id="13" Name="Task13" Type="ET" WCET="1234" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.726" ETUtil="0.636"/>
+
+New solution: <Taskset TotalTTUtil="2.909" TotalETUtil="3.229" Fitness="21.5460">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3670" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.726" ETUtil="1.123"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.909" TotalETUtil="3.229" Fitness="21.5460">
+    <Task Id="5" Name="Task5" Type="TT" WCET="247" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.484" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.885" TotalETUtil="3.229" Fitness="21.4020">
+    <Task Id="5" Name="Task5" Type="TT" WCET="127" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.46" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.885" TotalETUtil="3.229" Fitness="21.4020">
+    <Task Id="5" Name="Task5" Type="TT" WCET="127" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.46" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.864" TotalETUtil="3.229" Fitness="21.2760">
+    <Task Id="5" Name="Task5" Type="TT" WCET="25" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.439" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.864" TotalETUtil="3.229" Fitness="21.2760">
+    <Task Id="5" Name="Task5" Type="TT" WCET="25" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.439" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.86" TotalETUtil="3.229" Fitness="21.2520">
+    <Task Id="5" Name="Task5" Type="TT" WCET="6" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.435" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.86" TotalETUtil="3.229" Fitness="21.2520">
+    <Task Id="5" Name="Task5" Type="TT" WCET="6" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.435" ETUtil="0.643"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.726" ETUtil="1.123"/>
+
+New solution: <Taskset TotalTTUtil="2.86" TotalETUtil="3.229" Fitness="21.2470">
+    <Task Id="5" Name="Task5" Type="TT" WCET="6" Period="5000" Deadline="2506" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B2" CoreAffinity="[B1, B2]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.434" ETUtil="0.643"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.727" ETUtil="1.123"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.86" TotalETUtil="3.229" Fitness="21.2470">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1309" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="1.434" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.347" TotalETUtil="3.229" Fitness="12.5640">
+    <Task Id="4" Name="Task4" Type="TT" WCET="283" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.921" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.347" TotalETUtil="3.229" Fitness="12.5640">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3899" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.921" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.096" TotalETUtil="3.229" Fitness="12.3730">
+    <Task Id="7" Name="Task7" Type="TT" WCET="2643" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.67" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.096" TotalETUtil="3.229" Fitness="12.3730">
+    <Task Id="7" Name="Task7" Type="TT" WCET="2643" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.0" ETUtil="0.73"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.67" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.096" TotalETUtil="3.229" Fitness="7.3730">
+    <Task Id="7" Name="Task7" Type="TT" WCET="2643" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.529" ETUtil="0.73"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.141" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.096" TotalETUtil="3.229" Fitness="7.3730">
+    <Task Id="4" Name="Task4" Type="TT" WCET="283" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.141" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.286" TotalETUtil="3.229" Fitness="7.1830">
+    <Task Id="4" Name="Task4" Type="TT" WCET="662" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.331" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.286" TotalETUtil="3.229" Fitness="7.1830">
+    <Task Id="13" Name="Task13" Type="ET" WCET="3670" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.727" ETUtil="1.123"/>
+
+New solution: <Taskset TotalTTUtil="2.286" TotalETUtil="2.794" Fitness="0.5680">
+    <Task Id="13" Name="Task13" Type="ET" WCET="1497" MIT="5000" Deadline="7047" MaxJitter="0" Priority="-1" CpuId="B" CoreId="B2" CoreAffinity="[]"/>
+    <Core Id="B2" Name="Core 2" TTUtil="0.727" ETUtil="0.688"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.286" TotalETUtil="2.794" Fitness="0.5680">
+    <Task Id="4" Name="Task4" Type="TT" WCET="662" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.331" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.816" TotalETUtil="2.794" Fitness="0.3600">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1722" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.861" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.816" TotalETUtil="2.794" Fitness="0.3600">
+    <Task Id="7" Name="Task7" Type="TT" WCET="2643" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.529" ETUtil="0.73"/>
+
+New solution: <Taskset TotalTTUtil="2.926" TotalETUtil="2.794" Fitness="0.2500">
+    <Task Id="7" Name="Task7" Type="TT" WCET="3194" Period="5000" Deadline="3955" MaxJitter="0" Offset="0" Priority="1" CpuId="A" CoreId="A1" CoreAffinity="[]"/>
+    <Core Id="A1" Name="Core 1" TTUtil="0.639" ETUtil="0.73"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.926" TotalETUtil="2.794" Fitness="0.2500">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1722" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.861" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.425" TotalETUtil="2.794" Fitness="0.4290">
+    <Task Id="4" Name="Task4" Type="TT" WCET="720" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.36" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.425" TotalETUtil="2.794" Fitness="0.4290">
+    <Task Id="4" Name="Task4" Type="TT" WCET="720" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.36" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.55" TotalETUtil="2.794" Fitness="0.3040">
+    <Task Id="4" Name="Task4" Type="TT" WCET="970" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.485" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.55" TotalETUtil="2.794" Fitness="0.3040">
+    <Task Id="4" Name="Task4" Type="TT" WCET="970" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.485" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.593" TotalETUtil="2.794" Fitness="0.2610">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1057" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.528" ETUtil="0.643"/>
+
+
+
+Old solution: <Taskset TotalTTUtil="2.593" TotalETUtil="2.794" Fitness="0.2610">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1057" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.528" ETUtil="0.643"/>
+
+New solution: <Taskset TotalTTUtil="2.774" TotalETUtil="2.794" Fitness="0.0980">
+    <Task Id="4" Name="Task4" Type="TT" WCET="1418" Period="2000" Deadline="1800" MaxJitter="0" Offset="0" Priority="1" CpuId="B" CoreId="B1" CoreAffinity="[B1]"/>
+    <Core Id="B1" Name="Core 1" TTUtil="0.709" ETUtil="0.643"/>
+
+
+
