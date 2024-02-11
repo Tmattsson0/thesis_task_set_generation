@@ -29,6 +29,7 @@ bin/
 .DS_Store
 
 /target/
+/testCases/
 */target/**
 **/META-INF/
 !.mvn/wrapper/maven-wrapper.jar
