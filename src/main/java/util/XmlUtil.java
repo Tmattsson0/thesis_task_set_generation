@@ -2,7 +2,6 @@ package util;
 
 import model.*;
 
-import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,7 +32,7 @@ import javax.xml.transform.stream.*;
 
 public class XmlUtil {
 
-    public static PlatformModel readPlatformModelConfig(String platformModelFilePath) throws IOException, JAXBException, SAXException, ParserConfigurationException {
+    public static PlatformModel readPlatformModelConfig(String platformModelFilePath) throws IOException, SAXException, ParserConfigurationException {
         if (!Files.exists(Paths.get(platformModelFilePath))) {
             throw new FileNotFoundException();
         }

@@ -26,8 +26,7 @@ public class ParametersJsonReader {
         try {
             root =  new ObjectMapper().readTree(parametersFile);
         } catch (IOException e) {
-            e.printStackTrace();
-//            throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -48,11 +47,9 @@ public class ParametersJsonReader {
     }
 
     public int[] getMicrotickValues(){
-//        return root.path("environment").path( "microtick_values").a;
         try {
             return new ObjectMapper().readValue(root.path("environment").path("microtick_values").traverse(), int[].class);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

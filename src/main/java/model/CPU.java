@@ -1,6 +1,5 @@
 package model;
 
-import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 import java.util.stream.Collectors;
 

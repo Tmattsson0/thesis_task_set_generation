@@ -4,8 +4,6 @@ import data.Singleton;
 import model.*;
 import org.xml.sax.SAXException;
 
-
-import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,12 +42,12 @@ public class ConfigInitializer {
             singleton.NUM_OF_HOST_TRANSITIONS = paramReader.getNumOfHostTransitions();
             singleton.LATENCY_TIGHTNESS = paramReader.getLatency();
 
-        } catch (IOException | ParseException | ParserConfigurationException | SAXException | JAXBException e){
+        } catch (IOException | ParseException | ParserConfigurationException | SAXException e){
             throw new RuntimeException(e);
         }
     }
 
-    private static void initialize(String parameters) {
+    public static void initialize(String parameters) {
         Singleton singleton = Singleton.getInstance();
 
         try {
@@ -84,10 +82,10 @@ public class ConfigInitializer {
         }
     }
 
-    private static PlatformModel createPlatformModelFromParameters(CoreDistributionStrategy coreDistribution) {
+    private static PlatformModel createPlatformModelFromParameters(CoreDistributionStrategy coreDistributionStrategy) {
         Singleton singleton = Singleton.getInstance();
 
-        if (coreDistribution.equals(CoreDistributionStrategy.Homogenous)) {
+        if (coreDistributionStrategy.equals(CoreDistributionStrategy.Homogenous)) {
 
             List<EndSystem> endSystems = new ArrayList<>();
 
@@ -159,7 +157,7 @@ public class ConfigInitializer {
 
             return platformModel;
 
-        } else if (coreDistribution.equals(CoreDistributionStrategy.Random)){
+        } else if (coreDistributionStrategy.equals(CoreDistributionStrategy.Random)){
             //Not yet implemented
             return null;
         } else {

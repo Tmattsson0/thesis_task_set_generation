@@ -1,6 +1,5 @@
 package model;
 
-import data.Singleton;
 import util.RandomUtil;
 
 import java.util.*;

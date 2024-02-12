@@ -4,11 +4,9 @@ import model.DeadlineType;
 import model.PlatformModel;
 
 public class Singleton {
-    // Static variable reference of single_instance
-    // of type data.Singleton
+
     private static Singleton single_instance = null;
 
-    // Environment variables:
     public int NUMBER_OF_HOSTS;
     public String SCHEDULE_TYPE;
     public boolean PREEMPTIBLE;
@@ -29,18 +27,10 @@ public class Singleton {
     public int NUM_OF_HOST_TRANSITIONS;
     public double LATENCY_TIGHTNESS;
     public PlatformModel PLATFORMMODEL;
-//    public List<TTtask> TTtasks;
-//    public List<ETtask> ETtasks;
     public double[] coreAffinityDist = {0.75, 0.1, 0.15};
 
-    // Constructor
-    // Here we will be creating private constructor
-    // restricted to this class itself
-    private Singleton() {
+    private Singleton() {}
 
-    }
-
-    // Static method to create instance of data.Singleton class
     public static synchronized Singleton getInstance()
     {
         if (single_instance == null)
