@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 
 public class LogUtil {
-    static String testCasesLogFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
+    static String testCasesLogFilePath = "./testCases";
     static String fileName = "test_newFitRand";
 
     public static void writeToLog(String str) throws IOException {

@@ -18,7 +18,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        ConfigInitializer.initialize("config/parameters.json", "config/config_small.xml");
+        ConfigInitializer.initialize("./config/parameters.json", "./config/config_small.xml");
 
         Singleton s = Singleton.getInstance();
         TaskGenerator t = new TaskGenerator();

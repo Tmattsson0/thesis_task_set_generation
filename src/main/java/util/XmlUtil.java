@@ -183,7 +183,7 @@ public class XmlUtil {
     }
 
     public static void writeTaskList(PlatformModel platformModel, String fileName) {
-        String testCasesFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
+        String testCasesFilePath = "./testCases";
         Document dom;
         Element element;
 
@@ -263,7 +263,7 @@ public class XmlUtil {
     }
 
     public static void writeTaskListWithUtil(PlatformModel platformModel, String fileName) {
-        String testCasesFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
+        String testCasesFilePath = "./testCases";
         Document dom;
         Element element;
 
@@ -358,7 +358,7 @@ public class XmlUtil {
     }
 
     public static void writeTaskListWithUtilAndChains(PlatformModel platformModel, String fileName) {
-        String testCasesFilePath = "/Users/thomasmattsson/Documents/GitHub/thesis_task_set_generation/testCases";
+        String testCasesFilePath = "./testCases";
         Document dom;
         Element element;
 
