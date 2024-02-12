@@ -44,7 +44,7 @@ public class Main {
 
         Instant end = Instant.now();
 
-        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "test_newFitRand");
+        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set");
 
         System.out.println("Elapsed time in seconds: " + Duration.between(start, end).getSeconds());
     }
