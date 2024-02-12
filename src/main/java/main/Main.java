@@ -17,9 +17,18 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-
+        //arg[0] = "parameters.json"
+        //arg[1] = "config.xml"
         //For using config file:
-        ConfigInitializer.initialize("./config/parameters.json", "./config/config_small.xml");
+
+        if (args.length == 1 && args[0].equals("parameters.json")) {
+            ConfigInitializer.initialize("./config/parameters.json");
+        } else if (args.length == 2 && args[0].equals("parameters.json")) {
+            ConfigInitializer.initialize("./config/" + args[0], "./config/" + args[1]);
+        } else {
+            throw new IllegalArgumentException("File names not correct.");
+        }
+
 
         //For using only parameters file.
 //        ConfigInitializer.initialize("./config/parameters.json");

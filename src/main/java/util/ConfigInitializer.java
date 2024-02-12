@@ -41,7 +41,7 @@ public class ConfigInitializer {
             singleton.NUM_OF_HIGH = paramReader.getNumOfHigh();
             singleton.NUM_OF_HOST_TRANSITIONS = paramReader.getNumOfHostTransitions();
             singleton.LATENCY_TIGHTNESS = paramReader.getLatency();
-
+            
         } catch (IOException | ParseException | ParserConfigurationException | SAXException e){
             throw new RuntimeException(e);
         }
