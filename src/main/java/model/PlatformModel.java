@@ -160,7 +160,7 @@ public class PlatformModel {
         addTaskToCore(taskTwo, taskOneOriginalCoreId);
     }
 
-    public List<? extends Task> getAllTasks(){
+    public List<Task> getAllTasks(){
         //Returns a list of all tasks from all cores
         return getAllCores().stream().map(Core::getTasks).flatMap(Collection::stream).collect(Collectors.toList());
     }

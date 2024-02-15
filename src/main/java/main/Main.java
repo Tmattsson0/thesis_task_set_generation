@@ -5,6 +5,7 @@ import data.Singleton;
 import model.*;
 import taskEngine.TaskGenerator;
 import taskEngine.TaskModifier;
+import taskEngine.TaskModifierHC;
 import util.ConfigInitializer;
 import util.LogUtil;
 import util.XmlUtil;
@@ -36,6 +37,7 @@ public class Main {
         Singleton s = Singleton.getInstance();
         TaskGenerator t = new TaskGenerator();
         TaskModifier taskModifier = new TaskModifier();
+        TaskModifierHC taskModifierHC = new TaskModifierHC();
 
         List<Task> tttasks = t.initializeTTtasks();
         List<Task> ettasks = t.initializeETtasks();
@@ -46,11 +48,11 @@ public class Main {
 
         Instant start = Instant.now();
 
-        taskModifier.generateInitialConfiguration(tasks);
+        taskModifierHC.generateInitialConfiguration(tasks);
 
         LogUtil.deleteLogFile();
 
-        taskModifier.modifyTasksUsingHeuristic();
+        taskModifierHC.modifyTasksUsingHeuristicBasicHC();
 
         ChainGenerator chainGenerator = new ChainGenerator();
         chainGenerator.initializeChains();
