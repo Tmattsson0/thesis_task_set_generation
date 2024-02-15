@@ -36,7 +36,7 @@ public class TaskModifierHC {
 
         PlatformModel bestSolution = null;
 
-        if (currentSolution.getFitness() < 0.1) {
+        if (currentSolution.getFitness() == 0) {
             bestSolution = new PlatformModel(currentSolution);
             bool = false;
         }
@@ -63,11 +63,12 @@ public class TaskModifierHC {
             //Top of hill
             if (Objects.isNull(firstBetterNeighbour)) {
                 bestSolution = new PlatformModel(currentSolution);
+                System.out.println("Top of hill!");
                 break;
             }
 
             //Perfect solution
-            else if (firstBetterNeighbour.getFitness() < 0.1) {
+            else if (firstBetterNeighbour.getFitness() == 0) {
                 bestSolution = new PlatformModel(firstBetterNeighbour);
                 break;
             }
@@ -90,7 +91,7 @@ public class TaskModifierHC {
 
         PlatformModel bestSolution = null;
 
-        if (currentSolution.getFitness() < 0.1) {
+        if (currentSolution.getFitness() == 0) {
             bestSolution = new PlatformModel(currentSolution);
             bool = false;
         }
@@ -107,11 +108,12 @@ public class TaskModifierHC {
             //Top of hill
             if (currentSolution.getFitness() < bestNeighbour.getFitness()) {
                 bestSolution = new PlatformModel(currentSolution);
+                System.out.println("Top of hill!");
                 break;
             }
 
             //Perfect solution
-            else if (bestNeighbour.getFitness() < 0.1) {
+            else if (bestNeighbour.getFitness() == 0) {
                 bestSolution = new PlatformModel(bestNeighbour);
                 break;
             }

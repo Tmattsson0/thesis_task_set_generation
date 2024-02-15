@@ -25,7 +25,9 @@ public class FitnessCalculator {
         for (Core c : candidate.getAllCores()){
             if (c.getScheduleType().getValue().contains("TT")) {
                 fitness += Math.abs(c.calculateTTUtil() - s.TT_UTILIZATION);
-            } else if (c.getScheduleType().getValue().contains("ET")) {
+            }
+
+            if (c.getScheduleType().getValue().contains("ET")) {
                 fitness += Math.abs(c.calculateETUtil() - s.ET_UTILIZATION);
             }
         }

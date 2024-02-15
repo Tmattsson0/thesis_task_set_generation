@@ -30,10 +30,6 @@ public class Main {
             throw new IllegalArgumentException("File names not correct.");
         }
 
-
-        //For using only parameters file.
-//        ConfigInitializer.initialize("./config/parameters.json");
-
         Singleton s = Singleton.getInstance();
         TaskGenerator t = new TaskGenerator();
         TaskModifier taskModifier = new TaskModifier();
@@ -48,19 +44,22 @@ public class Main {
 
         Instant start = Instant.now();
 
-        taskModifierHC.generateInitialConfiguration(tasks);
+
+        taskModifier.generateInitialConfiguration(tasks);
+//        taskModifierHC.generateInitialConfiguration(tasks);
 
         LogUtil.deleteLogFile();
 
+        taskModifier.modifyTasksUsingHeuristic();
 //        taskModifierHC.modifyTasksUsingHeuristicBasicHC();
-        taskModifierHC.modifyTasksUsingHeuristicSteepestAscentHC();
+//        taskModifierHC.modifyTasksUsingHeuristicSteepestAscentHC();
 
         ChainGenerator chainGenerator = new ChainGenerator();
         chainGenerator.initializeChains();
 
         Instant end = Instant.now();
 
-        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set2");
+        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_basic_HC");
 
         System.out.println("Elapsed time in seconds: " + Duration.between(start, end).getSeconds());
     }

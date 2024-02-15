@@ -32,22 +32,20 @@ public class TaskModifier {
 
         PlatformModel currentSolution = new PlatformModel(s.PLATFORMMODEL);
         currentSolution.setFitness(calculateFitness(currentSolution));
+
         initialAddToLog(currentSolution);
 
         // Initial and final temperature
-        double T = 1;
-
-        // Simulated Annealing parameters
+        double T = 100;
 
         // Temperature at which iteration terminates
         final double Tmin = .001;
 
         // Decrease in temperature
-        final double alpha = 0.99;
+        final double alpha = 0.9;
 
-        // Number of iterations of annealing
-        // before decreasing temperature
-        final int numIterations = 100;
+        // Number of iterations of annealing before decreasing temperature
+        final int numIterations = (s.NUM_OF_ET_TASKS + s.NUM_OF_TT_TASKS);
 
         double minFitness = Double.MAX_VALUE;
         PlatformModel bestSolution = null;
@@ -56,7 +54,7 @@ public class TaskModifier {
         while (T > Tmin) {
             for (int i = 0; i < numIterations; i++) {
 
-                if (calculateFitness(currentSolution) <= 0.1) {
+                if (calculateFitness(currentSolution) == 0) {
                     minFitness = currentSolution.getFitness();
                     bestSolution = new PlatformModel(currentSolution);
                     T = 0;
@@ -71,7 +69,11 @@ public class TaskModifier {
                 PlatformModel newSolution = generateCandidateMove(currentSolution, new double[]{0.75, 0.25});
                 newSolution.setFitness(calculateFitness(newSolution));
 
-                double ap = Math.pow(Math.E, (currentSolution.getFitness() - newSolution.getFitness() / T));
+//                double probabilityFunction = (-Math.abs(currentSolution.getFitness() - newSolution.getFitness())) / T;
+                double probabilityFunction = (newSolution.getFitness() - currentSolution.getFitness()) / T;
+                double ap = Math.pow(Math.E, -probabilityFunction);
+
+//                System.out.println("AP value is: " + ap);
 
                 if (newSolution.getFitness() < currentSolution.getFitness()) {
                     addLineToLog(newSolution, currentSolution);
@@ -87,23 +89,6 @@ public class TaskModifier {
         assert bestSolution != null;
 
         s.PLATFORMMODEL = bestSolution;
-
-        //Move generator - from a state, generate a move to a new state.
-        // - Define possible moves - return only one move
-        //      - Change WCET of a task
-        //      - Change core allocation of a task either move or swap
-
-
-        //Fitness function
-        // - Define fitness score
-        // - Make methods to quickly calculate it and store it?
-        // - In the beginning the util delta across cores
-        //
-//        double fitness = calculateFitness(candidateMove, s.TT_UTILIZATION);
-
-
-
-        //SA approach
     }
 
     //Neighbourhood function
