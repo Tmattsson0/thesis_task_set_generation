@@ -81,6 +81,50 @@ public class TaskModifierHC {
         s.PLATFORMMODEL = bestSolution;
     }
 
+    public void modifyTasksUsingHeuristicSteepestAscentHC() {
+        boolean bool = true;
+        PlatformModel currentSolution = new PlatformModel(s.PLATFORMMODEL);
+        currentSolution.setFitness(FitnessCalculator.calculateFitness(currentSolution));
+
+        initialAddToLog(currentSolution);
+
+        PlatformModel bestSolution = null;
+
+        if (currentSolution.getFitness() < 0.1) {
+            bestSolution = new PlatformModel(currentSolution);
+            bool = false;
+        }
+
+        while (bool) {
+            List<PlatformModel> neighbours = generateCandidateMoves(currentSolution);
+
+            //Find best neighbour
+            PlatformModel bestNeighbour;
+
+            bestNeighbour = Collections.min(neighbours, Comparator.comparingDouble(FitnessCalculator::calculateFitness));
+            bestNeighbour.setFitness(FitnessCalculator.calculateFitness(bestNeighbour));
+
+            //Top of hill
+            if (currentSolution.getFitness() < bestNeighbour.getFitness()) {
+                bestSolution = new PlatformModel(currentSolution);
+                break;
+            }
+
+            //Perfect solution
+            else if (bestNeighbour.getFitness() < 0.1) {
+                bestSolution = new PlatformModel(bestNeighbour);
+                break;
+            }
+
+            //Climb
+            else {
+                addLineToLog(bestNeighbour, currentSolution);
+                currentSolution = new PlatformModel(bestNeighbour);
+            }
+        }
+        s.PLATFORMMODEL = bestSolution;
+    }
+
 
 
     private List<PlatformModel> generateCandidateMoves(PlatformModel currentModel) {

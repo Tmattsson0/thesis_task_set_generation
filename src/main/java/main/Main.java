@@ -52,14 +52,15 @@ public class Main {
 
         LogUtil.deleteLogFile();
 
-        taskModifierHC.modifyTasksUsingHeuristicBasicHC();
+//        taskModifierHC.modifyTasksUsingHeuristicBasicHC();
+        taskModifierHC.modifyTasksUsingHeuristicSteepestAscentHC();
 
         ChainGenerator chainGenerator = new ChainGenerator();
         chainGenerator.initializeChains();
 
         Instant end = Instant.now();
 
-        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set");
+        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set2");
 
         System.out.println("Elapsed time in seconds: " + Duration.between(start, end).getSeconds());
     }
