@@ -4,10 +4,10 @@ import data.Singleton;
 import model.*;
 import util.RandomUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static util.LogUtil.addLineToLog;
 
 public class ChainGenerator {
     Singleton s;
@@ -34,7 +34,6 @@ public class ChainGenerator {
         numOfChains = s.NUM_OF_CHAINS;
     }
 
-
     public void initializeChains() {
         List<Chain> chains = new ArrayList<>();
 
@@ -53,9 +52,14 @@ public class ChainGenerator {
             c.getDict().put("desiredNumOfLowToHighPeriodTransitions", desiredNumOfLowToHighPeriodTransitions);
             c.getDict().put("desiredNumOfHighToLowPeriodTransitions", desiredNumOfHighToLowPeriodTransitions);
 
-            assignChainTasksAndValues(c, latencyTightness);
-
         }
+
+        for (Chain c : chains) {
+//            assignChainTasksAndValues(c, latencyTightness);
+//            assignChainTasksAndValuesHC(c, latencyTightness);
+            assignChainTasksAndValuesSteepestAscentHC(c, latencyTightness);
+        }
+
         s.PLATFORMMODEL.setChains(chains);
     }
 
@@ -66,7 +70,7 @@ public class ChainGenerator {
         currentSolution.setFitness(FitnessCalculator.calculateChainFitness(currentSolution));
 
         // Initial and final temperature
-        double T = 1;
+        double T = 1000;
 
         // Simulated Annealing parameters
 
@@ -74,7 +78,7 @@ public class ChainGenerator {
         final double Tmin = .001;
 
         // Decrease in temperature
-        final double alpha = 0.999;
+        final double alpha = 0.99;
 
         // Number of iterations of annealing
         // before decreasing temperature
@@ -101,7 +105,8 @@ public class ChainGenerator {
                 Chain newSolution = generateCandidateMove(currentSolution);
                 newSolution.setFitness(FitnessCalculator.calculateChainFitness(newSolution));
 
-                double ap = Math.pow(Math.E, (currentSolution.getFitness() - newSolution.getFitness() / T));
+                double probabilityFunction = (newSolution.getFitness() - currentSolution.getFitness()) / T;
+                double ap = Math.pow(Math.E, -probabilityFunction);
 
                 if (newSolution.getFitness() < currentSolution.getFitness()) {
 //                    addLineToLog(newSolution, currentSolution);
@@ -121,22 +126,131 @@ public class ChainGenerator {
         c.calculateAndSetLatency(latency);
     }
 
-    private void setInitialChainValues(Chain c) {
-        //Pick <specificNumOfHostTransitions + 1> cores that have TT tasks and pick <specificNumOfTasksInChain> from the cores
-        List<Task> initialTasks = new ArrayList<>();
-        List<Core> initialCores = new ArrayList<>();
+    private void assignChainTasksAndValuesHC(Chain chain, double latency) {
+        boolean bool = true;
+        Chain currentSolution = new Chain(chain);
+        setInitialChainValues(currentSolution);
+        currentSolution.setFitness(FitnessCalculator.calculateChainFitness(currentSolution));
 
-        for (int i = 0; i < c.getDict().get("desiredNumOfHostTransitions") + 1; i++) {
-            Collections.shuffle(validCoresList, RandomUtil.getRandom());
-            initialCores.add(validCoresList.get(0));
+        Chain bestSolution = null;
+
+        if (currentSolution.getFitness() == 0) {
+            bestSolution = new Chain(currentSolution);
+            bool = false;
         }
 
-        for (int i = 0; i < c.getDict().get("desiredNumTasksInChain"); i++) {
-            Collections.shuffle(initialCores, RandomUtil.getRandom());
-            initialTasks.add(initialCores.get(0).getTasks(ScheduleType.TT).get(RandomUtil.getRandom().ints(1, 0, initialCores.get(0).getTasks(ScheduleType.TT).size()).sum()));
+        while (bool) {
+            List<Chain> neighbours = generateCandidateMoves(currentSolution);
+
+            //shuffle
+            Collections.shuffle(neighbours, RandomUtil.getRandom());
+
+            //Select first better solution or break if none exist
+            Chain firstBetterNeighbour = null;
+
+            for (Chain c : neighbours) {
+                double fitness = FitnessCalculator.calculateChainFitness(c);
+
+                if (fitness < currentSolution.getFitness()) {
+                    firstBetterNeighbour = new Chain(c);
+                    firstBetterNeighbour.setFitness(fitness);
+                    break;
+                }
+            }
+
+            //Top of hill
+            if (Objects.isNull(firstBetterNeighbour)) {
+                bestSolution = new Chain(currentSolution);
+                System.out.println("Top of hill!");
+                break;
+            }
+
+            //Perfect solution
+            else if (firstBetterNeighbour.getFitness() == 0) {
+                bestSolution = new Chain(firstBetterNeighbour);
+                break;
+            }
+
+            //Climb
+            else {
+                currentSolution = new Chain(firstBetterNeighbour);
+            }
         }
-        c.setTasks(initialTasks);
+
+        chain.setTasks(bestSolution.getTasks());
+        chain.setFitness(bestSolution.getFitness());
+        chain.calculateAndSetLatency(latency);
     }
+
+    private void assignChainTasksAndValuesSteepestAscentHC(Chain chain, double latency) {
+        boolean bool = true;
+        Chain currentSolution = new Chain(chain);
+        setInitialChainValues(currentSolution);
+        currentSolution.setFitness(FitnessCalculator.calculateChainFitness(currentSolution));
+
+        Chain bestSolution = null;
+
+        if (currentSolution.getFitness() == 0) {
+            bestSolution = new Chain(currentSolution);
+            bool = false;
+        }
+
+        while (bool) {
+            List<Chain> neighbours = generateCandidateMoves(currentSolution);
+
+            //Select first better solution or break if none exist
+            Chain bestNeighbour;
+
+            bestNeighbour = Collections.min(neighbours, Comparator.comparingDouble(FitnessCalculator::calculateChainFitness));
+            bestNeighbour.setFitness(FitnessCalculator.calculateChainFitness(bestNeighbour));
+
+            //Top of hill
+            if (currentSolution.getFitness() < bestNeighbour.getFitness()) {
+                bestSolution = new Chain(currentSolution);
+                System.out.println("Top of hill!");
+                break;
+            }
+
+            //Perfect solution
+            else if (bestNeighbour.getFitness() == 0) {
+                bestSolution = new Chain(bestNeighbour);
+                break;
+            }
+
+            //Climb
+            else {
+                currentSolution = new Chain(bestNeighbour);
+            }
+        }
+
+        chain.setTasks(bestSolution.getTasks());
+        chain.setFitness(bestSolution.getFitness());
+        chain.calculateAndSetLatency(latency);
+    }
+
+    private List<Chain> generateCandidateMoves(Chain currentSolution) {
+        List<Chain> neighbours = new ArrayList<>();
+
+        int chainSize = currentSolution.getTasks().size();
+
+        //Replace tasks
+        for (int i = 0; i < chainSize; i++) {
+            Chain candidateChain = new Chain(currentSolution);
+            Task newRandomTask = validCoresList.get(RandomUtil.getRandom().ints(1, 0, validCoresList.size()).sum()).getRandomTask(ScheduleType.TT);
+            candidateChain.getTasks().set(i, newRandomTask);
+            neighbours.add(new Chain(candidateChain));
+        }
+
+        //Swap every task in chain with another one
+        for (int i = 0; i < chainSize; i++) {
+            Chain candidateChain = new Chain(currentSolution);
+            int b = RandomUtil.getRandom().ints(1, 0, chainSize).sum();
+            Collections.swap(candidateChain.getTasks(), i, b);
+            neighbours.add(new Chain(candidateChain));
+        }
+        return neighbours;
+    }
+
 
     private Chain generateCandidateMove(Chain c) {
         Chain chain = new Chain(c);
@@ -156,6 +270,23 @@ public class ChainGenerator {
         return chain;
     }
 
+    private void setInitialChainValues(Chain c) {
+        //Pick <specificNumOfHostTransitions + 1> cores that have TT tasks and pick <specificNumOfTasksInChain> from the cores
+        List<Task> initialTasks = new ArrayList<>();
+        List<Core> initialCores = new ArrayList<>();
+
+        for (int i = 0; i < c.getDict().get("desiredNumOfHostTransitions") + 1; i++) {
+            Collections.shuffle(validCoresList, RandomUtil.getRandom());
+            initialCores.add(validCoresList.get(0));
+        }
+
+        for (int i = 0; i < c.getDict().get("desiredNumTasksInChain"); i++) {
+            Collections.shuffle(initialCores, RandomUtil.getRandom());
+            initialTasks.add(initialCores.get(0).getTasks(ScheduleType.TT).get(RandomUtil.getRandom().ints(1, 0, initialCores.get(0).getTasks(ScheduleType.TT).size()).sum()));
+        }
+        c.setTasks(initialTasks);
+    }
+
     private int randomNumberCustomBounds(int origin, int bound){
         if (origin == bound) {
             return origin;
@@ -172,19 +303,19 @@ public class ChainGenerator {
         }
     }
 
-    private int randomNumberCustomBounds(int origin, int bound, int logicalBound){
-        if (bound <= logicalBound) {
-            if (origin == bound) {
-                return origin;
-            } else {
-                return RandomUtil.getRandom().ints(1, origin, bound).sum();
-            }
-        } else {
-            if (origin == logicalBound) {
-                return origin;
-            } else {
-                return RandomUtil.getRandom().ints(1, origin, logicalBound).sum();
-            }
-        }
-    }
+//    private int randomNumberCustomBounds(int origin, int bound, int logicalBound){
+//        if (bound <= logicalBound) {
+//            if (origin == bound) {
+//                return origin;
+//            } else {
+//                return RandomUtil.getRandom().ints(1, origin, bound).sum();
+//            }
+//        } else {
+//            if (origin == logicalBound) {
+//                return origin;
+//            } else {
+//                return RandomUtil.getRandom().ints(1, origin, logicalBound).sum();
+//            }
+//        }
+//    }
 }

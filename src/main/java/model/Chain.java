@@ -112,9 +112,9 @@ public class Chain {
                 "name='" + name + '\'' +
                 ", priority=" + priority +
                 ", latency=" + latency +
-                ", tasks=" + tasks +
                 ", fitness=" + fitness +
                 ", dict=" + dict +
+                ", tasks=" + tasks +
                 '}';
     }
 

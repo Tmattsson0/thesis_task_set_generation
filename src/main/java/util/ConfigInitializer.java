@@ -196,7 +196,6 @@ public class ConfigInitializer {
         Homogenous,
         Random
     }
-
 }
 
 

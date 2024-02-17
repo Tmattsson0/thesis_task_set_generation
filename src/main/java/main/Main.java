@@ -57,9 +57,11 @@ public class Main {
         ChainGenerator chainGenerator = new ChainGenerator();
         chainGenerator.initializeChains();
 
+        s.PLATFORMMODEL.getChains().forEach(System.out::println);
+
         Instant end = Instant.now();
 
-        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_basic_HC");
+        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_ChainTest");
 
         System.out.println("Elapsed time in seconds: " + Duration.between(start, end).getSeconds());
     }
