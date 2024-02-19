@@ -101,9 +101,9 @@ public class FitnessCalculator {
         int specificNumOfLowToHighPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.LOWHIGH);
         int specificNumOfHighToLowPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.HIGHLOW);
 
-        if (c.getDict().get("desiredNumTasksInChain") != specificNumberOfTasksInChain) {
-            fitness += Math.abs(c.getDict().get("desiredNumTasksInChain") - specificNumberOfTasksInChain) * 5;
-        }
+//        if (c.getDict().get("desiredNumTasksInChain") != specificNumberOfTasksInChain) {
+//            fitness += Math.abs(c.getDict().get("desiredNumTasksInChain") - specificNumberOfTasksInChain) * 5;
+//        }
 
         if(c.getDict().get("desiredNumOfHostTransitions") != specificNumOfHostTransitions) {
             fitness += Math.abs(c.getDict().get("desiredNumOfHostTransitions") - specificNumOfHostTransitions) * 3;

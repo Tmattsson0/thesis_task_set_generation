@@ -7,8 +7,6 @@ import util.RandomUtil;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static util.LogUtil.addLineToLog;
-
 public class ChainGenerator {
     Singleton s;
     int numOfChains;
@@ -55,7 +53,7 @@ public class ChainGenerator {
         }
 
         for (Chain c : chains) {
-//            assignChainTasksAndValues(c, latencyTightness);
+//            assignChainTasksAndValuesSA(c, latencyTightness);
 //            assignChainTasksAndValuesHC(c, latencyTightness);
             assignChainTasksAndValuesSteepestAscentHC(c, latencyTightness);
         }
@@ -63,7 +61,7 @@ public class ChainGenerator {
         s.PLATFORMMODEL.setChains(chains);
     }
 
-    private void assignChainTasksAndValues(Chain c, double latency) {
+    private void assignChainTasksAndValuesSA(Chain c, double latency) {
 
         Chain currentSolution = new Chain(c);
         setInitialChainValues(currentSolution);
@@ -241,11 +239,27 @@ public class ChainGenerator {
             neighbours.add(new Chain(candidateChain));
         }
 
-        //Swap every task in chain with another one
+        //Swap every task in chain with another random one
         for (int i = 0; i < chainSize; i++) {
             Chain candidateChain = new Chain(currentSolution);
             int b = RandomUtil.getRandom().ints(1, 0, chainSize).sum();
             Collections.swap(candidateChain.getTasks(), i, b);
+            neighbours.add(new Chain(candidateChain));
+        }
+
+        //Swap every task with its immediate neighbour + 1
+        for (int i = 0; i < chainSize; i++) {
+            Chain candidateChain = new Chain(currentSolution);
+            int b = i + 1;
+            Collections.swap(candidateChain.getTasks(), i, Math.min(b, chainSize - 1));
+            neighbours.add(new Chain(candidateChain));
+        }
+
+        //Swap every task with its immediate neighbour - 1
+        for (int i = 0; i < chainSize; i++) {
+            Chain candidateChain = new Chain(currentSolution);
+            int b = i - 1;
+            Collections.swap(candidateChain.getTasks(), i, Math.abs(b));
             neighbours.add(new Chain(candidateChain));
         }
         return neighbours;
@@ -257,7 +271,7 @@ public class ChainGenerator {
         double diceMove = RandomUtil.getRandom().doubles(1, 0, 1).sum();
 
         //Replace task in list with new task
-        if (diceMove <= 0.25) {
+        if (diceMove <= 0.5) {
             Task newRandomTask = validCoresList.get(RandomUtil.getRandom().ints(1, 0, validCoresList.size()).sum()).getRandomTask(ScheduleType.TT);
             chain.getTasks().set(RandomUtil.getRandom().ints(1, 0, chain.getTasks().size()).sum(), newRandomTask);
         } else {

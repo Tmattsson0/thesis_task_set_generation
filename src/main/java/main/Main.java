@@ -54,6 +54,7 @@ public class Main {
 //        taskModifierHC.modifyTasksUsingHeuristicBasicHC();
 //        taskModifierHC.modifyTasksUsingHeuristicSteepestAscentHC();
 
+        System.out.println("Doing the Chains");
         ChainGenerator chainGenerator = new ChainGenerator();
         chainGenerator.initializeChains();
 
