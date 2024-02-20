@@ -127,8 +127,6 @@ public class TaskModifierHC {
         s.PLATFORMMODEL = bestSolution;
     }
 
-
-
     private List<PlatformModel> generateCandidateMoves(PlatformModel currentModel) {
         List<PlatformModel> neighbours = new ArrayList<>();
 
@@ -173,7 +171,6 @@ public class TaskModifierHC {
         }
         return neighbours;
     }
-
 
     private int getRandomLowerWCET(Task t) {
         if (t.getWcet() == 1) {

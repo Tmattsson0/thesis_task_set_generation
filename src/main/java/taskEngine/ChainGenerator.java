@@ -56,6 +56,7 @@ public class ChainGenerator {
 //            assignChainTasksAndValuesSA(c, latencyTightness);
 //            assignChainTasksAndValuesHC(c, latencyTightness);
             assignChainTasksAndValuesSteepestAscentHC(c, latencyTightness);
+            c.setDelay(util.DelayUtil.calculateDelay(c, s.PLATFORMMODEL));
         }
 
         s.PLATFORMMODEL.setChains(chains);

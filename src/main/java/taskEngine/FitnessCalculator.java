@@ -8,8 +8,9 @@ import model.Task;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class FitnessCalculator {
 
@@ -66,20 +67,23 @@ public class FitnessCalculator {
 //    }
 
     private static double calculateVariancePenalty(PlatformModel candidate){
-        List<Integer> wcets = candidate.getAllTasks().stream().map(Task::getWcet).toList();
-        HashSet<Integer> hs = new HashSet<>(wcets);
+        List<Integer> wcets = candidate.getAllTasks().stream().map(Task::getWcet).collect(Collectors.toCollection(ArrayList::new));
+        int penalty = 0;
+        double sameWCETsAllowed = wcets.size() * 0.01;
 
-        int numOfDuplicates = wcets.size() - hs.size();
+        Map<Integer, Long> result =
+                wcets.stream().collect(
+                        Collectors.groupingBy(
+                                Function.identity(), Collectors.counting()
+                        )
+                );
 
-        double penalty = (double) wcets.size() * ((double) (numOfDuplicates)/(wcets.size()));
-
-        if (numOfDuplicates >= wcets.size() * 0.1) {
-            return Math.pow(numOfDuplicates, 0.9);
-        } else if (numOfDuplicates >= wcets.size() * 0.2) {
-            return Math.pow(numOfDuplicates, 1.1);
-        } else {
-            return 0;
+        for (int wcet : wcets) {
+            if (result.get(wcet) >= sameWCETsAllowed) {
+                penalty += result.get(wcet);
+            }
         }
+        return penalty;
     }
 
     private static boolean isWithinPenaltyValue(double util) {
@@ -93,17 +97,14 @@ public class FitnessCalculator {
     public static double calculateChainFitness(Chain c) {
         double fitness = 0;
 
-        //Task in chain = essential
         //Host transitions = important
         //Period trans = not as important
+        //Repeat tasks = repeat (1 * repeat) / amount: penalty after 10%
+
         int specificNumberOfTasksInChain = c.getTasks().size();
         int specificNumOfHostTransitions = calculateNumOfHostTransitions(c);
         int specificNumOfLowToHighPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.LOWHIGH);
         int specificNumOfHighToLowPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.HIGHLOW);
-
-//        if (c.getDict().get("desiredNumTasksInChain") != specificNumberOfTasksInChain) {
-//            fitness += Math.abs(c.getDict().get("desiredNumTasksInChain") - specificNumberOfTasksInChain) * 5;
-//        }
 
         if(c.getDict().get("desiredNumOfHostTransitions") != specificNumOfHostTransitions) {
             fitness += Math.abs(c.getDict().get("desiredNumOfHostTransitions") - specificNumOfHostTransitions) * 3;
@@ -116,7 +117,48 @@ public class FitnessCalculator {
         if(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") != specificNumOfHighToLowPeriodTransitions) {
             fitness += Math.abs(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") - specificNumOfHighToLowPeriodTransitions);
         }
+
+//        fitness += calculateRepeatedTaskPenalty(c);
+//        fitness += calculatePercentageOfSameTaskPenalty(c);
+
+
         return fitness;
+    }
+
+    private static double calculatePercentageOfSameTaskPenalty(Chain c) {
+        double penalty = 0;
+
+        List<String> taskNames = c.getTasks().stream().map(Task::getName).toList();
+
+        Set<String> taskSet = new HashSet<>(taskNames);
+
+        int difference = Math.abs(taskNames.size() - taskSet.size());
+
+        if ((double) difference / taskNames.size() > 0.1) {
+            penalty = Math.round(100 * (double) (difference / taskNames.size()));
+        }
+        return penalty;
+    }
+
+    private static double calculateRepeatedTaskPenalty(Chain c) {
+        double penalty = 0;
+
+        List<String> taskIds = c.getTasks().stream().map(Task::getId).collect(Collectors.toCollection(ArrayList::new));
+
+        Map<String, Long> result =
+                taskIds.stream().collect(
+                        Collectors.groupingBy(
+                                Function.identity(), Collectors.counting()
+                        )
+                );
+
+        for (String taskId : taskIds) {
+            if (result.get(taskId) > 2) {
+                penalty += (double) result.get(taskId);
+            }
+        }
+
+        return penalty;
     }
 
     private static int calculateNumOfPeriodTransitions(Chain c, PeriodTransitionType periodTransitionType) {

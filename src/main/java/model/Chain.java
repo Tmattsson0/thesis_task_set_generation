@@ -13,6 +13,7 @@ public class Chain {
     private int latency;
     private List<Task> tasks;
     private double fitness;
+    private int delay;
     Dictionary<String, Integer> dict;
 
     public Chain(String name) {
@@ -21,6 +22,7 @@ public class Chain {
         this.tasks = new ArrayList<>();
         this.fitness = -1;
         this.latency = -1;
+        this.delay = 0;
         this.dict = new Hashtable<>();
         dict.put("desiredNumTasksInChain", -1);
         dict.put("desiredNumOfHostTransitions", -1);
@@ -88,6 +90,14 @@ public class Chain {
         this.dict = dict;
     }
 
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
     public void calculateAndSetLatency(double tightness){
         if (tightness == 0) {
             //lobound (sum(wcet))
@@ -117,5 +127,4 @@ public class Chain {
                 ", tasks=" + tasks +
                 '}';
     }
-
 }

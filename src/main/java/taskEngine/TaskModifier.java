@@ -137,8 +137,8 @@ public class TaskModifier {
     private Task getIdealRandomTask(PlatformModel model) {
         //get a random task from the core with the biggest util delta
         double rand = RandomUtil.getRandom().doubles(1, 0, 1).sum();
-
-        if (rand <= 0.5) {
+        double percentageOfTTtasks = (double) s.NUM_OF_TT_TASKS / (s.NUM_OF_TT_TASKS + s.NUM_OF_ET_TASKS);
+        if (rand <= percentageOfTTtasks) {
             //TT
             return getRandomTaskFromWorstUtilizedCore(model, ScheduleType.TT);
         } else {

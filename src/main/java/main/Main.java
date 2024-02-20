@@ -50,13 +50,13 @@ public class Main {
 
         LogUtil.deleteLogFile();
 
-        taskModifier.modifyTasksUsingHeuristic();
-//        taskModifierHC.modifyTasksUsingHeuristicBasicHC();
+//        taskModifier.modifyTasksUsingHeuristic();
+        taskModifierHC.modifyTasksUsingHeuristicBasicHC();
 //        taskModifierHC.modifyTasksUsingHeuristicSteepestAscentHC();
 
-        System.out.println("Doing the Chains");
-        ChainGenerator chainGenerator = new ChainGenerator();
-        chainGenerator.initializeChains();
+//        System.out.println("Doing the Chains");
+//        ChainGenerator chainGenerator = new ChainGenerator();
+//        chainGenerator.initializeChains();
 
         s.PLATFORMMODEL.getChains().forEach(System.out::println);
 
