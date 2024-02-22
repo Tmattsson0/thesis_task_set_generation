@@ -14,7 +14,7 @@ import static taskEngine.FitnessCalculator.calculateFitness;
 
 public class TaskModifier {
     Singleton s = Singleton.getInstance();
-    int timeLimit = 300;
+    int timeLimit = 600;
 
 
     public void generateInitialConfiguration(List<Task> taskList) {
@@ -39,7 +39,7 @@ public class TaskModifier {
         initialAddToLog(currentSolution);
 
         // Initial and final temperature
-        double T = 100;
+        double T = 500;
 
         // Temperature at which iteration terminates
         final double Tmin = .001;
@@ -48,7 +48,7 @@ public class TaskModifier {
         final double alpha = 0.9;
 
         // Number of iterations of annealing before decreasing temperature
-        final int numIterations = (s.NUM_OF_ET_TASKS + s.NUM_OF_TT_TASKS);
+        final int numIterations = Math.min((s.NUM_OF_ET_TASKS + s.NUM_OF_TT_TASKS), 200);
 
         double minFitness = Double.MAX_VALUE;
         PlatformModel bestSolution = null;

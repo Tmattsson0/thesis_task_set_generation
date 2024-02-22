@@ -23,13 +23,13 @@ public class TestRunner {
     public void runTest(){
 
         //SA
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             int numberOfRuns = 5;
             int seed = i;
             RandomUtil.setRandom(new Random(seed));
 
             for (int j = 0; j < numberOfRuns; j++) {
-                ConfigInitializer.initialize("./config/parameters_" + (j + 1) + ".json");
+                ConfigInitializer.initialize("./config/parameters_" + (j + 1) + ".json", "./config/configuration_file_4.xml");
 
                 System.out.println("Doing the tasks");
                 Instant startTasks = Instant.now();
@@ -72,13 +72,13 @@ public class TestRunner {
         }
 
         //BasicHC
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             int numberOfRuns = 5;
             int seed = i;
             RandomUtil.setRandom(new Random(seed));
 
             for (int j = 0; j < numberOfRuns; j++) {
-                ConfigInitializer.initialize("./config/parameters_" + (j + 1) + ".json");
+                ConfigInitializer.initialize("./config/parameters_" + (j + 1) + ".json", "./config/configuration_file_4.xml");
 
                 System.out.println("Doing the tasks");
                 Instant startTasks = Instant.now();
@@ -121,13 +121,13 @@ public class TestRunner {
         }
 
         //Steepest Ascent HC
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             int numberOfRuns = 5;
             int seed = i;
             RandomUtil.setRandom(new Random(seed));
 
             for (int j = 0; j < numberOfRuns; j++) {
-                ConfigInitializer.initialize("./config/parameters_" + (j + 1) + ".json");
+                ConfigInitializer.initialize("./config/parameters_" + (j + 1) + ".json", "./config/configuration_file_4.xml");
 
                 System.out.println("Doing the tasks");
                 Instant startTasks = Instant.now();
