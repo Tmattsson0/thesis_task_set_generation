@@ -4,6 +4,8 @@ import data.Singleton;
 import model.*;
 import util.RandomUtil;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 import static util.LogUtil.addLineToLog;
@@ -12,6 +14,7 @@ import static taskEngine.FitnessCalculator.calculateFitness;
 
 public class TaskModifier {
     Singleton s = Singleton.getInstance();
+    int timeLimit = 300;
 
 
     public void generateInitialConfiguration(List<Task> taskList) {
@@ -29,7 +32,7 @@ public class TaskModifier {
     }
 
     public void modifyTasksUsingHeuristic() {
-
+        Instant start = Instant.now();
         PlatformModel currentSolution = new PlatformModel(s.PLATFORMMODEL);
         currentSolution.setFitness(calculateFitness(currentSolution));
 
@@ -54,7 +57,7 @@ public class TaskModifier {
         while (T > Tmin) {
             for (int i = 0; i < numIterations; i++) {
 
-                if (calculateFitness(currentSolution) <= 5) {
+                if (calculateFitness(currentSolution) == 0) {
                     minFitness = currentSolution.getFitness();
                     bestSolution = new PlatformModel(currentSolution);
                     T = 0;
@@ -64,6 +67,12 @@ public class TaskModifier {
                 if (currentSolution.getFitness() < minFitness) {
                     minFitness = currentSolution.getFitness();
                     bestSolution = new PlatformModel(currentSolution);
+                }
+
+                if(Duration.between(start, Instant.now()).getSeconds() >= timeLimit){
+                    System.out.println("Time limit of " + timeLimit + " seconds reached");
+                    T = 0;
+                    break;
                 }
 
                 PlatformModel newSolution = generateCandidateMove(currentSolution, new double[]{0.75, 0.25});

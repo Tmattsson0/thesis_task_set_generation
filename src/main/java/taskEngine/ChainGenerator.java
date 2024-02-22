@@ -286,14 +286,16 @@ public class ChainGenerator {
     }
 
     private void setInitialChainValues(Chain c) {
-        //Pick <specificNumOfHostTransitions + 1> cores that have TT tasks and pick <specificNumOfTasksInChain> from the cores
         List<Task> initialTasks = new ArrayList<>();
-        List<Core> initialCores = new ArrayList<>();
+        List<Core> initialCores = validCoresList;
 
-        for (int i = 0; i < c.getDict().get("desiredNumOfHostTransitions") + 1; i++) {
-            Collections.shuffle(validCoresList, RandomUtil.getRandom());
-            initialCores.add(validCoresList.get(0));
-        }
+        //Old pick from x cores method
+//        List<Core> initialCores = new ArrayList<>();
+
+//        for (int i = 0; i < c.getDict().get("desiredNumOfHostTransitions") + 1; i++) {
+//            Collections.shuffle(validCoresList, RandomUtil.getRandom());
+//            initialCores.add(validCoresList.get(0));
+//        }
 
         for (int i = 0; i < c.getDict().get("desiredNumTasksInChain"); i++) {
             Collections.shuffle(initialCores, RandomUtil.getRandom());
@@ -317,20 +319,4 @@ public class ChainGenerator {
             return randomNumberCustomBounds(0, numOfTransitions);
         }
     }
-
-//    private int randomNumberCustomBounds(int origin, int bound, int logicalBound){
-//        if (bound <= logicalBound) {
-//            if (origin == bound) {
-//                return origin;
-//            } else {
-//                return RandomUtil.getRandom().ints(1, origin, bound).sum();
-//            }
-//        } else {
-//            if (origin == logicalBound) {
-//                return origin;
-//            } else {
-//                return RandomUtil.getRandom().ints(1, origin, logicalBound).sum();
-//            }
-//        }
-//    }
 }

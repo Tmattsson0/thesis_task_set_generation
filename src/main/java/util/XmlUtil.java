@@ -255,7 +255,6 @@ public class XmlUtil {
             }
         } catch (IOException e) {
             System.out.println("I failed");
-            e.printStackTrace();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -282,8 +281,6 @@ public class XmlUtil {
             rootEle.setAttribute("B__TotalETUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateETUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
 
             rootEle.setAttribute("C__Fitness", String.valueOf(BigDecimal.valueOf(platformModel.getFitness()).setScale(4, RoundingMode.HALF_UP)));
-
-
 
             List<? extends Task> tasks = platformModel.getAllTasks();
 
@@ -350,13 +347,12 @@ public class XmlUtil {
             }
         } catch (IOException e) {
             System.out.println("I failed");
-            e.printStackTrace();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void writeTaskListWithUtilAndChains(PlatformModel platformModel, String fileName) {
+    public static void writeTaskListWithUtilAndChains(PlatformModel platformModel, String fileName, int taskTimeTaken, int chainTimeTaken) {
         String testCasesFilePath = "./testCases";
         Document dom;
         Element element;
@@ -378,7 +374,9 @@ public class XmlUtil {
 
             rootEle.setAttribute("C__Fitness", String.valueOf(BigDecimal.valueOf(platformModel.getFitness()).setScale(4, RoundingMode.HALF_UP)));
 
+            rootEle.setAttribute("D__time_for_tasks", String.valueOf(taskTimeTaken));
 
+            rootEle.setAttribute("E__time_for_chains", String.valueOf(chainTimeTaken));
 
             List<? extends Task> tasks = platformModel.getAllTasks();
 
@@ -460,7 +458,6 @@ public class XmlUtil {
             }
         } catch (IOException e) {
             System.out.println("I failed");
-            e.printStackTrace();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }

@@ -68,19 +68,20 @@ public class FitnessCalculator {
 
     private static double calculateVariancePenalty(PlatformModel candidate){
         List<Integer> wcets = candidate.getAllTasks().stream().map(Task::getWcet).collect(Collectors.toCollection(ArrayList::new));
+        Set<Integer> wcetSet = new HashSet<>(wcets);
         int penalty = 0;
-        double sameWCETsAllowed = wcets.size() * 0.01;
+        double sameWCETsAllowed = wcets.size() * 0.05;
 
-        Map<Integer, Long> result =
+        Map<Integer, Long> occurrences =
                 wcets.stream().collect(
                         Collectors.groupingBy(
                                 Function.identity(), Collectors.counting()
                         )
                 );
 
-        for (int wcet : wcets) {
-            if (result.get(wcet) >= sameWCETsAllowed) {
-                penalty += result.get(wcet);
+        for (int wcet : wcetSet) {
+            if (occurrences.get(wcet) > sameWCETsAllowed) {
+                penalty += occurrences.get(wcet);
             }
         }
         return penalty;
@@ -120,9 +121,65 @@ public class FitnessCalculator {
 
 //        fitness += calculateRepeatedTaskPenalty(c);
 //        fitness += calculatePercentageOfSameTaskPenalty(c);
+        fitness += calculateChainVariancePenalty(c);
 
 
         return fitness;
+    }
+
+    private static double calculateChainVariancePenalty(Chain c) {
+        double penalty = 0;
+
+        List<Integer> taskIds = c.getTasks().stream().map(t -> Integer.parseInt(t.getId())).collect(Collectors.toCollection(ArrayList::new));
+
+        Map<Integer, Long> result =
+                taskIds.stream().collect(
+                        Collectors.groupingBy(
+                                Function.identity(), Collectors.counting()
+                        )
+                );
+
+        Set<Integer> taskSet = new HashSet<>(taskIds);
+
+        //Any one instance of 3 or more tasks in a row.
+        if (taskIds.size() >= 3) {
+            for (int i = 0; i < taskIds.size() - 2; i++) {
+                if (Objects.equals(taskIds.get(i), taskIds.get(i + 1)) && Objects.equals(taskIds.get(i + 1), taskIds.get(i + 2))) {
+                    penalty += 1;
+                }
+            }
+        }
+
+        //Any one instance of 2 same tasks in a row more than once
+        int counter = 0;
+        for (int taskId : taskSet) {
+            for (int i = 0; i < taskIds.size() - 1; i++) {
+                if (Objects.equals(taskIds.get(i), taskId) && Objects.equals(taskIds.get(i + 1), taskId)) {
+                    counter++;
+                }
+
+                if(counter > taskIds.size()/10) {
+                    penalty++;
+                }
+            }
+            //Any one task in chain more than 25%
+            if (result.get(taskId) > taskIds.size() * 0.25) {
+                penalty += 5;
+            }
+        }
+
+        //For task sets more than 50: more than 20% duplicates in chain. For less it’s 10%
+        int difference = Math.abs(taskIds.size() - taskSet.size());;
+        if (taskIds.size() > 50) {
+            if ((double) (difference / taskIds.size()) >= 0.2) {
+                penalty = Math.round(100 * (double) (difference / taskIds.size()));
+            }
+        } else {
+            if ((double) (difference / taskIds.size()) >= 0.1) {
+                penalty += 5;
+            }
+        }
+        return penalty;
     }
 
     private static double calculatePercentageOfSameTaskPenalty(Chain c) {
@@ -134,7 +191,7 @@ public class FitnessCalculator {
 
         int difference = Math.abs(taskNames.size() - taskSet.size());
 
-        if ((double) difference / taskNames.size() > 0.1) {
+        if ((double) (difference / taskNames.size()) > 0.1) {
             penalty = Math.round(100 * (double) (difference / taskNames.size()));
         }
         return penalty;

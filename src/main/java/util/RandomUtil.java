@@ -3,9 +3,13 @@ package util;
 import java.util.Random;
 
 public class RandomUtil {
-    private static final Random random = new Random(2);
+    private static Random random;
 
     public static Random getRandom(){
         return random;
+    }
+
+    public static void setRandom(Random random) {
+        RandomUtil.random = random;
     }
 }

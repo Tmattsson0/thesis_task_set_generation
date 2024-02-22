@@ -4,6 +4,8 @@ import data.Singleton;
 import model.*;
 import util.RandomUtil;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 import static util.LogUtil.addLineToLog;
@@ -12,6 +14,7 @@ import static util.LogUtil.initialAddToLog;
 public class TaskModifierHC {
 
     Singleton s = Singleton.getInstance();
+    int timeLimit = 300;
 
     public void generateInitialConfiguration(List<Task> taskList) {
         //Calculate a starting wcet for tasks
@@ -28,6 +31,7 @@ public class TaskModifierHC {
     }
 
     public void modifyTasksUsingHeuristicBasicHC() {
+        Instant start = Instant.now();
         boolean bool = true;
         PlatformModel currentSolution = new PlatformModel(s.PLATFORMMODEL);
         currentSolution.setFitness(FitnessCalculator.calculateFitness(currentSolution));
@@ -43,6 +47,11 @@ public class TaskModifierHC {
 
         while (bool) {
             List<PlatformModel> neighbours = generateCandidateMoves(currentSolution);
+
+            if(Duration.between(start, Instant.now()).getSeconds() >= timeLimit){
+                System.out.println("Time limit of " + timeLimit + " seconds reached");
+                break;
+            }
 
             //shuffle
             Collections.shuffle(neighbours, RandomUtil.getRandom());
@@ -83,6 +92,7 @@ public class TaskModifierHC {
     }
 
     public void modifyTasksUsingHeuristicSteepestAscentHC() {
+        Instant start = Instant.now();
         boolean bool = true;
         PlatformModel currentSolution = new PlatformModel(s.PLATFORMMODEL);
         currentSolution.setFitness(FitnessCalculator.calculateFitness(currentSolution));
@@ -97,6 +107,12 @@ public class TaskModifierHC {
         }
 
         while (bool) {
+
+            if(Duration.between(start, Instant.now()).getSeconds() >= timeLimit){
+                System.out.println("Time limit of " + timeLimit + " seconds reached");
+                break;
+            }
+
             List<PlatformModel> neighbours = generateCandidateMoves(currentSolution);
 
             //Find best neighbour

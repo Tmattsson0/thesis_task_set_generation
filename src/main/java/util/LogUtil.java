@@ -11,7 +11,8 @@ import java.time.LocalDate;
 
 public class LogUtil {
     static String testCasesLogFilePath = "./testCases";
-    static String fileName = "task-set";
+    public static String fileName;
+//    static String fileName = "task-set";
 
     public static void writeToLog(String str) throws IOException {
         File file = new File(testCasesLogFilePath + File.separator + LocalDate.now() + File.separator + fileName + ".log");
