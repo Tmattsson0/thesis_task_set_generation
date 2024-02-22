@@ -1,0 +1,86 @@
+<PlatformModel>
+    <EndSystem id="ES1">
+        <Cpu id="A" Name="Cpu 1">
+            <Core id="A1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="A2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="A3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="A4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+        <Cpu id="B" Name="Cpu 2">
+            <Core id="B1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="B2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="B3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="B4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+    </EndSystem>
+    <EndSystem id="ES2">
+        <Cpu id="C" Name="Cpu 1">
+            <Core id="C1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="C2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="C3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="C4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+        <Cpu id="D" Name="Cpu 2">
+            <Core id="D1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="D2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="D3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="D4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+    </EndSystem>
+    <EndSystem id="ES3">
+        <Cpu id="E" Name="Cpu 1">
+            <Core id="E1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="E2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="E3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="E4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+        <Cpu id="F" Name="Cpu 2">
+            <Core id="F1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="F2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="F3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="F4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+    </EndSystem>
+    <EndSystem id="ES4">
+        <Cpu id="G" Name="Cpu 1">
+            <Core id="G1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="G2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="G3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="G4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+        <Cpu id="H" Name="Cpu 2">
+            <Core id="H1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="H2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="H3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="H4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+    </EndSystem>
+    <EndSystem id="ES5">
+        <Cpu id="I" Name="Cpu 1">
+            <Core id="I1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="I2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="I3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="I4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+        <Cpu id="J" Name="Cpu 2">
+            <Core id="J1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="J2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="J3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="J4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+    </EndSystem>
+    <EndSystem id="ES6">
+        <Cpu id="K" Name="Cpu 1">
+            <Core id="K1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="K2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="K3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="K4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+        <Cpu id="L" Name="Cpu 2">
+            <Core id="L1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="L2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="L3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="L4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
+        </Cpu>
+    </EndSystem>
+</PlatformModel>

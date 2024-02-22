@@ -1,14 +1,14 @@
 <PlatformModel>
     <EndSystem id="ES1">
         <Cpu id="A" Name="Cpu 1">
-            <Core id="A1" Name="Core 1" MicroTick="10" ScheduleType="ET"/>
-            <Core id="A2" Name="Core 2" MicroTick="10" ScheduleType="ET"/>
+            <Core id="A1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
+            <Core id="A2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
             <Core id="A3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
             <Core id="A4" Name="Core 4" MicroTick="10" ScheduleType="TT + ET"/>
         </Cpu>
     </EndSystem>
     <EndSystem id="ES2">
-        <Cpu id="B" Name="Cpu 2">
+        <Cpu id="B" Name="Cpu 1">
             <Core id="B1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
             <Core id="B2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
             <Core id="B3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
@@ -16,7 +16,7 @@
         </Cpu>
     </EndSystem>
     <EndSystem id="ES3">
-        <Cpu id="C" Name="Cpu 3">
+        <Cpu id="C" Name="Cpu 1">
             <Core id="C1" Name="Core 1" MicroTick="10" ScheduleType="TT + ET"/>
             <Core id="C2" Name="Core 2" MicroTick="10" ScheduleType="TT + ET"/>
             <Core id="C3" Name="Core 3" MicroTick="10" ScheduleType="TT + ET"/>
