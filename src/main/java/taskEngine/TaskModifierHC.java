@@ -50,6 +50,7 @@ public class TaskModifierHC {
 
             if(Duration.between(start, Instant.now()).getSeconds() >= timeLimit){
                 System.out.println("Time limit of " + timeLimit + " seconds reached");
+                bestSolution = new PlatformModel(currentSolution);
                 break;
             }
 
@@ -110,6 +111,7 @@ public class TaskModifierHC {
 
             if(Duration.between(start, Instant.now()).getSeconds() >= timeLimit){
                 System.out.println("Time limit of " + timeLimit + " seconds reached");
+                bestSolution = new PlatformModel(currentSolution);
                 break;
             }
 
