@@ -70,7 +70,7 @@ public class FitnessCalculator {
         List<Integer> wcets = candidate.getAllTasks().stream().map(Task::getWcet).collect(Collectors.toCollection(ArrayList::new));
         Set<Integer> wcetSet = new HashSet<>(wcets);
         int penalty = 0;
-        double sameWCETsAllowed = wcets.size() * 0.05;
+        double sameWCETsAllowed = Math.max(wcets.size() * 0.05, 1);
 
         Map<Integer, Long> occurrences =
                 wcets.stream().collect(
