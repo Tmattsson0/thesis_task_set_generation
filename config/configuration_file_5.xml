@@ -23,4 +23,16 @@
             <Core id="C4" Name="Core 4" MicroTick="10" ScheduleType="ET"/>
         </Cpu>
     </EndSystem>
+
+    <Topology>
+        <Switch id = "S1">
+            <systems>
+                <EndsystemId>ES1</EndsystemId>
+                <EndsystemId>ES2</EndsystemId>
+                <EndsystemId>ES3</EndsystemId>
+            </systems>
+            <connections>
+            </connections>
+        </Switch>
+    </Topology>
 </PlatformModel>

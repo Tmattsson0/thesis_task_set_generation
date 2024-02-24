@@ -14,7 +14,7 @@ import static taskEngine.FitnessCalculator.calculateFitness;
 
 public class TaskModifier {
     Singleton s = Singleton.getInstance();
-    int timeLimit = 600;
+    int timeLimit = 1200;
 
 
     public void generateInitialConfiguration(List<Task> taskList) {

@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) {
 
         TestRunner t = new TestRunner();
-        t.runTest();
+        t.runConfigTest();
 
 //         RandomUtil.setRandom(new Random(0));
 //        //arg[0] = "parameters.json"
