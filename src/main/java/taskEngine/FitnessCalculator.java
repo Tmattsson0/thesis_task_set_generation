@@ -17,33 +17,102 @@ public class FitnessCalculator {
     static Singleton s = Singleton.getInstance();
 
     public static double calculateFitness(PlatformModel candidate){
-        //Sum deltas of tt and et util.
-        //Add large penalty value if core has less than 0.1% util of tt or et.
-        //Add penalty of variance is small
 
-        double fitness = 0;
+        switch (s.variance) {
+            case "current" -> {
 
-        for (Core c : candidate.getAllCores()){
-            if (c.getScheduleType().getValue().contains("TT")) {
-                fitness += Math.abs(c.calculateTTUtil() - s.TT_UTILIZATION);
+                //Sum deltas of tt and et util.
+                //Add large penalty value if core has less than 0.1% util of tt or et.
+                //Add penalty of variance is small
+
+                double fitness = 0;
+
+                for (Core c : candidate.getAllCores()) {
+                    if (c.getScheduleType().getValue().contains("TT")) {
+                        fitness += Math.abs(c.calculateTTUtil() - s.TT_UTILIZATION);
+                    }
+
+                    if (c.getScheduleType().getValue().contains("ET")) {
+                        fitness += Math.abs(c.calculateETUtil() - s.ET_UTILIZATION);
+                    }
+                }
+
+                for (Core c : candidate.getAllCores()) {
+                    if (isWithinPenaltyValue(c.calculateETUtil()) && c.getScheduleType().getValue().contains("ET")) {
+                        fitness += calculateBadUtilPenalty(c.calculateETUtil());
+                    } else if (isWithinPenaltyValue(c.calculateTTUtil()) && c.getScheduleType().getValue().contains("TT")) {
+                        fitness += calculateBadUtilPenalty(c.calculateTTUtil());
+                    }
+                }
+
+                fitness += calculateVariancePenalty(candidate);
+
+                return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
             }
+            case "simple" -> {
+                double fitness = 0;
 
-            if (c.getScheduleType().getValue().contains("ET")) {
-                fitness += Math.abs(c.calculateETUtil() - s.ET_UTILIZATION);
+                for (Core c : candidate.getAllCores()) {
+                    if (c.getScheduleType().getValue().contains("TT")) {
+                        fitness += Math.abs(c.calculateTTUtil() - s.TT_UTILIZATION);
+                    }
+
+                    if (c.getScheduleType().getValue().contains("ET")) {
+                        fitness += Math.abs(c.calculateETUtil() - s.ET_UTILIZATION);
+                    }
+                }
+
+                for (Core c : candidate.getAllCores()) {
+                    if (isWithinPenaltyValue(c.calculateETUtil()) && c.getScheduleType().getValue().contains("ET")) {
+                        fitness += calculateBadUtilPenalty(c.calculateETUtil());
+                    } else if (isWithinPenaltyValue(c.calculateTTUtil()) && c.getScheduleType().getValue().contains("TT")) {
+                        fitness += calculateBadUtilPenalty(c.calculateTTUtil());
+                    }
+                }
+
+                fitness += calculateSimpleVariancePenalty(candidate);
+
+                return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
+            }
+            case "none" -> {
+                double fitness = 0;
+
+                for (Core c : candidate.getAllCores()) {
+                    if (c.getScheduleType().getValue().contains("TT")) {
+                        fitness += Math.abs(c.calculateTTUtil() - s.TT_UTILIZATION);
+                    }
+
+                    if (c.getScheduleType().getValue().contains("ET")) {
+                        fitness += Math.abs(c.calculateETUtil() - s.ET_UTILIZATION);
+                    }
+                }
+
+                for (Core c : candidate.getAllCores()) {
+                    if (isWithinPenaltyValue(c.calculateETUtil()) && c.getScheduleType().getValue().contains("ET")) {
+                        fitness += calculateBadUtilPenalty(c.calculateETUtil());
+                    } else if (isWithinPenaltyValue(c.calculateTTUtil()) && c.getScheduleType().getValue().contains("TT")) {
+                        fitness += calculateBadUtilPenalty(c.calculateTTUtil());
+                    }
+                }
+
+                return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
             }
         }
 
-        for (Core c : candidate.getAllCores()) {
-            if (isWithinPenaltyValue(c.calculateETUtil()) && c.getScheduleType().getValue().contains("ET")) {
-                fitness += calculateBadUtilPenalty(c.calculateETUtil());
-            } else if (isWithinPenaltyValue(c.calculateTTUtil()) && c.getScheduleType().getValue().contains("TT")) {
-                fitness += calculateBadUtilPenalty(c.calculateTTUtil());
-            }
+        return 0;
+    }
+
+    private static double calculateSimpleVariancePenalty(PlatformModel candidate) {
+        int numOfWcets = s.NUM_OF_ET_TASKS + s.NUM_OF_TT_TASKS;
+        Set<Integer> wcetSet = candidate.getAllTasks().stream().map(Task::getWcet).collect(Collectors.toSet());
+        double duplicateWCETsAllowed = numOfWcets * 0.5;
+        int penalty = 0;
+
+        if (Math.abs(numOfWcets - wcetSet.size()) > duplicateWCETsAllowed){
+            penalty += (int) (Math.abs(numOfWcets - wcetSet.size()) - duplicateWCETsAllowed);
         }
 
-        fitness += calculateVariancePenalty(candidate);
-
-        return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
+        return penalty;
     }
 
 //    private static double calculateVariancePenalty(PlatformModel candidate) {

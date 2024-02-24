@@ -29,6 +29,9 @@ public class Singleton {
     public PlatformModel PLATFORMMODEL;
     public double[] coreAffinityDist = {0.75, 0.1, 0.15};
 
+    //Testing vars: "none", "simple", "current"
+    public String variance;
+
     private Singleton() {}
 
     public static synchronized Singleton getInstance()
