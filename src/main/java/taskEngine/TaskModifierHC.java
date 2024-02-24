@@ -14,7 +14,7 @@ import static util.LogUtil.initialAddToLog;
 public class TaskModifierHC {
 
     Singleton s = Singleton.getInstance();
-    int timeLimit = 1200;
+    int timeLimit = s.timeLimit;
 
     public void generateInitialConfiguration(List<Task> taskList) {
         //Calculate a starting wcet for tasks

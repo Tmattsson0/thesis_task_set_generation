@@ -33,7 +33,7 @@ public class TestRunner {
             s.variance = varianceCode;
             //Run on config 4
             //SA
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 1; i++) {
                 int numberOfRuns = 5;
                 int seed = i;
                 RandomUtil.setRandom(new Random(seed));
@@ -56,7 +56,7 @@ public class TestRunner {
 
                     taskModifier.generateInitialConfiguration(tasks);
 
-                    LogUtil.fileName = "task_set_gen_SA_AR_param" + (j + 1) + "_seed_" + seed;
+                    LogUtil.fileName = "task_set_gen_SA_VAR_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed;
                     LogUtil.deleteLogFile();
 
                     taskModifier.modifyTasksUsingHeuristic();
@@ -72,7 +72,7 @@ public class TestRunner {
                     int taskTimeTaken = (int) Duration.between(startTasks, endTasks).getSeconds();
 //                int chainTimeTaken = (int) Duration.between(startChains, endChains).getSeconds();
 
-                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_SA_VAR_param" + (j + 1) + "_seed_" + seed, taskTimeTaken, 0);
+                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_SA_VAR_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed, taskTimeTaken, 0);
 
                     System.out.println("Task generation. Time elapsed in seconds: " + taskTimeTaken);
 //                System.out.println("Chain generation. Time elapsed in seconds: " + 0);
@@ -80,7 +80,7 @@ public class TestRunner {
             }
 
             //Steepest Ascent HC
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 1; i++) {
                 int numberOfRuns = 5;
                 int seed = i;
                 RandomUtil.setRandom(new Random(seed));
@@ -103,7 +103,7 @@ public class TestRunner {
 
                     taskModifierHC.generateInitialConfiguration(tasks);
 
-                    LogUtil.fileName = "task_set_gen_SAHC_VAR_param" + (j + 1) + "_seed_" + seed;
+                    LogUtil.fileName = "task_set_gen_SAHC_VAR_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed;
                     LogUtil.deleteLogFile();
 
                     taskModifierHC.modifyTasksUsingHeuristicSteepestAscentHC();
@@ -119,7 +119,7 @@ public class TestRunner {
                     int taskTimeTaken = (int) Duration.between(startTasks, endTasks).getSeconds();
 //                    int chainTimeTaken = (int) Duration.between(startChains, endChains).getSeconds();
 
-                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_SAHC_VAR_param" + (j + 1) + "_seed_" + seed, taskTimeTaken, 0);
+                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_SAHC_VAR_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed, taskTimeTaken, 0);
 
                     System.out.println("Task generation. Time elapsed in seconds: " + taskTimeTaken);
 //                    System.out.println("Chain generation. Time elapsed in seconds: " + chainTimeTaken);

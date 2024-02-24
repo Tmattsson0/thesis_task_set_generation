@@ -31,6 +31,7 @@ public class Singleton {
 
     //Testing vars: "none", "simple", "current"
     public String variance;
+    public int timeLimit = 1200;
 
     private Singleton() {}
 
