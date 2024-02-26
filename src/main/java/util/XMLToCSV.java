@@ -18,9 +18,11 @@ import org.w3c.dom.Element;
         public static void main(String[] args) {
             Map<String, Map<String, Double>> dataMap = new LinkedHashMap<>();
 
-            for (int j = 1; j <= 2; j++) {
+            for (int j = 1; j <= 5; j++) {
                 for (int i = 0; i < 3; i++) {
-                    String fileName = "testCases/config5_test/task_set_gen_SA_param" + j + "_seed_" + i + ".xml";
+                    String fileName = "testCases/var/task_set_gen_SAHC_VAR_param" + j + "_current__seed_" + i + ".xml";
+
+
                     try {
                         File file = new File(fileName);
                         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -48,13 +50,13 @@ import org.w3c.dom.Element;
         }
 
         private static void writeDataToCSV(Map<String, Map<String, Double>> dataMap) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("testCases/config5_test/output.csv"))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("testCases/var/output.csv"))) {
                 // Write header
                 writer.write("File Name;Fitness;time_for_tasks;time_for_chains\n");
 
                 // Write data
                 for (Map.Entry<String, Map<String, Double>> entry : dataMap.entrySet()) {
-                    String fileNameWithoutPrefix = entry.getKey().replace("testCases/config5_test/", "").replace(".xml", "");
+                    String fileNameWithoutPrefix = entry.getKey().replace("testCases/test1/task_set_gen_", "").replace(".xml", "");
                     writer.write(fileNameWithoutPrefix + ";");
                     Map<String, Double> values = entry.getValue();
                     DecimalFormat europeanFormat = new DecimalFormat("#,##0.00");

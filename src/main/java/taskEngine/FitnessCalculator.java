@@ -200,51 +200,35 @@ public class FitnessCalculator {
         double penalty = 0;
 
         List<Integer> taskIds = c.getTasks().stream().map(t -> Integer.parseInt(t.getId())).collect(Collectors.toCollection(ArrayList::new));
+        Set<Integer> taskSet = new HashSet<>(taskIds);
 
-        Map<Integer, Long> result =
+        Map<Integer, Long> occurrences =
                 taskIds.stream().collect(
                         Collectors.groupingBy(
                                 Function.identity(), Collectors.counting()
                         )
                 );
 
-        Set<Integer> taskSet = new HashSet<>(taskIds);
-
-        //Any one instance of 3 or more tasks in a row.
-        if (taskIds.size() >= 3) {
-            for (int i = 0; i < taskIds.size() - 2; i++) {
-                if (Objects.equals(taskIds.get(i), taskIds.get(i + 1)) && Objects.equals(taskIds.get(i + 1), taskIds.get(i + 2))) {
+        //Any one instance of 2 or more tasks in a row.
+        if (taskIds.size() >= 2) {
+            for (int i = 0; i < taskIds.size() - 1; i++) {
+                if (Objects.equals(taskIds.get(i), taskIds.get(i + 1))) {
                     penalty += 1;
                 }
             }
         }
 
-        //Any one instance of 2 same tasks in a row more than once
-        int counter = 0;
-        for (int taskId : taskSet) {
-            for (int i = 0; i < taskIds.size() - 1; i++) {
-                if (Objects.equals(taskIds.get(i), taskId) && Objects.equals(taskIds.get(i + 1), taskId)) {
-                    counter++;
-                }
-
-                if(counter > taskIds.size()/10) {
-                    penalty++;
-                }
-            }
-            //Any one task in chain more than 25%
-            if (result.get(taskId) > taskIds.size() * 0.25) {
-                penalty += 5;
-            }
+        //Max 25% duplicates
+        int difference = Math.abs(taskIds.size() - taskSet.size());
+        double maxDuplicatesAllowed = Math.max(taskIds.size() * 0.25, 1);
+        if (difference >= maxDuplicatesAllowed) {
+            penalty += difference;
         }
 
-        //For task sets more than 50: more than 20% duplicates in chain. For less it’s 10%
-        int difference = Math.abs(taskIds.size() - taskSet.size());;
-        if (taskIds.size() > 50) {
-            if ((double) (difference / taskIds.size()) >= 0.2) {
-                penalty = Math.round(100 * (double) (difference / taskIds.size()));
-            }
-        } else {
-            if ((double) (difference / taskIds.size()) >= 0.1) {
+
+        //Any one task in chain more than 25%
+        for (int taskId : taskSet) {
+            if (occurrences.get(taskId) > Math.max(taskIds.size() * 0.25, 1)) {
                 penalty += 5;
             }
         }
