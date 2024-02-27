@@ -4,12 +4,15 @@ import data.Singleton;
 import model.*;
 import util.RandomUtil;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChainGenerator {
     Singleton s;
     int numOfChains;
+    int timeLimit = s.timeLimit;
 
     //All numbers are treated as "Up to and including"
     int numOfTasksInChain;
@@ -32,7 +35,7 @@ public class ChainGenerator {
         numOfChains = s.NUM_OF_CHAINS;
     }
 
-    public void initializeChains() {
+    public void initializeChains(String algo) {
         List<Chain> chains = new ArrayList<>();
 
         for (int i = 0; i < numOfChains; i++) {
@@ -53,16 +56,19 @@ public class ChainGenerator {
         }
 
         for (Chain c : chains) {
-//            assignChainTasksAndValuesSA(c, latencyTightness);
-//            assignChainTasksAndValuesHC(c, latencyTightness);
-            assignChainTasksAndValuesSteepestAscentHC(c, latencyTightness);
+
+            switch (algo){
+                case "HC" -> assignChainTasksAndValuesHC(c, latencyTightness);
+                case "SHAHC" -> assignChainTasksAndValuesSteepestAscentHC(c, latencyTightness);
+                case "SA" -> assignChainTasksAndValuesSA(c, latencyTightness);
+            }
             c.setDelay(util.DelayUtil.calculateDelay(c, s.PLATFORMMODEL));
         }
-
         s.PLATFORMMODEL.setChains(chains);
     }
 
     private void assignChainTasksAndValuesSA(Chain c, double latency) {
+        Instant start = Instant.now();
 
         Chain currentSolution = new Chain(c);
         setInitialChainValues(currentSolution);
@@ -101,6 +107,12 @@ public class ChainGenerator {
                     bestSolution = new Chain(currentSolution);
                 }
 
+                if(Duration.between(start, Instant.now()).getSeconds() >= timeLimit){
+                    System.out.println("Time limit of " + timeLimit + " seconds reached");
+                    T = 0;
+                    break;
+                }
+
                 Chain newSolution = generateCandidateMove(currentSolution);
                 newSolution.setFitness(FitnessCalculator.calculateChainFitness(newSolution));
 
@@ -126,6 +138,7 @@ public class ChainGenerator {
     }
 
     private void assignChainTasksAndValuesHC(Chain chain, double latency) {
+        Instant start = Instant.now();
         boolean bool = true;
         Chain currentSolution = new Chain(chain);
         setInitialChainValues(currentSolution);
@@ -135,6 +148,11 @@ public class ChainGenerator {
 
         if (currentSolution.getFitness() == 0) {
             bestSolution = new Chain(currentSolution);
+            bool = false;
+        }
+
+        if(Duration.between(start, Instant.now()).getSeconds() >= timeLimit){
+            System.out.println("Time limit of " + timeLimit + " seconds reached");
             bool = false;
         }
 
@@ -182,6 +200,7 @@ public class ChainGenerator {
     }
 
     private void assignChainTasksAndValuesSteepestAscentHC(Chain chain, double latency) {
+        Instant start = Instant.now();
         boolean bool = true;
         Chain currentSolution = new Chain(chain);
         setInitialChainValues(currentSolution);
@@ -191,6 +210,11 @@ public class ChainGenerator {
 
         if (currentSolution.getFitness() == 0) {
             bestSolution = new Chain(currentSolution);
+            bool = false;
+        }
+
+        if(Duration.between(start, Instant.now()).getSeconds() >= timeLimit){
+            System.out.println("Time limit of " + timeLimit + " seconds reached");
             bool = false;
         }
 

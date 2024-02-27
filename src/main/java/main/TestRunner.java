@@ -19,13 +19,11 @@ import java.util.Random;
 
 public class TestRunner {
 
-
-    public void runVarianceTest() {
+    public void runVarianceTestChain() {
         //var variable
         Singleton s = Singleton.getInstance();
         List<String> varianceCodes = new ArrayList<>();
         varianceCodes.add("none");
-        varianceCodes.add("simple");
         varianceCodes.add("current");
 
         for (String varianceCode : varianceCodes) {
@@ -33,7 +31,7 @@ public class TestRunner {
             s.variance = varianceCode;
             //Run on config 4
             //SA
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 3; i++) {
                 int numberOfRuns = 5;
                 int seed = i;
                 RandomUtil.setRandom(new Random(seed));
@@ -56,31 +54,31 @@ public class TestRunner {
 
                     taskModifier.generateInitialConfiguration(tasks);
 
-                    LogUtil.fileName = "task_set_gen_SA_VAR_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed;
+                    LogUtil.fileName = "task_set_gen_SA_CHAIN_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed;
                     LogUtil.deleteLogFile();
 
                     taskModifier.modifyTasksUsingHeuristic();
 
                     Instant endTasks = Instant.now();
 
-//                System.out.println("Doing the Chains");
-//                Instant startChains = Instant.now();
-//                ChainGenerator chainGenerator = new ChainGenerator();
-//                chainGenerator.initializeChains();
-//                Instant endChains = Instant.now();
+                    System.out.println("Doing the Chains");
+                    Instant startChains = Instant.now();
+                    ChainGenerator chainGenerator = new ChainGenerator();
+                    chainGenerator.initializeChains("SA");
+                    Instant endChains = Instant.now();
 
                     int taskTimeTaken = (int) Duration.between(startTasks, endTasks).getSeconds();
-//                int chainTimeTaken = (int) Duration.between(startChains, endChains).getSeconds();
+                    int chainTimeTaken = (int) Duration.between(startChains, endChains).getSeconds();
 
-                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_SA_VAR_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed, taskTimeTaken, 0);
+                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_SA_CHAIN_param" + (j + 1) + "_" + varianceCode + "_" + "_seed_" + seed, taskTimeTaken, chainTimeTaken);
 
                     System.out.println("Task generation. Time elapsed in seconds: " + taskTimeTaken);
-//                System.out.println("Chain generation. Time elapsed in seconds: " + 0);
+                    System.out.println("Chain generation. Time elapsed in seconds: " + chainTimeTaken);
                 }
             }
 
-            //Steepest Ascent HC
-            for (int i = 0; i < 1; i++) {
+            //BasicHC
+            for (int i = 0; i < 3; i++) {
                 int numberOfRuns = 5;
                 int seed = i;
                 RandomUtil.setRandom(new Random(seed));
@@ -92,7 +90,7 @@ public class TestRunner {
                     Instant startTasks = Instant.now();
 
                     TaskGenerator t = new TaskGenerator();
-                    TaskModifierHC taskModifierHC = new TaskModifierHC();
+                    TaskModifier taskModifier = new TaskModifier();
 
                     List<Task> tttasks = t.initializeTTtasks();
                     List<Task> ettasks = t.initializeETtasks();
@@ -101,28 +99,75 @@ public class TestRunner {
                     tasks.addAll(tttasks);
                     tasks.addAll(ettasks);
 
-                    taskModifierHC.generateInitialConfiguration(tasks);
+                    taskModifier.generateInitialConfiguration(tasks);
 
-                    LogUtil.fileName = "task_set_gen_SAHC_VAR_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed;
+                    LogUtil.fileName = "task_set_gen_HC_CHAIN_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed;
                     LogUtil.deleteLogFile();
 
-                    taskModifierHC.modifyTasksUsingHeuristicSteepestAscentHC();
+                    taskModifier.modifyTasksUsingHeuristic();
 
                     Instant endTasks = Instant.now();
 
-//                    System.out.println("Doing the Chains");
-//                    Instant startChains = Instant.now();
-//                    ChainGenerator chainGenerator = new ChainGenerator();
-//                    chainGenerator.initializeChains();
-//                    Instant endChains = Instant.now();
+                    System.out.println("Doing the Chains");
+                    Instant startChains = Instant.now();
+                    ChainGenerator chainGenerator = new ChainGenerator();
+                    chainGenerator.initializeChains("HC");
+                    Instant endChains = Instant.now();
 
                     int taskTimeTaken = (int) Duration.between(startTasks, endTasks).getSeconds();
-//                    int chainTimeTaken = (int) Duration.between(startChains, endChains).getSeconds();
+                    int chainTimeTaken = (int) Duration.between(startChains, endChains).getSeconds();
 
-                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_SAHC_VAR_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed, taskTimeTaken, 0);
+                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_HC_CHAIN_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed, taskTimeTaken, chainTimeTaken);
 
                     System.out.println("Task generation. Time elapsed in seconds: " + taskTimeTaken);
-//                    System.out.println("Chain generation. Time elapsed in seconds: " + chainTimeTaken);
+                    System.out.println("Chain generation. Time elapsed in seconds: " + chainTimeTaken);
+                }
+            }
+
+            //Steepest Ascent HC
+            for (int i = 0; i < 3; i++) {
+                int numberOfRuns = 5;
+                int seed = i;
+                RandomUtil.setRandom(new Random(seed));
+
+                for (int j = 0; j < numberOfRuns; j++) {
+                    ConfigInitializer.initialize("./config/parameters_" + (j + 1) + ".json", "./config/configuration_file_" + 4 + ".xml");
+
+                    System.out.println("Doing the tasks");
+                    Instant startTasks = Instant.now();
+
+                    TaskGenerator t = new TaskGenerator();
+                    TaskModifier taskModifier = new TaskModifier();
+
+                    List<Task> tttasks = t.initializeTTtasks();
+                    List<Task> ettasks = t.initializeETtasks();
+
+                    List<Task> tasks = new ArrayList<>();
+                    tasks.addAll(tttasks);
+                    tasks.addAll(ettasks);
+
+                    taskModifier.generateInitialConfiguration(tasks);
+
+                    LogUtil.fileName = "task_set_gen_SAHC_CHAIN_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed;
+                    LogUtil.deleteLogFile();
+
+                    taskModifier.modifyTasksUsingHeuristic();
+
+                    Instant endTasks = Instant.now();
+
+                    System.out.println("Doing the Chains");
+                    Instant startChains = Instant.now();
+                    ChainGenerator chainGenerator = new ChainGenerator();
+                    chainGenerator.initializeChains("SAHC");
+                    Instant endChains = Instant.now();
+
+                    int taskTimeTaken = (int) Duration.between(startTasks, endTasks).getSeconds();
+                    int chainTimeTaken = (int) Duration.between(startChains, endChains).getSeconds();
+
+                    XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_gen_SAHC_CHAIN_param" + (j + 1) + "_" + varianceCode+ "_" + "_seed_" + seed, taskTimeTaken, chainTimeTaken);
+
+                    System.out.println("Task generation. Time elapsed in seconds: " + taskTimeTaken);
+                    System.out.println("Chain generation. Time elapsed in seconds: " + chainTimeTaken);
                 }
             }
         }

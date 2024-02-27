@@ -1,28 +1,11 @@
 package main;
 
-import taskEngine.ChainGenerator;
-import data.Singleton;
-import model.*;
-import taskEngine.TaskGenerator;
-import taskEngine.TaskModifier;
-import taskEngine.TaskModifierHC;
-import util.ConfigInitializer;
-import util.LogUtil;
-import util.RandomUtil;
-import util.XmlUtil;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 
 public class Main {
     public static void main(String[] args) {
 
         TestRunner t = new TestRunner();
-        t.runVarianceTest();
+        t.runVarianceTestChain();
 
 //         RandomUtil.setRandom(new Random(0));
 //        //arg[0] = "parameters.json"

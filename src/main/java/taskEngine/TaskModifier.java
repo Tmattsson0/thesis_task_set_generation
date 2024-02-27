@@ -57,7 +57,7 @@ public class TaskModifier {
         while (T > Tmin) {
             for (int i = 0; i < numIterations; i++) {
 
-                if (calculateFitness(currentSolution) == 0) {
+                if (calculateFitness(currentSolution) < 1) {
                     minFitness = currentSolution.getFitness();
                     bestSolution = new PlatformModel(currentSolution);
                     T = 0;

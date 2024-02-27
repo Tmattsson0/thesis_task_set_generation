@@ -19,7 +19,7 @@ public class FitnessCalculator {
     public static double calculateFitness(PlatformModel candidate){
 
         switch (s.variance) {
-            case "current" -> {
+            case "current1" -> {
 
                 //Sum deltas of tt and et util.
                 //Add large penalty value if core has less than 0.1% util of tt or et.
@@ -49,7 +49,7 @@ public class FitnessCalculator {
 
                 return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
             }
-            case "simple" -> {
+            case "simple1" -> {
                 double fitness = 0;
 
                 for (Core c : candidate.getAllCores()) {
@@ -74,7 +74,7 @@ public class FitnessCalculator {
 
                 return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
             }
-            case "none" -> {
+            case "none1" -> {
                 double fitness = 0;
 
                 for (Core c : candidate.getAllCores()) {
@@ -96,10 +96,37 @@ public class FitnessCalculator {
                 }
 
                 return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
+
+            } default -> {
+                //Sum deltas of tt and et util.
+                //Add large penalty value if core has less than 0.1% util of tt or et.
+                //Add penalty of variance is small
+
+                double fitness = 0;
+
+                for (Core c : candidate.getAllCores()) {
+                    if (c.getScheduleType().getValue().contains("TT")) {
+                        fitness += Math.abs(c.calculateTTUtil() - s.TT_UTILIZATION);
+                    }
+
+                    if (c.getScheduleType().getValue().contains("ET")) {
+                        fitness += Math.abs(c.calculateETUtil() - s.ET_UTILIZATION);
+                    }
+                }
+
+                for (Core c : candidate.getAllCores()) {
+                    if (isWithinPenaltyValue(c.calculateETUtil()) && c.getScheduleType().getValue().contains("ET")) {
+                        fitness += calculateBadUtilPenalty(c.calculateETUtil());
+                    } else if (isWithinPenaltyValue(c.calculateTTUtil()) && c.getScheduleType().getValue().contains("TT")) {
+                        fitness += calculateBadUtilPenalty(c.calculateTTUtil());
+                    }
+                }
+
+                fitness += calculateVariancePenalty(candidate);
+
+                return new BigDecimal(fitness).setScale(3, RoundingMode.HALF_UP).doubleValue();
             }
         }
-
-        return 0;
     }
 
     private static double calculateSimpleVariancePenalty(PlatformModel candidate) {
@@ -165,35 +192,54 @@ public class FitnessCalculator {
     }
 
     public static double calculateChainFitness(Chain c) {
-        double fitness = 0;
 
-        //Host transitions = important
-        //Period trans = not as important
-        //Repeat tasks = repeat (1 * repeat) / amount: penalty after 10%
 
-        int specificNumberOfTasksInChain = c.getTasks().size();
-        int specificNumOfHostTransitions = calculateNumOfHostTransitions(c);
-        int specificNumOfLowToHighPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.LOWHIGH);
-        int specificNumOfHighToLowPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.HIGHLOW);
+        switch (s.variance) {
 
-        if(c.getDict().get("desiredNumOfHostTransitions") != specificNumOfHostTransitions) {
-            fitness += Math.abs(c.getDict().get("desiredNumOfHostTransitions") - specificNumOfHostTransitions) * 3;
+            case "current"-> {
+                double fitness = 0;
+
+                int specificNumOfHostTransitions = calculateNumOfHostTransitions(c);
+                int specificNumOfLowToHighPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.LOWHIGH);
+                int specificNumOfHighToLowPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.HIGHLOW);
+
+                if(c.getDict().get("desiredNumOfHostTransitions") != specificNumOfHostTransitions) {
+                    fitness += Math.abs(c.getDict().get("desiredNumOfHostTransitions") - specificNumOfHostTransitions) * 3;
+                }
+
+                if(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") != specificNumOfLowToHighPeriodTransitions) {
+                    fitness += Math.abs(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") - specificNumOfLowToHighPeriodTransitions);
+                }
+
+                if(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") != specificNumOfHighToLowPeriodTransitions) {
+                    fitness += Math.abs(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") - specificNumOfHighToLowPeriodTransitions);
+                }
+
+                fitness += calculateChainVariancePenalty(c);
+
+                return fitness;
+            } case "none" -> {
+                double fitness = 0;
+
+                int specificNumOfHostTransitions = calculateNumOfHostTransitions(c);
+                int specificNumOfLowToHighPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.LOWHIGH);
+                int specificNumOfHighToLowPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.HIGHLOW);
+
+                if(c.getDict().get("desiredNumOfHostTransitions") != specificNumOfHostTransitions) {
+                    fitness += Math.abs(c.getDict().get("desiredNumOfHostTransitions") - specificNumOfHostTransitions) * 3;
+                }
+
+                if(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") != specificNumOfLowToHighPeriodTransitions) {
+                    fitness += Math.abs(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") - specificNumOfLowToHighPeriodTransitions);
+                }
+
+                if(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") != specificNumOfHighToLowPeriodTransitions) {
+                    fitness += Math.abs(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") - specificNumOfHighToLowPeriodTransitions);
+                }
+                return fitness;
+            }
         }
-
-        if(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") != specificNumOfLowToHighPeriodTransitions) {
-            fitness += Math.abs(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") - specificNumOfLowToHighPeriodTransitions);
-        }
-
-        if(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") != specificNumOfHighToLowPeriodTransitions) {
-            fitness += Math.abs(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") - specificNumOfHighToLowPeriodTransitions);
-        }
-
-//        fitness += calculateRepeatedTaskPenalty(c);
-//        fitness += calculatePercentageOfSameTaskPenalty(c);
-        fitness += calculateChainVariancePenalty(c);
-
-
-        return fitness;
+        return 0;
     }
 
     private static double calculateChainVariancePenalty(Chain c) {

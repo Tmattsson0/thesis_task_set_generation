@@ -9,8 +9,8 @@
   "system": {
     "tt_utilization": 0.7,
     "et_utilization": 0.7,
-    "num_of_tt_tasks": 125,
-    "num_of_et_tasks": 125,
+    "num_of_tt_tasks": 250,
+    "num_of_et_tasks": 250,
     "periods":
     [[10000, 0.1],
       [20000, 0.1],
@@ -30,11 +30,11 @@
     "deadline_type": "arbitrary;50,150"
   },
   "chain": {
-    "num_of_chains": 0,
-    "num_of_tasks_in_chain": 50,
-    "num_of_low": 5,
-    "num_of_high": 5,
-    "num_of_host_transitions": 5,
+    "num_of_chains": 1,
+    "num_of_tasks_in_chain": 10,
+    "num_of_low": 1,
+    "num_of_high": 1,
+    "num_of_host_transitions": 1,
     "latency_tightness": 50
   }
 }

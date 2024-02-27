@@ -165,9 +165,9 @@ public class ParametersJsonReader {
     public int getNumOfLow(){
         int numberOfLowToHigh = root.path("chain").path("num_of_low").asInt();
 
-        if (numberOfLowToHigh > getPeriods().length - 1) {
-            throw new IllegalArgumentException("Number of period transitions exceed number of period values");
-        }
+//        if (numberOfLowToHigh > getPeriods().length - 1) {
+//            throw new IllegalArgumentException("Number of period transitions exceed number of period values");
+//        }
 
         return numberOfLowToHigh;
     }
@@ -175,9 +175,9 @@ public class ParametersJsonReader {
     public int getNumOfHigh(){
         int numberOfHighToLow = root.path("chain").path("num_of_high").asInt();
 
-        if (numberOfHighToLow > getPeriods().length - 1) {
-            throw new IllegalArgumentException("Number of period transitions exceed number of period values");
-        }
+//        if (numberOfHighToLow > getPeriods().length - 1) {
+//            throw new IllegalArgumentException("Number of period transitions exceed number of period values");
+//        }
 
         return numberOfHighToLow;
     }
