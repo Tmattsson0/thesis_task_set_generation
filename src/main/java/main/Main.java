@@ -68,7 +68,6 @@ public class Main {
         ChainGenerator chainGenerator = new ChainGenerator();
         chainGenerator.initializeChains();
 
-//        s.PLATFORMMODEL.getChains().forEach(System.out::println);
         Instant endChains = Instant.now();
 
         int taskTimeTaken = (int) Duration.between(startTasks, endTasks).getSeconds();
