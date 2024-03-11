@@ -26,11 +26,11 @@
     "deadline_type": "arbitrary;50,150"
   },
   "chain": {
-    "num_of_chains": 10,
-    "num_of_tasks_in_chain": 50,
-    "num_of_low": 5,
-    "num_of_high": 5,
-    "num_of_host_transitions": 5,
+    "num_of_chains": 5,
+    "num_of_tasks_in_chain": 10,
+    "num_of_low": 3,
+    "num_of_high": 3,
+    "num_of_host_transitions": 3,
     "latency_tightness": 50
   }
 }

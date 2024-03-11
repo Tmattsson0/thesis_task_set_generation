@@ -56,3 +56,4 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
+.idea/misc.xml
