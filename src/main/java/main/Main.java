@@ -21,7 +21,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
 
-         RandomUtil.setRandom(new Random(0));
+         RandomUtil.setRandom(new Random());
         //arg[0] = "parameters.json"
         //arg[1] = "config.xml"
         //For using config file:
@@ -73,7 +73,8 @@ public class Main {
         int taskTimeTaken = (int) Duration.between(startTasks, endTasks).getSeconds();
         int chainTimeTaken = (int) Duration.between(startChains, endChains).getSeconds();
 
-        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_ChainTest", taskTimeTaken, chainTimeTaken);
+        XmlUtil.writeTaskListWithUtilAndChains(s.PLATFORMMODEL, "task_set_OG", taskTimeTaken, chainTimeTaken);
+        XmlUtil.writeTaskListShane(s.PLATFORMMODEL, "task_set_Shane", taskTimeTaken, chainTimeTaken);
 
         System.out.println("Task generation. Time elapsed in seconds: " + taskTimeTaken);
         System.out.println("Chain generation. Time elapsed in seconds: " + chainTimeTaken);

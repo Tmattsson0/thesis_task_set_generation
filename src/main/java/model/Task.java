@@ -55,8 +55,6 @@ public class Task {
         }
     }
 
-
-
     private String generateName(String id) {
         return "Task" + id;
     }

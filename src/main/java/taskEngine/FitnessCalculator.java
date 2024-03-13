@@ -34,9 +34,9 @@ public class FitnessCalculator {
         }
 
         for (Core c : candidate.getAllCores()) {
-            if (isWithinPenaltyValue(c.calculateETUtil()) && c.getScheduleType().getValue().contains("ET")) {
+            if (isWithinPenaltyValue(c.calculateETUtil()) && c.getScheduleType().getValue().contains("ET") && s.ET_UTILIZATION > 0) {
                 fitness += calculateBadUtilPenalty(c.calculateETUtil());
-            } else if (isWithinPenaltyValue(c.calculateTTUtil()) && c.getScheduleType().getValue().contains("TT")) {
+            } else if (isWithinPenaltyValue(c.calculateTTUtil()) && c.getScheduleType().getValue().contains("TT") && s.TT_UTILIZATION > 0) {
                 fitness += calculateBadUtilPenalty(c.calculateTTUtil());
             }
         }
@@ -108,15 +108,15 @@ public class FitnessCalculator {
         int specificNumOfHighToLowPeriodTransitions = calculateNumOfPeriodTransitions(c, PeriodTransitionType.HIGHLOW);
 
         if(c.getDict().get("desiredNumOfHostTransitions") != specificNumOfHostTransitions) {
-            fitness += Math.abs(c.getDict().get("desiredNumOfHostTransitions") - specificNumOfHostTransitions) * 3;
+            fitness += Math.abs(c.getDict().get("desiredNumOfHostTransitions") - specificNumOfHostTransitions) * 5;
         }
 
         if(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") != specificNumOfLowToHighPeriodTransitions) {
-            fitness += Math.abs(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") - specificNumOfLowToHighPeriodTransitions);
+            fitness += Math.abs(c.getDict().get("desiredNumOfLowToHighPeriodTransitions") - specificNumOfLowToHighPeriodTransitions) * 3;
         }
 
         if(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") != specificNumOfHighToLowPeriodTransitions) {
-            fitness += Math.abs(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") - specificNumOfHighToLowPeriodTransitions);
+            fitness += Math.abs(c.getDict().get("desiredNumOfHighToLowPeriodTransitions") - specificNumOfHighToLowPeriodTransitions) * 3;
         }
 
 //        fitness += calculateRepeatedTaskPenalty(c);

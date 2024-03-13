@@ -54,6 +54,15 @@ public class PlatformModel {
         return allCores;
     }
 
+    public List<CPU> getAllCPUs(){
+        List<CPU> allCpus = new ArrayList<>();
+
+        for (EndSystem es : getEndSystems()) {
+            allCpus.addAll(es.getCpus());
+        }
+        return allCpus;
+    }
+
     public List<Core> getAllCores(ScheduleType scheduleType) {
         if (scheduleType == ScheduleType.TTET || scheduleType == ScheduleType.NONE) {
             List<Core> allCores = new ArrayList<>();
@@ -172,6 +181,10 @@ public class PlatformModel {
 
     public Core getCoreByTaskId (String taskId){
         return getAllCores().stream().filter(core -> core.containsTask(taskId)).findAny().orElse(null);
+    }
+
+    public EndSystem getEndSystemByCPUId (String cpuId) {
+        return getEndSystems().stream().filter(es -> es.containsCpu(cpuId)).findAny().orElse(null);
     }
 
     public void assignTasksToPlatform(List<Task> tasks){

@@ -33,4 +33,8 @@ public class EndSystem {
     public void setCpuList(List<CPU> cpuList) {
         this.cpuList = cpuList;
     }
+
+    public boolean containsCpu(String cpuId) {
+        return cpuList.stream().anyMatch(cpu -> cpu.getId().equals(cpuId));
+    }
 }

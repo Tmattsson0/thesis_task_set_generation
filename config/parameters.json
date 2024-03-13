@@ -7,30 +7,29 @@
     "microtick_values": [100, 200, 300, 400, 500]
   },
   "system": {
-    "tt_utilization": 0.7,
-    "et_utilization": 0.7,
-    "num_of_tt_tasks": 100,
-    "num_of_et_tasks": 25,
+    "tt_utilization": 0.2,
+    "et_utilization": 0,
+    "num_of_tt_tasks": 10,
+    "num_of_et_tasks": 0,
     "periods":
-    [[10000, 0.2],
-      [20000, 0.2],
-      [30000, 0.2],
-      [40000, 0.2],
-      [50000, 0.1],
-      [60000, 0.1]
+    [[500, 0.2],
+      [1000, 0.2],
+      [2000, 0.2],
+      [3000, 0.2],
+      [5000, 0.2]
     ]
   },
   "task": {
-    "allowed_jitter": [0.05, 0.85, 0.10],
+    "allowed_jitter": [0, 0.85, 0.15],
     "release_time": [0.9, 0.1],
     "deadline_type": "arbitrary;50,150"
   },
   "chain": {
-    "num_of_chains": 5,
-    "num_of_tasks_in_chain": 10,
-    "num_of_low": 3,
-    "num_of_high": 3,
-    "num_of_host_transitions": 3,
-    "latency_tightness": 50
+    "num_of_chains": 0,
+    "num_of_tasks_in_chain": 5,
+    "num_of_low": 0,
+    "num_of_high": 0,
+    "num_of_host_transitions": 0,
+    "latency_tightness": 25
   }
 }

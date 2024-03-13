@@ -34,7 +34,7 @@ public class TaskGenerator {
                 .toList());
 
         for (int i = 0; i < numOfTTTasks; i++) {
-            Task temp = new TTtask(String.valueOf(seq.incrementAndGet()), specificPeriods[i], deadlineType);
+            Task temp = new TTtask(String.valueOf(seq.incrementAndGet() - 1), specificPeriods[i], deadlineType);
             initialTTtasks.add(temp);
         }
 

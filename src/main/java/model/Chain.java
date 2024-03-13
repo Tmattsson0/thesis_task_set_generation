@@ -98,20 +98,23 @@ public class Chain {
         this.delay = delay;
     }
 
+    //latency in milliseconds
     public void calculateAndSetLatency(double tightness){
+        //low bound (sum(wcet))
+        int lowBound = (int) Math.round(tasks.stream().mapToDouble(Task::getWcet).sum())/1000;
+
+        //high bound (2*sum(period) - sum(wcet))
+        int highBound = (int) Math.round((2 * tasks.stream().mapToDouble(Task::getPeriod).sum()) - (tasks.stream().mapToDouble(Task::getWcet).sum()/1000));
+
         if (tightness == 0) {
-            //lobound (sum(wcet))
-            setLatency((int) Math.round(tasks.stream().mapToDouble(Task::getWcet).sum()));
+            setLatency(lowBound);
         } else if (tightness == 100) {
-            //hibound (2*sum(period) - sum(wcet))
-            setLatency((int) (Math.round((2 * tasks.stream().mapToDouble(Task::getPeriod).sum()) - tasks.stream().mapToDouble(Task::getWcet).sum())));
+            setLatency(highBound);
         } else {
             //the tightness refers to where on the number line between the lobound and hibound the latency will be.
             //Example: if tightness is 33. Then the latency will be 33% along the numberline between lobound and hibound.
             //lobound 100, hibound 1000 and tightness 33 = ((1000 - 100) * 0.33) + 100 = 397.
-            int lobound = (int) Math.round(tasks.stream().mapToDouble(Task::getWcet).sum());
-            int hibound = (int) (Math.round((2 * tasks.stream().mapToDouble(Task::getPeriod).sum()) - tasks.stream().mapToDouble(Task::getWcet).sum()));
-            int tightLatency = (int) Math.round(((hibound - lobound) * tightness) + lobound);
+            int tightLatency = (int) Math.round(((highBound - lowBound) * (tightness * 0.01)) + lowBound);
             setLatency(tightLatency);
         }
     }

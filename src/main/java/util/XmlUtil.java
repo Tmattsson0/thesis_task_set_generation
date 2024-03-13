@@ -538,4 +538,136 @@ public class XmlUtil {
             throw new ParseException("Error", 0);
         }
     }
+
+    public static void writeTaskListShane(PlatformModel platformModel, String fileName, int taskTimeTaken, int chainTimeTaken) {
+        String testCasesFilePath = "./testCases";
+        Document dom;
+        Element element;
+        Element graphElement;
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            //File stuff
+            File file = new File(testCasesFilePath + File.separator + LocalDate.now() + File.separator + fileName + ".xml");
+            Files.createDirectories(Paths.get(testCasesFilePath + File.separator + LocalDate.now()));
+
+            //XML stuff
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            dom = db.newDocument();
+
+            Element rootEle = dom.createElement("graphml");
+//            rootEle.setAttribute("A__TotalTTUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateTTUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+//
+//            rootEle.setAttribute("B__TotalETUtil", String.valueOf(BigDecimal.valueOf(platformModel.getAllCores().stream().mapToDouble(Core::calculateETUtil).sum()).setScale(3, RoundingMode.HALF_UP).doubleValue()));
+//
+//            rootEle.setAttribute("C__Fitness", String.valueOf(BigDecimal.valueOf(platformModel.getFitness()).setScale(4, RoundingMode.HALF_UP)));
+//
+//            rootEle.setAttribute("D__time_for_tasks", String.valueOf(taskTimeTaken));
+//
+//            rootEle.setAttribute("E__time_for_chains", String.valueOf(chainTimeTaken));
+
+            rootEle.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xsi", "A__http://www.w3.org/2001/XMLSchema-instance");
+            rootEle.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xsd", "B__http://www.w3.org/2001/XMLSchema");
+
+            Element graphml = dom.createElement("Graph");
+
+            rootEle.appendChild(graphml);
+
+            List<? extends Task> tasks = platformModel.getAllTasks();
+
+            tasks.sort(Comparator.comparingInt((Task o) -> Integer.parseInt(o.getId())));
+
+            for (Task t : tasks) {
+                element = dom.createElement("Node");
+                element.setAttribute("A__Id", t.getId());
+                element.setAttribute("B__Name", t.getName());
+//                if (t instanceof TTtask) {element.setAttribute("C__Type", String.valueOf(((TTtask) t).getTaskType()));}
+//                if (t instanceof ETtask) {element.setAttribute("C__Type", String.valueOf(((ETtask) t).getTaskType()));}
+                element.setAttribute("C__WCET", String.valueOf(t.getWcet()));
+                element.setAttribute("D__BCET", String.valueOf(t.getWcet()));
+                if (t instanceof TTtask) {element.setAttribute("E__Period", String.valueOf(t.getPeriod()));}
+//                if (t instanceof ETtask) {element.setAttribute("E__MIT", String.valueOf(t.getPeriod()));}
+                element.setAttribute("F__Deadline", String.valueOf(t.getDeadline()));
+                element.setAttribute("G__EarliestActivation", String.valueOf(0));
+                element.setAttribute("H__MaxJitter", String.valueOf(t.getMaxJitter()));
+                if (t instanceof TTtask) {element.setAttribute("I__Offset", String.valueOf(((TTtask) t).getOffset()));}
+                if (t instanceof TTtask){element.setAttribute("J__DeadlineAdjustment", String.valueOf(0));}
+//                if (t instanceof ETtask){element.setAttribute("I__Priority", String.valueOf(((ETtask) t).getPriority()));}
+                element.setAttribute("K__CpuId", String.valueOf(CheekyLetterToNumberConverter.cpuIdLetterToNumberConverter(t.getCpuId())));
+
+                if (t.getCoreAffinity().length == 1) {
+                    element.setAttribute("L__CoreId", String.valueOf(CheekyLetterToNumberConverter.coreIdLetterToNumberConverter(t.getCoreAffinity()[0])));
+                } else {
+                    element.setAttribute("L__CoreId", String.valueOf(-1));
+                }
+
+
+
+//                element.setAttribute("L__CoreAffinity", Arrays.toString(t.getCoreAffinity()));
+                //Coreaffinty[0] = -1
+                //Coreaffinty[1] = 1
+                //Coreaffinty[1+] = -1
+
+
+                graphml.appendChild(element);
+            }
+
+//            for (Core c : platformModel.getAllCores()){
+//                element = dom.createElement("Core");
+//                element.setAttribute("A__Id", c.getId());
+//                element.setAttribute("B__Name", c.getName());
+//                element.setAttribute("C__TTUtil", String.valueOf(c.calculateTTUtil()));
+//                element.setAttribute("D__ETUtil", String.valueOf(c.calculateETUtil()));
+//                graphml.appendChild(element);
+//
+//            }
+
+            for (Chain c : platformModel.getChains()) {
+                element = dom.createElement("Chain");
+                element.setAttribute("A__Budget", String.valueOf(c.getLatency() - c.getDelay()));
+                element.setAttribute("B__Priority", String.valueOf(1));
+                element.setAttribute("C__Name", c.getName());
+//                element.setAttribute("D__Fitness", String.valueOf(c.getFitness()));
+                for (Task t : c.getTasks()) {
+                    Element taskElement = dom.createElement("Runnable");
+                    taskElement.setAttribute("A__Name", t.getName());
+                    element.appendChild(taskElement);
+                }
+                graphml.appendChild(element);
+            }
+
+            dom.appendChild(rootEle);
+
+            try {
+                Transformer tr = TransformerFactory.newInstance().newTransformer();
+                tr.setOutputProperty(OutputKeys.INDENT, "yes");
+                tr.setOutputProperty(OutputKeys.METHOD, "xml");
+
+                StringWriter writer = new StringWriter();
+
+                tr.transform(new DOMSource(dom),
+                        new StreamResult(writer));
+
+                //Custom manipulation of string (sorting and stuff):
+                String output = writer.getBuffer().toString();
+
+                output = output.replaceAll("[A-Z]__", "");
+
+                FileOutputStream outputStream = new FileOutputStream(file);
+
+                byte[] strToBytes = output.getBytes();
+                outputStream.write(strToBytes);
+
+                outputStream.close();
+
+            } catch (TransformerException te) {
+                System.out.println(te.getMessage());
+            }
+        } catch (IOException e) {
+            System.out.println("I failed");
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

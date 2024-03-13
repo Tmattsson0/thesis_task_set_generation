@@ -53,12 +53,11 @@ public class ChainGenerator {
         }
 
         for (Chain c : chains) {
-//            assignChainTasksAndValuesSA(c, latencyTightness);
+            assignChainTasksAndValuesSA(c, latencyTightness);
 //            assignChainTasksAndValuesHC(c, latencyTightness);
-            assignChainTasksAndValuesSteepestAscentHC(c, latencyTightness);
-            c.setDelay(util.DelayUtil.calculateDelay(c, s.PLATFORMMODEL));
+//            assignChainTasksAndValuesSteepestAscentHC(c, latencyTightness);
+            c.setDelay(util.DelayUtil.calculateDelayInMilliseconds(c, s.PLATFORMMODEL));
         }
-
         s.PLATFORMMODEL.setChains(chains);
     }
 
@@ -81,7 +80,7 @@ public class ChainGenerator {
 
         // Number of iterations of annealing
         // before decreasing temperature
-        final int numIterations = 100;
+        final int numIterations = 500;
 
         double minFitness = Double.MAX_VALUE;
         Chain bestSolution = null;

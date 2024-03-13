@@ -27,7 +27,7 @@ public class Singleton {
     public int NUM_OF_HOST_TRANSITIONS;
     public double LATENCY_TIGHTNESS;
     public PlatformModel PLATFORMMODEL;
-    public double[] coreAffinityDist = {0.75, 0.1, 0.15};
+    public double[] coreAffinityDist = {0.5, 0.25, 0.25};
 
     private Singleton() {}
 
